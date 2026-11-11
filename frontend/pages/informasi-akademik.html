@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <meta name="description" content="Informasi akademik dan berita terbaru Universitas Muhammadiyah Kupang melalui PUSDATIN UMKOE.">
+
+    <title>Informasi Akademik | PUSDATIN UMKOE</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+    <link rel="stylesheet" href="../css/informasi-akademik.css">
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="topbar">
+        <div class="topbar-inner">
+
+            <a href="../index.html" class="brand">
+                <span class="brand-icon">
+                    <i class="fa-solid fa-building-columns"></i>
+                </span>
+
+                <span>
+                    <strong>PUSDATIN <b>UMKOE</b></strong>
+                    <small>Pusat Data dan Teknologi Informasi</small>
+                </span>
+            </a>
+
+            <a href="../index.html" class="back-link">
+                <i class="fa-solid fa-arrow-left"></i>
+                <span>Kembali ke Beranda</span>
+            </a>
+
+        </div>
+    </header>
+
+
+    <main>
+
+        <!-- HERO -->
+        <section class="academic-hero">
+
+            <div class="hero-decoration decoration-one"></div>
+            <div class="hero-decoration decoration-two"></div>
+
+            <div class="academic-hero-inner">
+
+                <div class="hero-content">
+
+                    <div class="hero-label">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                        PUSAT INFORMASI AKADEMIK
+                    </div>
+
+                    <h1>
+                        Informasi Akademik
+                        <span>Universitas Muhammadiyah Kupang</span>
+                    </h1>
+
+                    <p>
+                        Temukan berita kampus, perkembangan kegiatan akademik,
+                        informasi perkuliahan, dan berbagai informasi resmi
+                        Universitas Muhammadiyah Kupang.
+                    </p>
+
+                    <a href="#berita" class="hero-button">
+                        Jelajahi Informasi
+                        <i class="fa-solid fa-arrow-down"></i>
+                    </a>
+
+                </div>
+
+                <div class="hero-visual">
+
+                    <div class="visual-circle circle-one"></div>
+                    <div class="visual-circle circle-two"></div>
+
+                    <div class="academic-illustration">
+                        <div class="book-icon">
+                            <i class="fa-solid fa-book-open"></i>
+                        </div>
+
+                        <div class="illustration-caption">
+                            <strong>Academic Information</strong>
+                            <span>Universitas Muhammadiyah Kupang</span>
+                        </div>
+                    </div>
+
+                    <div class="floating-icon floating-one">
+                        <i class="fa-solid fa-newspaper"></i>
+                    </div>
+
+                    <div class="floating-icon floating-two">
+                        <i class="fa-solid fa-calendar-days"></i>
+                    </div>
+
+                    <div class="floating-icon floating-three">
+                        <i class="fa-solid fa-graduation-cap"></i>
+                    </div>
+
+                </div>
+
+            </div>
+        </section>
+
+
+        <!-- INFORMASI SUMBER -->
+        <section class="source-notice">
+            <div class="source-notice-inner">
+
+                <div class="notice-icon">
+                    <i class="fa-solid fa-circle-info"></i>
+                </div>
+
+                <div>
+                    <strong>Sumber informasi resmi</strong>
+
+                    <p>
+                        Berita pada halaman ini diambil dari website resmi
+                        Universitas Muhammadiyah Kupang. Informasi jadwal,
+                        kalender akademik, dan pengumuman hanya ditampilkan
+                        apabila tersedia dari sumber resmi.
+                    </p>
+                </div>
+
+                <a href="https://umkoe.ac.id/" target="_blank" rel="noopener noreferrer">
+                    Website UMKOE
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+
+            </div>
+        </section>
+
+
+        <!-- BERITA -->
+        <section class="news-section" id="berita">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="section-kicker">UPDATE UNIVERSITAS</span>
+
+                    <h2>Berita dan Informasi Kampus</h2>
+
+                    <p>
+                        Ikuti perkembangan terbaru kegiatan dan informasi
+                        Universitas Muhammadiyah Kupang.
+                    </p>
+                </div>
+
+                <div class="live-indicator">
+                    <span></span>
+                    Terhubung ke sumber berita
+                </div>
+
+            </div>
+
+
+            <!-- SEARCH -->
+            <div class="news-toolbar">
+
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+
+                    <input
+                        type="search"
+                        id="newsSearch"
+                        placeholder="Cari berita atau informasi..."
+                        autocomplete="off"
+                    >
+                </div>
+
+                <a
+                    href="https://umkoe.ac.id/category/berita/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="official-news-link"
+                >
+                    Semua Berita Resmi
+                    <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                </a>
+
+            </div>
+
+
+            <!-- FILTER -->
+            <div class="filter-list" id="newsFilters">
+
+                <button class="filter-button active" data-filter="all">
+                    Semua Berita
+                </button>
+
+                <button class="filter-button" data-filter="academic">
+                    Akademik
+                </button>
+
+                <button class="filter-button" data-filter="research">
+                    Penelitian
+                </button>
+
+                <button class="filter-button" data-filter="student">
+                    Kemahasiswaan
+                </button>
+
+            </div>
+
+
+            <!-- STATUS -->
+            <div class="news-status" id="newsStatus">
+                <i class="fa-solid fa-spinner fa-spin"></i>
+                Mengambil berita terbaru...
+            </div>
+
+
+            <!-- NEWS GRID -->
+            <div class="news-grid" id="newsGrid"></div>
+
+
+            <!-- LOAD MORE -->
+            <div class="load-more-wrap">
+
+                <button id="loadMoreButton" class="load-more-button" hidden>
+                    Muat Berita Lainnya
+                    <i class="fa-solid fa-arrow-down"></i>
+                </button>
+
+            </div>
+
+        </section>
+
+
+        <!-- INFORMASI AKADEMIK -->
+        <section class="academic-services">
+
+            <div class="section-heading">
+
+                <div>
+                    <span class="section-kicker">AKSES LAYANAN</span>
+
+                    <h2>Layanan Informasi Akademik</h2>
+
+                    <p>
+                        Akses halaman layanan dan sumber informasi
+                        yang berkaitan dengan kegiatan akademik kampus.
+                    </p>
+                </div>
+
+            </div>
+
+
+            <div class="academic-service-grid">
+
+                <a href="daftar-prodi.html" class="academic-service-card">
+
+                    <div class="service-icon blue">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+
+                    <div>
+                        <h3>Daftar Program Studi</h3>
+
+                        <p>
+                            Lihat halaman informasi program studi
+                        </p>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-right service-arrow"></i>
+
+                </a>
+
+
+                <a
+                    href="https://umkoe.ac.id/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="academic-service-card"
+                >
+
+                    <div class="service-icon purple">
+                        <i class="fa-solid fa-globe"></i>
+                    </div>
+
+                    <div>
+                        <h3>Website Resmi UMKOE</h3>
+
+                        <p>
+                            Kunjungi portal resmi universitas
+                        </p>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-right service-arrow"></i>
+
+                </a>
+
+
+                <a
+                    href="https://umkoe.ac.id/category/berita/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="academic-service-card"
+                >
+
+                    <div class="service-icon green">
+                        <i class="fa-solid fa-newspaper"></i>
+                    </div>
+
+                    <div>
+                        <h3>Arsip Berita Kampus</h3>
+
+                        <p>
+                            Lihat seluruh berita yang dipublikasikan
+                        </p>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-right service-arrow"></i>
+
+                </a>
+
+
+                <a href="support-it.html" class="academic-service-card">
+
+                    <div class="service-icon orange">
+                        <i class="fa-solid fa-headset"></i>
+                    </div>
+
+                    <div>
+                        <h3>Support IT</h3>
+
+                        <p>
+                            Hubungi layanan bantuan teknologi informasi
+                        </p>
+                    </div>
+
+                    <i class="fa-solid fa-arrow-right service-arrow"></i>
+
+                </a>
+
+            </div>
+
+        </section>
+
+
+        <!-- PENGUMUMAN -->
+        <section class="announcement-section">
+
+            <div class="announcement-card">
+
+                <div class="announcement-icon">
+                    <i class="fa-solid fa-bullhorn"></i>
+                </div>
+
+                <div class="announcement-content">
+
+                    <span>INFORMASI PENGUMUMAN</span>
+
+                    <h2>Pengumuman Akademik</h2>
+
+                    <p id="announcementMessage">
+                        Memeriksa ketersediaan pengumuman resmi...
+                    </p>
+
+                </div>
+
+                <a
+                    href="https://umkoe.ac.id/"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="announcement-button"
+                >
+                    Kunjungi Website
+                    <i class="fa-solid fa-arrow-right"></i>
+                </a>
+
+            </div>
+
+        </section>
+
+    </main>
+
+
+    <!-- FOOTER -->
+    <footer class="footer">
+
+        <div class="footer-inner">
+
+            <span>
+                © <span id="currentYear"></span>
+                PUSDATIN Universitas Muhammadiyah Kupang
+            </span>
+
+            <a href="../index.html">
+                Kembali ke Beranda
+            </a>
+
+        </div>
+
+    </footer>
+
+
+    <script src="../js/pages/informasi-akademik.js"></script>
+
+</body>
+</html>

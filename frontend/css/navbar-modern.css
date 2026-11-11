@@ -1,0 +1,225 @@
+/* =========================================
+   PUSDATIN MODERN NAVBAR
+   Aktif hanya ketika body memiliki
+   class navbar-modern
+========================================= */
+
+body.navbar-modern .site-header {
+    position: sticky;
+    top: 12px;
+    z-index: 1000;
+    width: min(96%, 1440px);
+    margin: 12px auto 0;
+    background: rgba(255, 255, 255, 0.88);
+    backdrop-filter: blur(22px);
+    -webkit-backdrop-filter: blur(22px);
+    border: 1px solid rgba(226, 232, 240, 0.85);
+    border-radius: 20px;
+    box-shadow: 0 12px 40px rgba(15, 23, 42, 0.07);
+    transition: box-shadow .3s ease, background .3s ease;
+}
+
+body.navbar-modern .navbar {
+    min-height: 76px;
+    padding-inline: 24px;
+    gap: 22px;
+}
+
+body.navbar-modern .brand {
+    gap: 12px;
+}
+
+body.navbar-modern .brand-icon {
+    width: 46px;
+    height: 46px;
+    border-radius: 15px;
+    background: linear-gradient(145deg, #123b78, #2563eb);
+    color: #fff;
+    box-shadow: 0 6px 15px rgba(37, 99, 235, .2);
+}
+
+body.navbar-modern .brand-text strong {
+    color: #102b50;
+    font-size: 18px;
+    letter-spacing: -.6px;
+}
+
+body.navbar-modern .brand-text small {
+    color: #718096;
+    font-size: 8px;
+    letter-spacing: .8px;
+}
+
+body.navbar-modern .nav-menu {
+    gap: 5px;
+    padding: 6px;
+    border: 1px solid #edf1f7;
+    border-radius: 14px;
+    background: #f8fafc;
+}
+
+body.navbar-modern .nav-link {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 11px 14px;
+    border-radius: 10px;
+    color: #53647b;
+    font-size: 12px;
+    font-weight: 700;
+    transition: all .25s ease;
+}
+
+body.navbar-modern .nav-link:hover,
+body.navbar-modern .nav-link.active,
+body.navbar-modern .has-dropdown.open > .nav-link {
+    color: #1d4ed8;
+    background: #eaf1ff;
+}
+
+body.navbar-modern .dropdown-toggle svg {
+    width: 14px;
+    height: 14px;
+}
+
+body.navbar-modern .dropdown-menu {
+    top: calc(100% + 15px);
+    min-width: 255px;
+    padding: 10px;
+    border: 1px solid #e8edf5;
+    border-radius: 17px;
+    background: rgba(255, 255, 255, .98);
+    box-shadow: 0 22px 55px rgba(15, 23, 42, .13);
+    animation: modernDropdown .2s ease both;
+}
+
+body.navbar-modern .dropdown-menu a {
+    padding: 13px 14px;
+    border-radius: 11px;
+    color: #34445c;
+    font-size: 13px;
+    font-weight: 600;
+    transition: all .2s ease;
+}
+
+body.navbar-modern .dropdown-menu a:hover {
+    color: #1d4ed8;
+    background: #eff5ff;
+    transform: translateX(3px);
+}
+
+body.navbar-modern .nav-menu > li:last-child > a {
+    color: #fff;
+    background: linear-gradient(135deg, #1d4ed8, #2563eb);
+    padding-inline: 17px;
+    box-shadow: 0 5px 13px rgba(37, 99, 235, .16);
+}
+
+body.navbar-modern .nav-menu > li:last-child > a:hover {
+    color: #fff;
+    background: #1745b5;
+    transform: translateY(-2px);
+}
+
+/* Admin belum ditampilkan karena halamannya belum tersedia */
+body.navbar-modern .nav-admin {
+    display: none;
+}
+
+/* Animasi dropdown */
+@keyframes modernDropdown {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Tombol hamburger */
+body.navbar-modern .mobile-menu-toggle {
+    border: 1px solid #e3eaf4;
+    border-radius: 13px;
+    background: #f8fafc;
+}
+
+body.navbar-modern .mobile-menu-toggle:hover {
+    background: #eaf1ff;
+}
+
+/* Responsif */
+@media (max-width: 1024px) {
+    body.navbar-modern .navbar {
+        gap: 12px;
+    }
+
+    body.navbar-modern .nav-menu {
+        gap: 2px;
+    }
+
+    body.navbar-modern .nav-link {
+        padding-inline: 9px;
+        font-size: 11px;
+    }
+}
+
+@media (max-width: 768px) {
+    body.navbar-modern .site-header {
+        top: 6px;
+        width: calc(100% - 20px);
+        margin-top: 6px;
+        border-radius: 16px;
+    }
+
+    body.navbar-modern .navbar {
+        min-height: 68px;
+        padding: 10px 14px;
+        gap: 10px;
+    }
+
+    body.navbar-modern .brand-icon {
+        width: 41px;
+        height: 41px;
+    }
+
+    body.navbar-modern .brand-text strong {
+        font-size: 16px;
+    }
+
+    body.navbar-modern .brand-text small {
+        font-size: 7px;
+    }
+
+    body.navbar-modern .nav-menu {
+        gap: 5px;
+        padding: 12px;
+        border: 1px solid #edf1f7;
+        border-radius: 14px;
+        background: #fff;
+        box-shadow: 0 15px 30px rgba(15, 23, 42, .06);
+    }
+
+    body.navbar-modern .nav-link {
+        width: 100%;
+        padding: 13px;
+        font-size: 13px;
+    }
+
+    body.navbar-modern .dropdown-menu {
+        margin-top: 3px;
+        padding: 5px 8px;
+        background: #f8fafc;
+        box-shadow: none;
+    }
+
+    body.navbar-modern .dropdown-menu a {
+        padding: 12px;
+    }
+
+    body.navbar-modern .nav-menu > li:last-child > a {
+        justify-content: center;
+        margin-top: 5px;
+    }
+}

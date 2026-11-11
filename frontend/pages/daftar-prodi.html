@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Daftar Program Studi | PUSDATIN UMKOE</title>
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/daftar-prodi.css">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet"
+          href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+</head>
+
+<body>
+
+<header class="prodi-header">
+    <a href="../index.html" class="prodi-brand">
+        <span class="brand-icon">
+            <i class="fas fa-graduation-cap"></i>
+        </span>
+
+        <span>
+            <small>PUSDATIN</small>
+            <strong>UMKOE</strong>
+        </span>
+    </a>
+
+    <a href="../index.html" class="back-home">
+        <i class="fas fa-arrow-left"></i>
+        Kembali ke Beranda
+    </a>
+</header>
+
+<main>
+
+    <section class="prodi-hero">
+        <div class="hero-content">
+            <span class="hero-label">
+                <i class="fas fa-university"></i>
+                INFORMASI AKADEMIK
+            </span>
+
+            <h1>Daftar Program Studi</h1>
+
+            <p>
+                Temukan informasi program studi Universitas Muhammadiyah
+                Kupang melalui satu halaman yang mudah diakses.
+            </p>
+
+            <div class="hero-decoration">
+                <i class="fas fa-graduation-cap"></i>
+            </div>
+        </div>
+    </section>
+
+    <section class="prodi-container">
+
+        <div class="breadcrumb">
+            <a href="../index.html">Beranda</a>
+            <i class="fas fa-chevron-right"></i>
+            <span>Daftar Program Studi</span>
+        </div>
+
+        <div class="prodi-summary">
+
+            <div class="summary-card">
+                <div class="summary-icon blue">
+                    <i class="fas fa-book-open"></i>
+                </div>
+
+                <div>
+                    <span>Total Program Studi</span>
+                    <strong id="totalProdi">17</strong>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-icon yellow">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+
+                <div>
+                    <span>Program Sarjana</span>
+                    <strong id="totalS1">16</strong>
+                </div>
+            </div>
+
+            <div class="summary-card">
+                <div class="summary-icon green">
+                    <i class="fas fa-award"></i>
+                </div>
+
+                <div>
+                    <span>Program Magister</span>
+                    <strong id="totalS2">1</strong>
+                </div>
+            </div>
+
+        </div>
+
+        <section class="prodi-card">
+
+            <div class="prodi-card-header">
+                <div>
+                    <span class="section-label">DATA AKADEMIK</span>
+                    <h2>Data Program Studi UMKOE</h2>
+
+                    <p>
+                        Cari dan lihat informasi program studi yang tersedia.
+                    </p>
+                </div>
+
+                <button type="button" id="printButton" class="print-button">
+                    <i class="fas fa-print"></i>
+                    Cetak Data
+                </button>
+            </div>
+
+            <div class="prodi-controls">
+
+                <label class="length-control">
+                    Tampilkan
+
+                    <select id="lengthSelect">
+                        <option value="10">10</option>
+                        <option value="25">25</option>
+                        <option value="50">50</option>
+                    </select>
+
+                    entri
+                </label>
+
+                <div class="search-control">
+                    <i class="fas fa-search"></i>
+
+                    <input
+                        type="search"
+                        id="searchInput"
+                        placeholder="Cari nama, kode, atau jenjang..."
+                        autocomplete="off"
+                    >
+                </div>
+
+            </div>
+
+            <div class="table-information">
+                <span id="resultInfo">Menampilkan data program studi</span>
+                <span class="data-label">
+                    <i class="fas fa-database"></i>
+                    Data lokal
+                </span>
+            </div>
+
+            <div class="table-responsive">
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="number-column">No.</th>
+                            <th>Kode</th>
+                            <th>Nama Program Studi</th>
+                            <th>Jenjang</th>
+                            <th>Semester Mulai</th>
+                            <th>Nomor SK</th>
+                            <th>Tanggal SK</th>
+                        </tr>
+                    </thead>
+
+                    <tbody id="prodiTableBody">
+                        <tr>
+                            <td colspan="7" class="empty-state">
+                                Memuat data...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+
+            </div>
+
+            <div class="pagination-area">
+
+                <span id="pageInfo">Halaman 1 dari 1</span>
+
+                <div class="pagination-buttons">
+                    <button id="prevButton" type="button">
+                        <i class="fas fa-chevron-left"></i>
+                        Sebelumnya
+                    </button>
+
+                    <button id="nextButton" type="button">
+                        Selanjutnya
+                        <i class="fas fa-chevron-right"></i>
+                    </button>
+                </div>
+
+            </div>
+
+            <div class="data-note">
+                <i class="fas fa-info-circle"></i>
+
+                <p>
+                    Informasi di halaman ini menggunakan data yang tersedia
+                    pada halaman lama PUSDATIN. Keakuratan dan pembaruan
+                    data akademik perlu dikonfirmasi kepada pihak terkait.
+                </p>
+            </div>
+
+        </section>
+
+        <section class="prodi-help">
+            <div class="help-icon">
+                <i class="fas fa-headset"></i>
+            </div>
+
+            <div>
+                <h3>Butuh Informasi Lebih Lanjut?</h3>
+                <p>
+                    Hubungi layanan Support IT PUSDATIN jika menemukan
+                    informasi yang perlu diperbaiki.
+                </p>
+            </div>
+
+            <a href="../index.html#support" class="help-button">
+                Hubungi Kami
+                <i class="fas fa-arrow-right"></i>
+            </a>
+        </section>
+
+    </section>
+
+</main>
+
+<footer class="prodi-footer">
+    <p>
+        &copy; 2026 PUSDATIN Universitas Muhammadiyah Kupang.
+        Seluruh hak cipta dilindungi.
+    </p>
+</footer>
+
+<script src="../js/pages/daftar-prodi.js"></script>
+
+</body>
+</html>

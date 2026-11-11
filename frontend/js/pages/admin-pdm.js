@@ -1,0 +1,605 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const STORAGE_KEY = "pdmSubmissions";
+
+    const tableBody = document.getElementById("submissionTableBody");
+    const searchInput = document.getElementById("searchSubmission");
+    const filterStatus = document.getElementById("filterStatus");
+    const detailPanel = document.getElementById("detailPanel");
+    const reviewForm = document.getElementById("reviewForm");
+
+    let submissions = {};
+    let activeCode = null;
+
+    const statusDescriptions = {
+        "Menunggu Pemeriksaan":
+            "Pengajuan telah diterima dan sedang menunggu pemeriksaan admin.",
+
+        "Sedang Diperiksa":
+            "Pengajuan sedang diperiksa oleh petugas PUSDATIN.",
+
+        "Perlu Perbaikan":
+            "Pengajuan memerlukan perbaikan. Silakan perhatikan catatan pemeriksaan admin.",
+
+        "Disetujui":
+            "Pengajuan telah disetujui oleh petugas pemeriksa.",
+
+        "Ditolak":
+            "Pengajuan tidak dapat disetujui. Silakan perhatikan catatan pemeriksaan admin."
+    };
+
+    const statusClasses = {
+        "Menunggu Pemeriksaan": "is-review",
+        "Sedang Diperiksa": "is-review",
+        "Perlu Perbaikan": "is-revision",
+        "Disetujui": "is-approved",
+        "Ditolak": "is-rejected"
+    };
+
+    const methodLabels = {
+        satuan: "PDF Satuan",
+        link: "Link Cloud",
+        zip: "File Arsip"
+    };
+
+    function readSubmissions() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            const parsed = saved ? JSON.parse(saved) : {};
+
+            if (
+                !parsed ||
+                typeof parsed !== "object" ||
+                Array.isArray(parsed)
+            ) {
+                throw new Error("Format data pengajuan tidak valid.");
+            }
+
+            submissions = parsed;
+        } catch (error) {
+            console.error("Gagal membaca data PDM:", error);
+
+            submissions = {};
+
+            tableBody.replaceChildren();
+
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+
+            cell.colSpan = 6;
+            cell.className = "admin-table-empty";
+            cell.textContent =
+                "Data tidak dapat dibaca. Periksa penyimpanan browser.";
+
+            row.appendChild(cell);
+            tableBody.appendChild(row);
+
+            return false;
+        }
+
+        return true;
+    }
+
+    function saveSubmissions() {
+        try {
+            localStorage.setItem(
+                STORAGE_KEY,
+                JSON.stringify(submissions)
+            );
+
+            return true;
+        } catch (error) {
+            console.error("Gagal menyimpan perubahan PDM:", error);
+            alert(
+                "Perubahan gagal disimpan. Periksa kapasitas penyimpanan browser."
+            );
+
+            return false;
+        }
+    }
+
+    function getSortedSubmissions() {
+        return Object.entries(submissions).sort((a, b) => {
+            const dateA = new Date(a[1].createdAt || 0).getTime();
+            const dateB = new Date(b[1].createdAt || 0).getTime();
+
+            return dateB - dateA;
+        });
+    }
+
+    function createStatusBadge(status) {
+        const badge = document.createElement("span");
+
+        badge.className =
+            `admin-status ${statusClasses[status] || ""}`;
+
+        badge.textContent = status || "Status Tidak Diketahui";
+
+        return badge;
+    }
+
+    function renderStats() {
+        const records = Object.values(submissions);
+
+        const count = {
+            total: records.length,
+            waiting: 0,
+            processing: 0,
+            revision: 0,
+            approved: 0,
+            rejected: 0
+        };
+
+        records.forEach((item) => {
+            switch (item.status) {
+                case "Menunggu Pemeriksaan":
+                    count.waiting++;
+                    break;
+                case "Sedang Diperiksa":
+                    count.processing++;
+                    break;
+                case "Perlu Perbaikan":
+                    count.revision++;
+                    break;
+                case "Disetujui":
+                    count.approved++;
+                    break;
+                case "Ditolak":
+                    count.rejected++;
+                    break;
+            }
+        });
+
+        document.getElementById("totalSubmissions").textContent = count.total;
+        document.getElementById("waitingSubmissions").textContent = count.waiting;
+        document.getElementById("processingSubmissions").textContent = count.processing;
+        document.getElementById("revisionSubmissions").textContent = count.revision;
+        document.getElementById("approvedSubmissions").textContent = count.approved;
+        document.getElementById("rejectedSubmissions").textContent = count.rejected;
+    }
+
+    function renderTable() {
+        tableBody.replaceChildren();
+
+        const keyword = searchInput.value.trim().toLowerCase();
+        const selectedStatus = filterStatus.value;
+
+        const records = getSortedSubmissions().filter(([code, item]) => {
+            const searchable = [
+                code,
+                item.nama,
+                item.nim
+            ].join(" ").toLowerCase();
+
+            const matchesKeyword = searchable.includes(keyword);
+            const matchesStatus =
+                !selectedStatus || item.status === selectedStatus;
+
+            return matchesKeyword && matchesStatus;
+        });
+
+        if (records.length === 0) {
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+
+            cell.colSpan = 6;
+            cell.className = "admin-table-empty";
+            cell.textContent =
+                Object.keys(submissions).length === 0
+                    ? "Belum ada pengajuan PDM yang tersimpan."
+                    : "Tidak ada pengajuan yang sesuai dengan pencarian.";
+
+            row.appendChild(cell);
+            tableBody.appendChild(row);
+        } else {
+            records.forEach(([code, item]) => {
+                const row = document.createElement("tr");
+
+                const studentCell = document.createElement("td");
+
+                const name = document.createElement("strong");
+                name.className = "admin-student-name";
+                name.textContent = item.nama || "-";
+
+                const nim = document.createElement("span");
+                nim.className = "admin-student-nim";
+                nim.textContent = item.nim || "-";
+
+                studentCell.append(name, nim);
+
+                const codeCell = document.createElement("td");
+                const codeText = document.createElement("span");
+                codeText.className = "admin-code";
+                codeText.textContent = code;
+                codeCell.appendChild(codeText);
+
+                const dateCell = document.createElement("td");
+                dateCell.textContent = item.tanggal || "-";
+
+                const methodCell = document.createElement("td");
+                methodCell.textContent =
+                    methodLabels[item.metode] || item.metode || "-";
+
+                const statusCell = document.createElement("td");
+                statusCell.appendChild(
+                    createStatusBadge(item.status)
+                );
+
+                const actionCell = document.createElement("td");
+                const detailButton = document.createElement("button");
+
+                detailButton.type = "button";
+                detailButton.className = "admin-detail-button";
+                detailButton.textContent = "Periksa";
+                detailButton.dataset.code = code;
+
+                detailButton.addEventListener("click", () => {
+                    openDetail(code);
+                });
+
+                actionCell.appendChild(detailButton);
+
+                row.append(
+                    studentCell,
+                    codeCell,
+                    dateCell,
+                    methodCell,
+                    statusCell,
+                    actionCell
+                );
+
+                tableBody.appendChild(row);
+            });
+        }
+
+        document.getElementById("tableInfo").textContent =
+            `Menampilkan ${records.length} dari ${Object.keys(submissions).length} pengajuan`;
+    }
+
+        function renderDocuments(documents) {
+        const container = document.getElementById("detailDocuments");
+        container.replaceChildren();
+
+        const documentLabels = {
+            ijazah: "Ijazah",
+            transkrip: "Transkrip Nilai",
+            ktp: "Kartu Tanda Penduduk",
+            ktm: "Kartu Tanda Mahasiswa",
+            akte: "Akta Kelahiran",
+            kk: "Kartu Keluarga",
+            "surat-rektor": "Surat Rekomendasi Rektor",
+            arsip: "File Arsip",
+            link: "Link Cloud"
+        };
+
+        const documentIcons = {
+            pdf: {
+                label: "PDF",
+                className: "is-pdf",
+                svg: '<path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><path d="M14 2v6h6"/><path d="M8 13h8"/><path d="M8 17h5"/>'
+            },
+            link: {
+                label: "CLOUD",
+                className: "is-cloud",
+                svg: '<path d="M20 16.2A4.5 4.5 0 0 0 18 7.5h-1.3A6 6 0 1 0 5 16.3"/><path d="M12 12v9"/><path d="m8 17 4 4 4-4"/>'
+            },
+            arsip: {
+                label: "ZIP",
+                className: "is-archive",
+                svg: '<rect x="3" y="4" width="18" height="4" rx="1"/><path d="M5 8v12h14V8"/><path d="M10 12h4"/><path d="M10 15h4"/>'
+            }
+        };
+
+        if (!Array.isArray(documents) || documents.length === 0) {
+            const empty = document.createElement("p");
+            empty.className = "admin-document-note";
+            empty.textContent = "Tidak ada informasi dokumen.";
+            container.appendChild(empty);
+            return;
+        }
+
+        documents.forEach((documentItem) => {
+            const type = String(documentItem?.jenis || "").toLowerCase();
+
+            const iconType = type === "link"
+                ? "link"
+                : type === "arsip" || type === "zip"
+                    ? "arsip"
+                    : "pdf";
+
+            const iconData = documentIcons[iconType];
+
+            const row = document.createElement("div");
+            row.className = "admin-document-item";
+
+            const iconWrapper = document.createElement("div");
+            iconWrapper.className =
+                `admin-document-icon ${iconData.className}`;
+
+            const svg = document.createElementNS(
+                "http://www.w3.org/2000/svg",
+                "svg"
+            );
+
+            svg.setAttribute("viewBox", "0 0 24 24");
+            svg.setAttribute("fill", "none");
+            svg.setAttribute("stroke", "currentColor");
+            svg.setAttribute("stroke-width", "1.7");
+            svg.setAttribute("stroke-linecap", "round");
+            svg.setAttribute("stroke-linejoin", "round");
+            svg.setAttribute("aria-hidden", "true");
+
+            svg.innerHTML = iconData.svg;
+
+            iconWrapper.appendChild(svg);
+
+            const content = document.createElement("div");
+            content.className = "admin-document-content";
+
+            const name = document.createElement("strong");
+
+            name.textContent =
+                documentItem?.nama ||
+                documentLabels[type] ||
+                "Dokumen";
+
+            const typeLabel = document.createElement("span");
+            typeLabel.className = "admin-document-type";
+
+            typeLabel.textContent =
+                documentLabels[type] ||
+                "Dokumen PDF";
+
+            const information = document.createElement("small");
+            information.className = "admin-document-information";
+
+            information.textContent = type === "link"
+                ? "Informasi tautan tersedia, URL belum tersimpan."
+                : "Nama dokumen tersimpan, file asli belum tersedia.";
+
+            content.append(name, typeLabel, information);
+
+            const badge = document.createElement("span");
+            badge.className = "admin-document-badge";
+            badge.textContent = "Informasi Tersimpan";
+
+            row.append(iconWrapper, content, badge);
+
+            container.appendChild(row);
+        });
+    }
+
+    function renderHistory(history) {
+        const container = document.getElementById("adminHistory");
+        container.replaceChildren();
+
+        if (!Array.isArray(history) || history.length === 0) {
+            const empty = document.createElement("p");
+            empty.className = "admin-document-note";
+            empty.textContent = "Belum ada riwayat pengajuan.";
+            container.appendChild(empty);
+            return;
+        }
+
+        history.forEach((item, index) => {
+            const row = document.createElement("div");
+            row.className = "admin-history-item";
+
+            const marker = document.createElement("span");
+            marker.className = "admin-history-marker";
+            marker.textContent = index + 1;
+
+            const content = document.createElement("div");
+            content.className = "admin-history-content";
+
+            const title = document.createElement("strong");
+            title.textContent = item.title || "Pembaruan Status";
+
+            const description = document.createElement("p");
+            description.textContent = item.description || "-";
+
+            const date = document.createElement("time");
+            date.textContent = item.date || "-";
+
+            content.append(title, description, date);
+            row.append(marker, content);
+            container.appendChild(row);
+        });
+    }
+
+    function openDetail(code) {
+        const item = submissions[code];
+
+        if (!item) {
+            alert("Data pengajuan tidak ditemukan.");
+            return;
+        }
+
+        activeCode = code;
+
+        document.getElementById("detailCode").textContent = code;
+        document.getElementById("detailName").textContent =
+            item.nama || "-";
+
+        document.getElementById("detailNim").textContent =
+            item.nim || "-";
+
+        document.getElementById("detailDate").textContent =
+            item.tanggal || "-";
+
+        document.getElementById("detailMethod").textContent =
+            methodLabels[item.metode] || item.metode || "-";
+
+        document.getElementById("reviewCode").value = code;
+
+        document.getElementById("reviewStatus").value =
+            item.status || "Menunggu Pemeriksaan";
+
+        document.getElementById("reviewNote").value =
+            item.revision || "";
+
+        document.getElementById("reviewMessage").textContent = "";
+
+        renderDocuments(item.dokumen);
+        renderHistory(item.history);
+
+        detailPanel.hidden = false;
+
+        detailPanel.scrollIntoView({
+            behavior: "smooth",
+            block: "start"
+        });
+    }
+
+    function closeDetail() {
+        detailPanel.hidden = true;
+        activeCode = null;
+        reviewForm.reset();
+    }
+
+    function getCurrentDate() {
+        return new Date().toLocaleDateString("id-ID", {
+            day: "2-digit",
+            month: "long",
+            year: "numeric"
+        });
+    }
+
+    function saveReview(event) {
+        event.preventDefault();
+
+        const code = document.getElementById("reviewCode").value;
+        const newStatus = document.getElementById("reviewStatus").value;
+        const note = document.getElementById("reviewNote").value.trim();
+
+        const item = submissions[code];
+
+        if (!item) {
+            alert("Data pengajuan tidak ditemukan.");
+            return;
+        }
+
+        if (
+            !Object.prototype.hasOwnProperty.call(
+                statusDescriptions,
+                newStatus
+            )
+        ) {
+            alert("Status pengajuan tidak valid.");
+            return;
+        }
+
+        if (
+            ["Perlu Perbaikan", "Ditolak"].includes(newStatus) &&
+            !note
+        ) {
+            alert(
+                "Catatan wajib diisi jika pengajuan memerlukan perbaikan atau ditolak."
+            );
+
+            document.getElementById("reviewNote").focus();
+            return;
+        }
+
+        const oldStatus = item.status || "Menunggu Pemeriksaan";
+        const oldNote = item.revision || "";
+
+        const statusChanged = oldStatus !== newStatus;
+        const noteChanged = oldNote !== note;
+
+        if (!statusChanged && !noteChanged) {
+            document.getElementById("reviewMessage").textContent =
+                "Tidak ada perubahan untuk disimpan.";
+            return;
+        }
+
+        const now = new Date();
+
+        const updatedItem = {
+            ...item,
+            status: newStatus,
+            revision: ["Perlu Perbaikan", "Ditolak"].includes(newStatus)
+                ? note
+                : "",
+            description: statusDescriptions[newStatus],
+            history: Array.isArray(item.history)
+                ? [...item.history]
+                : []
+        };
+
+        let historyTitle;
+        let historyDescription;
+
+        if (statusChanged) {
+            historyTitle = newStatus;
+            historyDescription = statusDescriptions[newStatus];
+        } else {
+            historyTitle = "Catatan Pemeriksaan Diperbarui";
+            historyDescription =
+                "Admin memperbarui catatan pemeriksaan tanpa mengubah status.";
+        }
+
+        if (note) {
+            historyDescription += ` Catatan admin: ${note}`;
+        }
+
+        updatedItem.history.push({
+            title: historyTitle,
+            description: historyDescription,
+            date: getCurrentDate()
+        });
+
+        updatedItem.updatedAt = now.toISOString();
+
+        submissions[code] = updatedItem;
+
+        if (!saveSubmissions()) {
+            submissions[code] = item;
+            return;
+        }
+
+        renderStats();
+        renderTable();
+        openDetail(code);
+
+        document.getElementById("reviewMessage").textContent =
+            "Pemeriksaan berhasil disimpan.";
+    }
+
+    function refreshData() {
+        if (!readSubmissions()) {
+            renderStats();
+            return;
+        }
+
+        renderStats();
+        renderTable();
+
+        if (activeCode && submissions[activeCode]) {
+            openDetail(activeCode);
+        }
+    }
+
+    searchInput.addEventListener("input", renderTable);
+    filterStatus.addEventListener("change", renderTable);
+
+    document.getElementById("refreshButton").addEventListener(
+        "click",
+        refreshData
+    );
+
+    document.getElementById("closeDetail").addEventListener(
+        "click",
+        closeDetail
+    );
+
+    reviewForm.addEventListener("submit", saveReview);
+
+    // Memperbarui tampilan jika data berubah dari tab browser lain.
+    window.addEventListener("storage", (event) => {
+        if (event.key === STORAGE_KEY) {
+            refreshData();
+        }
+    });
+
+    refreshData();
+});

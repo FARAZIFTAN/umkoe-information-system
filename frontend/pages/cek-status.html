@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Cek Status PDM | PUSDATIN UMKOE</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/pdm.css">
+    <link rel="stylesheet" href="../css/cek-status.css">
+</head>
+
+<body>
+
+<header class="pdm-header">
+    <div class="pdm-header-inner">
+        <a href="../index.html" class="pdm-brand">
+            <div class="pdm-brand-icon">P</div>
+            <div>
+                <strong>PUSDATIN UMKOE</strong>
+                <span>Pusat Data dan Teknologi Informasi</span>
+            </div>
+        </a>
+
+        <a href="../index.html" class="pdm-back-link">
+            ← Kembali ke Beranda
+        </a>
+    </div>
+</header>
+
+<main class="status-main">
+
+    <section class="status-heading">
+        <div class="pdm-breadcrumb">
+            <a href="../index.html">Beranda</a>
+            <span>/</span>
+            <span>Layanan Mahasiswa</span>
+            <span>/</span>
+            <strong>Cek Status PDM</strong>
+        </div>
+
+        <span class="pdm-eyebrow">LAYANAN MAHASISWA</span>
+
+        <h1>Cek Status Pengajuan PDM</h1>
+
+        <p>
+            Pantau perkembangan pengajuan Pemutakhiran Data Mandiri
+            menggunakan kode pelacakan yang diperoleh setelah pengajuan.
+        </p>
+    </section>
+
+    <section class="status-search-card">
+
+        <div class="search-icon">🔎</div>
+
+        <h2>Masukkan Kode Pelacakan</h2>
+
+        <p>
+            Masukkan kode pelacakan untuk melihat informasi
+            perkembangan pengajuan Anda.
+        </p>
+
+        <form id="statusForm">
+            <label for="trackingInput">Kode Pelacakan</label>
+
+            <div class="tracking-input-group">
+                <input
+                    type="text"
+                    id="trackingInput"
+                    placeholder="Contoh: PDM-2026-ABC123"
+                    autocomplete="off"
+                    required
+                >
+
+                <button type="submit" id="searchButton">
+                    Cari Status →
+                </button>
+            </div>
+
+            <small>
+                Pastikan kode pelacakan dimasukkan dengan benar.
+            </small>
+        </form>
+
+        <div class="search-error" id="searchError" hidden></div>
+
+    </section>
+
+    <section class="status-result" id="statusResult" hidden>
+
+        <div class="result-top">
+            <div>
+                <span class="result-label">HASIL PENCARIAN</span>
+                <h2>Informasi Pengajuan</h2>
+            </div>
+
+            <span class="status-badge" id="statusBadge">
+                Menunggu Pemeriksaan
+            </span>
+        </div>
+
+        <div class="result-details">
+
+            <div class="detail-item">
+                <span>Nama Mahasiswa</span>
+                <strong id="resultName">-</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>NIM</span>
+                <strong id="resultNim">-</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Kode Pelacakan</span>
+                <strong id="resultCode">-</strong>
+            </div>
+
+            <div class="detail-item">
+                <span>Tanggal Pengajuan</span>
+                <strong id="resultDate">-</strong>
+            </div>
+
+        </div>
+
+        <div class="status-description" id="statusDescription">
+            Pengajuan Anda sedang menunggu pemeriksaan.
+        </div>
+
+        <div class="revision-notice" id="revisionNotice" hidden>
+            <strong>Informasi Perbaikan</strong>
+            <p id="revisionMessage"></p>
+        </div>
+
+        <div class="timeline-section">
+            <h3>Riwayat Pengajuan</h3>
+            <div class="status-timeline" id="statusTimeline"></div>
+        </div>
+
+        <p class="result-disclaimer">
+            Informasi ini merupakan data demonstrasi dan belum terhubung
+            dengan sistem administrasi kampus.
+        </p>
+
+    </section>
+
+    <section class="status-help">
+        <div>
+            <span>💬</span>
+            <div>
+                <h3>Mengalami Kendala?</h3>
+                <p>Hubungi layanan Support IT jika mengalami masalah terkait pengajuan PDM.</p>
+            </div>
+        </div>
+
+        <a href="../index.html#support">Hubungi Support IT →</a>
+    </section>
+
+</main>
+
+<footer class="pdm-footer">
+    <p>© 2026 PUSDATIN Universitas Muhammadiyah Kupang.</p>
+    <a href="../index.html">Kembali ke Beranda</a>
+</footer>
+
+<script src="../js/pages/cek-status.js"></script>
+
+</body>
+</html>

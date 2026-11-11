@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Panel administrasi pengajuan PDM PUSDATIN UMKOE">
+    <title>Admin PDM | PUSDATIN UMKOE</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <link rel="stylesheet" href="../css/style.css">
+    <link rel="stylesheet" href="../css/components.css">
+    <link rel="stylesheet" href="../css/responsive.css">
+    <link rel="stylesheet" href="../css/pdm.css">
+    <link rel="stylesheet" href="../css/admin-pdm.css">
+</head>
+<body>
+
+<header class="pdm-header">
+    <div class="pdm-header-inner">
+        <a href="../index.html" class="pdm-brand">
+            <div class="pdm-brand-icon">P</div>
+            <div>
+                <strong>PUSDATIN UMKOE</strong>
+                <span>Panel Administrasi PDM</span>
+            </div>
+        </a>
+
+        <a href="../index.html" class="pdm-back-link">
+            ← Kembali ke Beranda
+        </a>
+    </div>
+</header>
+
+<main class="admin-main">
+
+    <section class="admin-heading">
+        <div class="pdm-breadcrumb">
+            <a href="../index.html">Beranda</a>
+            <span>/</span>
+            <span>Administrasi</span>
+            <span>/</span>
+            <strong>Admin PDM</strong>
+        </div>
+
+        <span class="pdm-eyebrow">PANEL ADMINISTRASI</span>
+        <h1>Manajemen Pengajuan PDM</h1>
+        <p>
+            Kelola, periksa, dan pantau pengajuan Pemutakhiran Data Mandiri
+            mahasiswa.
+        </p>
+    </section>
+
+    <div class="admin-demo-notice">
+        <strong>Mode demonstrasi</strong>
+        <span>
+            Data dikelola melalui penyimpanan browser (localStorage), bukan
+            database server.
+        </span>
+    </div>
+
+    <section class="admin-stats" aria-label="Ringkasan pengajuan">
+        <article class="admin-stat-card">
+            <span class="stat-icon stat-icon-blue">▤</span>
+            <div>
+                <span class="stat-label">Total Pengajuan</span>
+                <strong id="totalSubmissions">0</strong>
+            </div>
+        </article>
+
+        <article class="admin-stat-card">
+            <span class="stat-icon stat-icon-orange">◷</span>
+            <div>
+                <span class="stat-label">Menunggu Pemeriksaan</span>
+                <strong id="waitingSubmissions">0</strong>
+            </div>
+        </article>
+
+        <article class="admin-stat-card">
+            <span class="stat-icon stat-icon-yellow">!</span>
+            <div>
+                <span class="stat-label">Perlu Perbaikan</span>
+                <strong id="revisionSubmissions">0</strong>
+            </div>
+        </article>
+
+        <article class="admin-stat-card">
+            <span class="stat-icon stat-icon-green">✓</span>
+            <div>
+                <span class="stat-label">Disetujui</span>
+                <strong id="approvedSubmissions">0</strong>
+            </div>
+        </article>
+    </section>
+
+    <section class="admin-panel">
+        <div class="admin-panel-heading">
+            <div>
+                <span class="admin-section-label">DATA MAHASISWA</span>
+                <h2>Daftar Pengajuan</h2>
+                <p>Periksa data dan perbarui status pengajuan mahasiswa.</p>
+            </div>
+
+            <button type="button" class="admin-refresh-button" id="refreshButton">
+                ↻ Muat Ulang
+            </button>
+        </div>
+
+        <div class="admin-toolbar">
+            <div class="admin-search">
+                <label for="searchSubmission">Cari pengajuan</label>
+                <input
+                    type="search"
+                    id="searchSubmission"
+                    placeholder="Cari nama, NIM, atau kode pelacakan..."
+                >
+            </div>
+
+            <div class="admin-filter">
+                <label for="filterStatus">Filter status</label>
+                <select id="filterStatus">
+                    <option value="">Semua Status</option>
+                    <option value="Menunggu Pemeriksaan">Menunggu Pemeriksaan</option>
+                    <option value="Sedang Diperiksa">Sedang Diperiksa</option>
+                    <option value="Perlu Perbaikan">Perlu Perbaikan</option>
+                    <option value="Disetujui">Disetujui</option>
+                    <option value="Ditolak">Ditolak</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="admin-table-wrapper">
+            <table class="admin-table">
+                <thead>
+                    <tr>
+                        <th>Mahasiswa</th>
+                        <th>Kode Pelacakan</th>
+                        <th>Tanggal</th>
+                        <th>Metode</th>
+                        <th>Status</th>
+                        <th>Aksi</th>
+                    </tr>
+                </thead>
+                <tbody id="submissionTableBody">
+                    <tr>
+                        <td colspan="6" class="admin-table-empty">
+                            Memuat data pengajuan...
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="admin-table-footer">
+            <span id="tableInfo">Menampilkan 0 pengajuan</span>
+        </div>
+    </section>
+
+    <section class="admin-detail-panel" id="detailPanel" hidden>
+        <div class="admin-panel-heading">
+            <div>
+                <span class="admin-section-label">PEMERIKSAAN PENGAJUAN</span>
+                <h2>Detail Pengajuan</h2>
+                <p>Periksa informasi mahasiswa dan berikan keputusan.</p>
+            </div>
+
+            <button type="button" class="admin-close-button" id="closeDetail">
+                Tutup
+            </button>
+        </div>
+
+        <div class="detail-code-box">
+            <span>Kode Pelacakan</span>
+            <strong id="detailCode">-</strong>
+        </div>
+
+        <div class="admin-detail-grid">
+            <div class="admin-detail-item">
+                <span>Nama Mahasiswa</span>
+                <strong id="detailName">-</strong>
+            </div>
+            <div class="admin-detail-item">
+                <span>Nomor Induk Mahasiswa</span>
+                <strong id="detailNim">-</strong>
+            </div>
+            <div class="admin-detail-item">
+                <span>Tanggal Pengajuan</span>
+                <strong id="detailDate">-</strong>
+            </div>
+            <div class="admin-detail-item">
+                <span>Metode Pengiriman</span>
+                <strong id="detailMethod">-</strong>
+            </div>
+        </div>
+
+        <div class="admin-document-section">
+            <h3>Dokumen Pengajuan</h3>
+            <div id="detailDocuments" class="admin-document-list"></div>
+            <p class="admin-document-note">
+                Halaman demonstrasi hanya menyimpan nama dokumen, bukan file aslinya.
+            </p>
+        </div>
+
+        <form id="reviewForm" class="admin-review-form">
+            <h3>Pemeriksaan Admin</h3>
+
+            <input type="hidden" id="reviewCode">
+
+            <div class="admin-form-group">
+                <label for="reviewStatus">Status Pengajuan</label>
+                <select id="reviewStatus" required>
+                    <option value="Menunggu Pemeriksaan">Menunggu Pemeriksaan</option>
+                    <option value="Sedang Diperiksa">Sedang Diperiksa</option>
+                    <option value="Perlu Perbaikan">Perlu Perbaikan</option>
+                    <option value="Disetujui">Disetujui</option>
+                    <option value="Ditolak">Ditolak</option>
+                </select>
+            </div>
+
+            <div class="admin-form-group">
+                <label for="reviewNote">Catatan Pemeriksaan</label>
+                <textarea
+                    id="reviewNote"
+                    rows="4"
+                    placeholder="Tuliskan catatan atau alasan perubahan status..."
+                ></textarea>
+                <small>
+                    Catatan akan ditampilkan kepada mahasiswa jika status
+                    memerlukan perbaikan atau penolakan.
+                </small>
+            </div>
+
+            <div class="admin-form-actions">
+                <button type="submit" class="admin-save-button">
+                    Simpan Pemeriksaan
+                </button>
+                <span id="reviewMessage" role="status"></span>
+            </div>
+        </form>
+
+        <div class="admin-history-section">
+            <h3>Riwayat Pengajuan</h3>
+            <div id="adminHistory" class="admin-history"></div>
+        </div>
+    </section>
+
+</main>
+
+<footer class="pdm-footer">
+    <p>© 2026 PUSDATIN Universitas Muhammadiyah Kupang.</p>
+    <a href="../index.html">Kembali ke Beranda</a>
+</footer>
+
+<script src="../js/admin/auth.js"></script>
+<script src="../js/pages/admin-pdm.js"></script>
+</body>
+</html>

@@ -1,0 +1,219 @@
+document.addEventListener("DOMContentLoaded", () => {
+    const STORAGE_KEY = "pdmSubmissions";
+
+    const totalElement = document.getElementById("dashboardTotal");
+    const waitingElement = document.getElementById("dashboardWaiting");
+    const revisionElement = document.getElementById("dashboardRevision");
+    const approvedElement = document.getElementById("dashboardApproved");
+    const tableBody = document.getElementById("recentSubmissionBody");
+    const tableInfo = document.getElementById("recentTableInfo");
+    const refreshButton = document.getElementById("refreshDashboard");
+
+    const statusClasses = {
+        "Menunggu Pemeriksaan": "is-review",
+        "Sedang Diperiksa": "is-review",
+        "Perlu Perbaikan": "is-revision",
+        "Disetujui": "is-approved",
+        "Ditolak": "is-rejected"
+    };
+
+    const methodLabels = {
+        satuan: "PDF Satuan",
+        link: "Link Cloud",
+        zip: "File Arsip"
+    };
+
+    function readSubmissions() {
+        try {
+            const saved = localStorage.getItem(STORAGE_KEY);
+            const parsed = saved ? JSON.parse(saved) : {};
+
+            if (
+                !parsed ||
+                typeof parsed !== "object" ||
+                Array.isArray(parsed)
+            ) {
+                throw new Error("Format data PDM tidak valid.");
+            }
+
+            return Object.entries(parsed).filter(([, item]) => (
+                item &&
+                typeof item === "object" &&
+                !Array.isArray(item)
+            ));
+        } catch (error) {
+            console.error("Gagal membaca data PDM:", error);
+            return null;
+        }
+    }
+
+    function getSortedRecords(entries) {
+        return entries.sort((a, b) => {
+            const dateA = new Date(a[1].createdAt || 0).getTime();
+            const dateB = new Date(b[1].createdAt || 0).getTime();
+
+            return (Number.isFinite(dateB) ? dateB : 0) -
+                   (Number.isFinite(dateA) ? dateA : 0);
+        });
+    }
+
+    function createStatusBadge(status) {
+        const badge = document.createElement("span");
+
+        badge.className = `dashboard-status ${statusClasses[status] || ""}`;
+        badge.textContent = status || "Status Tidak Diketahui";
+
+        return badge;
+    }
+
+    function formatDate(item) {
+        if (item.tanggal) {
+            return item.tanggal;
+        }
+
+        if (!item.createdAt) {
+            return "-";
+        }
+
+        const date = new Date(item.createdAt);
+
+        if (Number.isNaN(date.getTime())) {
+            return "-";
+        }
+
+        return date.toLocaleDateString("id-ID", {
+            day: "2-digit",
+            month: "short",
+            year: "numeric"
+        });
+    }
+
+    function renderStats(records) {
+        const stats = {
+            total: records.length,
+            waiting: 0,
+            revision: 0,
+            approved: 0
+        };
+
+        records.forEach(([, item]) => {
+            if (item.status === "Menunggu Pemeriksaan") {
+                stats.waiting++;
+            }
+
+            if (item.status === "Perlu Perbaikan") {
+                stats.revision++;
+            }
+
+            if (item.status === "Disetujui") {
+                stats.approved++;
+            }
+        });
+
+        totalElement.textContent = stats.total;
+        waitingElement.textContent = stats.waiting;
+        revisionElement.textContent = stats.revision;
+        approvedElement.textContent = stats.approved;
+    }
+
+    function renderRecent(records) {
+        tableBody.replaceChildren();
+
+        const recentRecords = getSortedRecords([...records]).slice(0, 5);
+
+        if (recentRecords.length === 0) {
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+
+            cell.colSpan = 5;
+            cell.className = "dashboard-empty";
+            cell.textContent = "Belum ada pengajuan PDM yang tersimpan.";
+
+            row.appendChild(cell);
+            tableBody.appendChild(row);
+
+            tableInfo.textContent = "Belum ada data pengajuan.";
+            return;
+        }
+
+        recentRecords.forEach(([code, item]) => {
+            const row = document.createElement("tr");
+
+            const studentCell = document.createElement("td");
+            const studentName = document.createElement("strong");
+            const studentNim = document.createElement("small");
+
+            studentName.textContent = item.nama || "-";
+            studentNim.textContent = item.nim || "-";
+
+            studentCell.append(studentName, studentNim);
+
+            const codeCell = document.createElement("td");
+            codeCell.textContent = code;
+
+            const dateCell = document.createElement("td");
+            dateCell.textContent = formatDate(item);
+
+            const methodCell = document.createElement("td");
+            methodCell.textContent =
+                methodLabels[item.metode] || item.metode || "-";
+
+            const statusCell = document.createElement("td");
+            statusCell.appendChild(createStatusBadge(item.status));
+
+            row.append(
+                studentCell,
+                codeCell,
+                dateCell,
+                methodCell,
+                statusCell
+            );
+
+            tableBody.appendChild(row);
+        });
+
+        tableInfo.textContent =
+            `Menampilkan ${recentRecords.length} pengajuan terbaru dari ${records.length} pengajuan.`;
+    }
+
+    function renderDashboard() {
+        const records = readSubmissions();
+
+        if (records === null) {
+            totalElement.textContent = "-";
+            waitingElement.textContent = "-";
+            revisionElement.textContent = "-";
+            approvedElement.textContent = "-";
+
+            tableBody.replaceChildren();
+
+            const row = document.createElement("tr");
+            const cell = document.createElement("td");
+
+            cell.colSpan = 5;
+            cell.className = "dashboard-empty";
+            cell.textContent =
+                "Data PDM tidak dapat dibaca. Periksa penyimpanan browser.";
+
+            row.appendChild(cell);
+            tableBody.appendChild(row);
+
+            tableInfo.textContent = "Terjadi kesalahan membaca data.";
+            return;
+        }
+
+        renderStats(records);
+        renderRecent(records);
+    }
+
+    refreshButton.addEventListener("click", renderDashboard);
+
+    // Memperbarui dashboard jika data berubah dari tab browser lain.
+    window.addEventListener("storage", (event) => {
+        if (event.key === STORAGE_KEY) {
+            renderDashboard();
+        }
+    });
+
+    renderDashboard();
+});
