@@ -1,0 +1,328 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratorium Komputer - PUSDATIN UMK</title>
+    <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1PIQb-v4vNSdTQMKLbOejmIp8ttSKpyag&sz=w32">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2d328a; 
+            --secondary: #5d5fef;
+            --accent: #ffcb05;
+            --bg-light: #f4f7fe;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
+
+        /* --- HEADER --- */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 10px 5%; background: white; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
+        .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none;}
+        .logo-box { background: #f0f2ff; padding: 10px; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+        .logo-box img { height: 42px; }
+        .logo-text span { display: block; font-size: 0.7rem; font-weight: 700; color: var(--secondary); text-transform: uppercase; letter-spacing: 1px; line-height: 1; margin-bottom: 2px; }
+        .logo-text b { font-size: 1.15rem; color: var(--primary); font-weight: 800; white-space: nowrap; }
+        
+        .btn-back { text-decoration: none; color: var(--primary); font-weight: 700; font-size: 0.9rem; transition: var(--transition); display: flex; align-items: center; gap: 8px; }
+        .btn-back:hover { color: var(--secondary); transform: translateX(-5px); }
+
+        /* --- HERO --- */
+        .lab-hero { padding: 140px 5% 80px; background: linear-gradient(135deg, var(--primary) 0%, #1a1d5c 100%); color: white; text-align: center; position: relative; overflow: hidden; }
+        .lab-hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 15px; position: relative; z-index: 2;}
+        .lab-hero p { max-width: 600px; margin: 0 auto; opacity: 0.9; font-size: 1.1rem; position: relative; z-index: 2;}
+        .badge-status { display: inline-flex; align-items: center; gap: 8px; background: rgba(32, 201, 151, 0.2); color: #20c997; padding: 8px 16px; border-radius: 30px; font-weight: 700; font-size: 0.85rem; margin-top: 20px; border: 1px solid rgba(32, 201, 151, 0.3); position: relative; z-index: 2;}
+
+        /* --- LAYOUT --- */
+        .container { max-width: 1200px; margin: -40px auto 80px; padding: 0 20px; position: relative; z-index: 3; }
+        .grid-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 30px; }
+        
+        .card { background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); padding: 35px; margin-bottom: 30px; }
+        .card-full { grid-column: 1 / -1; }
+        .section-title { font-size: 1.3rem; color: var(--primary); margin-bottom: 25px; display: flex; align-items: center; gap: 12px; font-weight: 800; }
+        .section-title i { background: #f0f2ff; width: 45px; height: 45px; display: flex; align-items: center; justify-content: center; border-radius: 12px; color: var(--secondary); font-size: 1.2rem;}
+
+        /* --- JADWAL & PRINT BUTTON --- */
+        .header-with-btn { display: flex; justify-content: space-between; align-items: center; margin-bottom: 25px; width: 100%; }
+        .btn-print { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 12px; 
+            font-weight: 700; 
+            font-size: 0.85rem; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(45, 50, 138, 0.2);
+        }
+        .btn-print:hover { background: var(--secondary); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(93, 95, 239, 0.3); }
+
+        .facility-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .facility-item { display: flex; align-items: flex-start; gap: 15px; padding: 15px; background: #f8fafc; border-radius: 16px; border: 1px solid #e2e8f0; transition: var(--transition); }
+        .facility-item i { font-size: 1.5rem; color: var(--primary); background: #f0f2ff; padding: 12px; border-radius: 12px; }
+        .facility-info h4 { font-size: 0.95rem; margin-bottom: 3px; }
+
+        .software-tags { display: flex; flex-wrap: wrap; gap: 10px; }
+        .tag { background: #f0f2ff; color: var(--primary); padding: 8px 16px; border-radius: 30px; font-size: 0.85rem; font-weight: 600; border: 1px solid #e0e7ff;}
+
+        .table-responsive { overflow-x: auto; border-radius: 16px; border: 1px solid #e2e8f0; }
+        table { width: 100%; border-collapse: collapse; min-width: 800px; }
+        th { background: #f8fafc; padding: 15px; text-align: left; font-size: 0.9rem; color: var(--primary); font-weight: 700; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 15px; border-bottom: 1px solid #e2e8f0; font-size: 0.9rem; }
+        .jadwal-badge { background: #eef2ff; color: var(--secondary); padding: 5px 10px; border-radius: 6px; font-size: 0.8rem; font-weight: 600; }
+
+        .rules-list { list-style: none; display: flex; flex-direction: column; gap: 15px; }
+        .rules-list li { display: flex; gap: 15px; padding-bottom: 15px; border-bottom: 1px dashed #e2e8f0; }
+        .rules-list i { color: #ef4444; font-size: 1.2rem; }
+
+        /* --- PAGINATION STYLING --- */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .pagination-container button {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pagination-container button:hover:not(:disabled) { background: var(--primary); color: white; }
+        .pagination-container button:disabled { opacity: 0.3; cursor: not-allowed; border-color: #cbd5e1; color: #94a3b8; }
+        #pageInfo { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
+
+        /* --- PRINT TABLE (HIDDEN ON WEB) --- */
+        #printTableFull { display: none; }
+
+        @media (max-width: 992px) { .grid-layout { grid-template-columns: 1fr; } }
+
+        /* --- CSS KHUSUS CETAK (PRINT) --- */
+        @media print {
+            body { background: white; }
+            header, .lab-hero, .btn-back, .btn-print, .badge-status, #fasilitas, .card:not(.card-full), .pagination-container { 
+                display: none !important; 
+            }
+            #printableTable { display: none !important; } /* Sembunyikan tabel pagination */
+            
+            #printTableFull { 
+                display: table !important; /* Munculkan tabel penuh saat cetak */
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .container { margin: 0; padding: 0; max-width: 100%; }
+            .card-full { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; }
+            .section-title { color: black !important; font-size: 1.5rem; margin-bottom: 20px; border-bottom: 2px solid #000; padding-bottom: 10px; }
+            .section-title i { display: none; }
+            
+            #printTableFull th, #printTableFull td { 
+                border: 1px solid #000 !important; 
+                color: black !important; 
+                padding: 10px !important; 
+                font-size: 10pt !important;
+            }
+            #printTableFull th { background: #eee !important; }
+            
+            .card-full::before {
+                content: "UNIVERSITAS MUHAMMADIYAH KUPANG - PUSDATIN\A JADWAL PRAKTIKUM LABORATORIUM KOMPUTER\A PERIODE GENAP 2025\A";
+                white-space: pre;
+                display: block;
+                text-align: center;
+                font-weight: 800;
+                font-size: 1.2rem;
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-container">
+            <div class="logo-box"><img src="https://umkoe.ac.id/wp-content/uploads/2025/07/Logo-UMKOE-Warna-1.png" alt="Logo UMK"></div>
+            <div class="logo-text"><span>PUSDATIN</span><b>Universitas Muhammadiyah Kupang</b></div>
+        </a>
+        <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
+    </header>
+
+    <section class="lab-hero">
+        <h1 id="dispLabHeroTitle">Laboratorium Komputer Terpadu</h1>
+        <p id="dispLabHeroDesc">Memuat informasi fasilitas...</p>
+        <div class="badge-status"><i class="fas fa-check-circle"></i> Status Lab: Beroperasi Normal</div>
+    </section>
+
+    <div class="container">
+        <div class="grid-layout">
+            
+            <div class="card" id="fasilitas">
+                <div class="section-title"><i class="fas fa-microchip"></i> Spesifikasi & Fasilitas</div>
+                <div class="facility-grid">
+                    <div class="facility-item"><i class="fas fa-desktop"></i><div class="facility-info"><h4 id="dispLabFas1T">Memuat...</h4><p id="dispLabFas1D">-</p></div></div>
+                    <div class="facility-item"><i class="fas fa-wifi"></i><div class="facility-info"><h4 id="dispLabFas2T">Memuat...</h4><p id="dispLabFas2D">-</p></div></div>
+                    <div class="facility-item"><i class="fas fa-projector"></i><div class="facility-info"><h4 id="dispLabFas3T">Memuat...</h4><p id="dispLabFas3D">-</p></div></div>
+                    <div class="facility-item"><i class="fas fa-snowflake"></i><div class="facility-info"><h4 id="dispLabFas4T">Memuat...</h4><p id="dispLabFas4D">-</p></div></div>
+                </div>
+                <h4 style="margin: 25px 0 15px; font-size: 1rem; color: var(--text-dark);">Dukungan Perangkat Lunak</h4>
+                <div class="software-tags" id="dispLabSoftware"></div>
+            </div>
+
+            <div class="card">
+                <div class="section-title" style="color: #ef4444;"><i class="fas fa-exclamation-triangle" style="color: #ef4444; background: #fee2e2;"></i> Tata Tertib Lab</div>
+                <ul class="rules-list">
+                    <li><i class="fas fa-ban"></i><div class="rules-text"><h4 id="dispLabRule1T">Memuat...</h4><p id="dispLabRule1D">-</p></div></li>
+                    <li><i class="fas fa-id-card"></i><div class="rules-text"><h4 id="dispLabRule2T">Memuat...</h4><p id="dispLabRule2D">-</p></div></li>
+                    <li><i class="fas fa-trash-alt"></i><div class="rules-text"><h4 id="dispLabRule3T">Memuat...</h4><p id="dispLabRule3D">-</p></div></li>
+                    <li><i class="fas fa-usb"></i><div class="rules-text"><h4 id="dispLabRule4T">Memuat...</h4><p id="dispLabRule4D">-</p></div></li>
+                </ul>
+            </div>
+
+            <div class="card card-full" id="jadwal">
+                <div class="header-with-btn">
+                    <div class="section-title" style="margin-bottom: 0;"><i class="fas fa-calendar-check"></i> Jadwal Praktikum & Penggunaan Lab Komputer</div>
+                    <button onclick="window.print()" class="btn-print">
+                        <i class="fas fa-print"></i> Cetak Jadwal
+                    </button>
+                </div>
+                <div class="table-responsive">
+                    <table id="printableTable">
+                        <thead>
+                            <tr><th>Hari</th><th>Waktu</th><th>Mata Kuliah / Kegiatan</th><th>Program Studi</th><th>Dosen Pengampu</th></tr>
+                        </thead>
+                        <tbody id="tbodySchedule">
+                            <tr><td colspan="5" style="text-align:center; padding:40px;"><i class="fas fa-spinner fa-spin"></i> Menghubungkan ke database PUSDATIN...</td></tr>
+                        </tbody>
+                    </table>
+
+                    <table id="printTableFull">
+                        <thead>
+                            <tr><th>Hari</th><th>Waktu</th><th>Mata Kuliah / Kegiatan</th><th>Program Studi</th><th>Dosen Pengampu</th></tr>
+                        </thead>
+                        <tbody id="tbodyPrintFull"></tbody>
+                    </table>
+                </div>
+
+                <div class="pagination-container">
+                    <button id="prevBtn" onclick="changePage(-1)"><i class="fas fa-chevron-left"></i> Sebelumnya</button>
+                    <span id="pageInfo">Halaman 1 dari 1</span>
+                    <button id="nextBtn" onclick="changePage(1)">Selanjutnya <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwGz5YxurtaxYI5OmmgCqBniyqhvxNZ9ETDDftk0LyZzpc1YXtsJzy8JrRMicJEz1bm/exec";
+        
+        let currentSchedulePage = 1;
+        const recordsPerPage = 10;
+        let totalScheduleData = [];
+
+        async function loadLabData() {
+            try {
+                let response = await fetch(SCRIPT_URL + "?timestamp=" + new Date().getTime());
+                let result = await response.json();
+
+                totalScheduleData = result.jadwal || [];
+
+                const labData = JSON.parse(localStorage.getItem('dbLab_UMK')) || {
+                    heroT: "Laboratorium Komputer Terpadu", heroD: "Fasilitas komputasi modern untuk civitas akademika UMK.",
+                    f1T: "40 Unit PC High-End", f1D: "Intel Core i7, 16GB RAM, 512GB SSD.",
+                    f2T: "Koneksi Gigabit", f2D: "Fiber optic kampus berkecepatan 1 Gbps.",
+                    f3T: "Smart Projector", f3D: "Proyektor interaktif untuk presentasi dosen.",
+                    f4T: "Ruangan Full AC", f4D: "Suhu stabil untuk kenyamanan belajar.",
+                    soft: "Windows 11, Office 365, VS Code, SPSS, XAMPP",
+                    r1T: "Dilarang Makan/Minum", r1D: "Menghindari kerusakan perangkat.",
+                    r2T: "Wajib KTM", r2D: "Identitas akses masuk jam praktikum.",
+                    r3T: "Jaga Kebersihan", r3D: "Buang sampah pada tempatnya.",
+                    r4T: "Scan Flashdisk", r4D: "Cegah virus/malware masuk sistem."
+                };
+
+                document.getElementById('dispLabHeroTitle').innerText = labData.heroT;
+                document.getElementById('dispLabHeroDesc').innerText = labData.heroD;
+                document.getElementById('dispLabFas1T').innerText = labData.f1T; document.getElementById('dispLabFas1D').innerText = labData.f1D;
+                document.getElementById('dispLabFas2T').innerText = labData.f2T; document.getElementById('dispLabFas2D').innerText = labData.f2D;
+                document.getElementById('dispLabFas3T').innerText = labData.f3T; document.getElementById('dispLabFas3D').innerText = labData.f3D;
+                document.getElementById('dispLabFas4T').innerText = labData.f4T; document.getElementById('dispLabFas4D').innerText = labData.f4D;
+                document.getElementById('dispLabRule1T').innerText = labData.r1T; document.getElementById('dispLabRule1D').innerText = labData.r1D;
+                document.getElementById('dispLabRule2T').innerText = labData.r2T; document.getElementById('dispLabRule2D').innerText = labData.r2D;
+                document.getElementById('dispLabRule3T').innerText = labData.r3T; document.getElementById('dispLabRule3D').innerText = labData.r3D;
+                document.getElementById('dispLabRule4T').innerText = labData.r4T; document.getElementById('dispLabRule4D').innerText = labData.r4D;
+
+                const softContainer = document.getElementById('dispLabSoftware');
+                softContainer.innerHTML = labData.soft.split(',').map(s => `<div class="tag"><i class="fas fa-check-circle"></i> ${s.trim()}</div>`).join('');
+
+                renderSchedule();
+
+            } catch (error) {
+                console.error("Error:", error);
+                document.getElementById('tbodySchedule').innerHTML = `<tr><td colspan="5" style="text-align:center; color:red;">Gagal memuat jadwal.</td></tr>`;
+            }
+        }
+
+        function renderSchedule() {
+            const tbody = document.getElementById('tbodySchedule');
+            const tbodyPrint = document.getElementById('tbodyPrintFull');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageInfo = document.getElementById('pageInfo');
+            
+            // 1. Render untuk Tampilan Web
+            tbody.innerHTML = '';
+            const startIndex = (currentSchedulePage - 1) * recordsPerPage;
+            const endIndex = startIndex + recordsPerPage;
+            const paginatedItems = totalScheduleData.slice(startIndex, endIndex);
+            
+            if (paginatedItems.length > 0) {
+                paginatedItems.forEach(item => {
+                    tbody.innerHTML += `<tr><td><strong>${item.hari}</strong></td><td><span class="jadwal-badge">${item.waktu}</span></td><td>${item.matkul || '-'}</td><td>${item.prodi || '-'}</td><td>${item.dosen || '-'}</td></tr>`;
+                });
+            } else {
+                tbody.innerHTML = `<tr><td colspan="5" style="text-align:center; padding:30px; color:#94a3b8;">Belum ada jadwal.</td></tr>`;
+            }
+            
+            // 2. Render untuk Tampilan Cetak (Full)
+            tbodyPrint.innerHTML = '';
+            totalScheduleData.forEach(item => {
+                tbodyPrint.innerHTML += `<tr><td>${item.hari}</td><td>${item.waktu}</td><td>${item.matkul || '-'}</td><td>${item.prodi || '-'}</td><td>${item.dosen || '-'}</td></tr>`;
+            });
+            
+            const totalPages = Math.ceil(totalScheduleData.length / recordsPerPage) || 1;
+            pageInfo.innerText = `Halaman ${currentSchedulePage} dari ${totalPages}`;
+            prevBtn.disabled = currentSchedulePage === 1;
+            nextBtn.disabled = currentSchedulePage === totalPages;
+        }
+
+        function changePage(direction) {
+            currentSchedulePage += direction;
+            renderSchedule();
+            document.getElementById('jadwal').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        window.onload = loadLabData;
+    </script>
+</body>
+</html>

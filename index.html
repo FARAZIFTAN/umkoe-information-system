@@ -1,0 +1,482 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PUSDATIN - Universitas Muhammadiyah Kupang</title>
+    <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1PIQb-v4vNSdTQMKLbOejmIp8ttSKpyag&sz=w32">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2d328a; 
+            --secondary: #5d5fef;
+            --accent: #ffcb05;
+            --bg-light: #f4f7fe;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            
+            /* Variabel Warna Chatbot */
+            --bot-msg-bg: #e2e8f0;
+            --user-msg-bg: #2d328a;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: var(--bg-light);
+            color: #333;
+            overflow-x: hidden;
+        }
+
+        /* --- Header & Nav --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 5%; background: white; position: fixed; width: 100%;
+            top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+
+        .logo-container { display: flex; align-items: center; gap: 12px; position: relative; z-index: 1100; }
+        .logo-box { background: #f0f2ff; padding: 10px; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+        .logo-box img { height: 42px; }
+        .logo-text span { display: block; font-size: 0.7rem; font-weight: 700; color: var(--secondary); text-transform: uppercase; letter-spacing: 1px; line-height: 1; margin-bottom: 2px; }
+        .logo-text b { font-size: 1.15rem; color: var(--primary); font-weight: 800; white-space: nowrap; }
+
+        /* --- Hamburger Menu --- */
+        .mobile-menu-btn {
+            display: none; font-size: 1.5rem; color: var(--primary);
+            cursor: pointer; z-index: 1100; padding: 10px;
+        }
+
+        /* --- Navigation Logic --- */
+        .nav-wrapper { display: flex; align-items: center; }
+        .nav-links { display: flex; list-style: none; gap: 5px; align-items: center; }
+        .nav-links > li { position: relative; padding: 10px 0; }
+        
+        .nav-links li a {
+            text-decoration: none; color: #4a5568; padding: 12px 20px;
+            font-size: 0.9rem; font-weight: 600; transition: var(--transition);
+            border-radius: 12px; display: flex; align-items: center; gap: 8px;
+        }
+
+        .nav-links li a.active { background: white; color: var(--primary); box-shadow: 0 10px 25px rgba(93, 95, 239, 0.15); transform: translateY(-2px); }
+        .nav-links li a:hover:not(.active) { color: var(--secondary); background: #f8f9ff; }
+
+        /* --- Dropdown Styles --- */
+        .dropdown-content {
+            position: absolute; top: 100%; left: 0; background-color: white;
+            min-width: 240px; box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-radius: 15px; padding: 10px; opacity: 0; visibility: hidden;
+            transform: translateY(15px); transition: var(--transition); border: 1px solid #edf2f7;
+        }
+
+        .nav-links li:hover > .dropdown-content { opacity: 1; visibility: visible; transform: translateY(0); }
+
+        /* PERBAIKAN: Menambahkan target ke sub-dropdown-content dan transisi mulus */
+        .dropdown-content > a, .sub-dropdown > a, .sub-dropdown-content > a {
+            color: #4a5568 !important; padding: 12px 15px !important; font-size: 0.85rem !important;
+            border-radius: 10px !important; display: flex !important; align-items: center; justify-content: space-between;
+            background: transparent !important; box-shadow: none !important; width: 100%; cursor: pointer;
+            transition: all 0.3s ease !important; 
+        }
+
+        /* EFEK HOVER BARU: Background soft-blue, teks biru terang, dan teks bergeser sedikit ke kanan */
+        .dropdown-content > a:hover, .sub-dropdown:hover > a, .sub-dropdown-content > a:hover {
+            background-color: var(--bg-light) !important;
+            color: var(--primary) !important;
+            padding-left: 22px !important; 
+        }
+
+        .sub-dropdown { position: relative; }
+        .sub-dropdown-content {
+            position: absolute; top: 0; left: 100%; margin-left: 5px;
+            background-color: white; min-width: 200px; box-shadow: 0 15px 35px rgba(0,0,0,0.1);
+            border-radius: 15px; padding: 10px; opacity: 0; visibility: hidden;
+            transform: translateX(15px); transition: var(--transition); border: 1px solid #edf2f7;
+        }
+        .sub-dropdown:hover .sub-dropdown-content { opacity: 1; visibility: visible; transform: translateX(0); }
+
+        .btn-masuk {
+            background: var(--primary); color: white; padding: 12px 32px; border-radius: 12px;
+            text-decoration: none; font-weight: 700; transition: var(--transition); box-shadow: 0 6px 15px rgba(45, 50, 138, 0.2);
+            margin-left: 15px;
+        }
+
+        /* --- Hero Section --- */
+        .hero {
+            padding: 160px 8% 80px; min-height: 100vh;
+            background: linear-gradient(135deg, rgba(45, 50, 138, 0.92), rgba(63, 64, 149, 0.75)),
+                        url('https://images.unsplash.com/photo-1558494949-ef010cbdcc51?auto=format&fit=crop&q=80&w=2000');
+            background-size: cover; background-position: center;
+            display: grid; grid-template-columns: 1.1fr 0.9fr; align-items: center; gap: 60px; color: white;
+        }
+        .hero-content h1 { font-size: 3.8rem; font-weight: 800; margin-bottom: 24px; line-height: 1.1; }
+        .hero-content p { font-size: 1.15rem; margin-bottom: 40px; opacity: 0.9; line-height: 1.8; max-width: 600px; }
+        .hero-btns { display: flex; gap: 15px; }
+        .btn-hero-white { background: white; color: var(--primary); padding: 18px 36px; border-radius: 16px; text-decoration: none; font-weight: 700; display: flex; align-items: center; gap: 12px; transition: var(--transition); }
+        .btn-hero-outline { background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(12px); border: 1px solid rgba(255,255,255,0.3); color: white; padding: 18px 36px; border-radius: 16px; text-decoration: none; font-weight: 600; transition: var(--transition); }
+
+        /* Right Section Services */
+        .hero-right { display: flex; flex-direction: column; gap: 25px; }
+        .system-status { align-self: flex-end; background: rgba(255, 255, 255, 0.1); backdrop-filter: blur(10px); border: 1px solid rgba(255, 255, 255, 0.2); padding: 10px 20px; border-radius: 30px; display: flex; align-items: center; gap: 12px; font-size: 0.85rem; color: #fff; }
+        .status-dot { width: 12px; height: 12px; background: #20c997; border-radius: 50%; box-shadow: 0 0 10px #20c997; animation: pulse 1.5s infinite; }
+        .services-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
+        .service-card { background: rgba(255, 255, 255, 0.08); backdrop-filter: blur(20px); padding: 30px 25px; border-radius: 24px; text-align: center; color: white; transition: var(--transition); }
+        .service-card:hover { transform: translateY(-5px); background: rgba(255, 255, 255, 0.15); }
+        .service-icon { font-size: 2rem; color: var(--accent); margin-bottom: 15px; }
+
+        @keyframes pulse { 0% { opacity: 0.5; } 50% { opacity: 1; } 100% { opacity: 0.5; } }
+
+        /* ================= CSS UNTUK CHATBOT ================= */
+        .chat-toggler {
+            position: fixed; bottom: 30px; right: 30px; width: 60px; height: 60px;
+            background-color: var(--primary); color: white; border: none; border-radius: 50%;
+            font-size: 24px; cursor: pointer; box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            transition: transform 0.3s ease; z-index: 9999; display: flex; align-items: center; justify-content: center;
+        }
+        .chat-toggler:hover { transform: scale(1.1); background-color: var(--secondary); }
+
+        .chat-container {
+            position: fixed; bottom: 100px; right: 30px; width: 350px; max-width: 90vw;
+            background: white; border-radius: 15px; box-shadow: 0 8px 30px rgba(0,0,0,0.2);
+            display: flex; flex-direction: column; overflow: hidden;
+            transform: scale(0); transform-origin: bottom right; transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            z-index: 9998;
+        }
+        .chat-container.show { transform: scale(1); }
+
+        .chat-header { background-color: var(--primary); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; }
+        .chat-header h3 { margin: 0; font-size: 1rem; font-weight: 700; }
+        .close-btn { background: none; border: none; color: white; font-size: 18px; cursor: pointer; }
+
+        .chat-box { height: 350px; padding: 20px; overflow-y: auto; background-color: #f4f7f6; display: flex; flex-direction: column; gap: 15px; }
+        .chat-box::-webkit-scrollbar { width: 6px; }
+        .chat-box::-webkit-scrollbar-thumb { background: #ccc; border-radius: 10px; }
+
+        .message { max-width: 80%; padding: 10px 15px; border-radius: 15px; font-size: 0.85rem; line-height: 1.5; animation: fadeIn 0.3s ease-in-out; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+        .bot-message { background-color: var(--bot-msg-bg); color: #333; align-self: flex-start; border-bottom-left-radius: 0; }
+        .user-message { background-color: var(--user-msg-bg); color: white; align-self: flex-end; border-bottom-right-radius: 0; }
+
+        .chat-input { padding: 15px; background: white; display: flex; gap: 10px; border-top: 1px solid #ddd; }
+        .chat-input input { flex: 1; padding: 10px 15px; border: 1px solid #ccc; border-radius: 20px; outline: none; font-size: 0.85rem; transition: border 0.3s; }
+        .chat-input input:focus { border-color: var(--primary); }
+        .chat-input button { background-color: var(--primary); color: white; border: none; padding: 10px 20px; border-radius: 20px; cursor: pointer; font-weight: 600; font-size: 0.85rem; transition: background 0.3s; }
+        .chat-input button:hover { background-color: var(--secondary); }
+
+        /* ================= MOBILE RESPONSIVE ================= */
+        @media (max-width: 1200px) {
+            .mobile-menu-btn { display: block; }
+            
+            .nav-wrapper {
+                position: fixed; top: 0; right: -100%; width: 80%; max-width: 350px; height: 100vh;
+                background: white; box-shadow: -10px 0 30px rgba(0,0,0,0.1); transition: 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+                padding: 100px 30px 40px; flex-direction: column; align-items: flex-start; z-index: 1050;
+            }
+
+            .nav-wrapper.active { right: 0; }
+            .nav-links { flex-direction: column; width: 100%; align-items: flex-start; gap: 10px; }
+            .nav-links > li { width: 100%; }
+            .nav-links li a { width: 100%; padding: 15px; font-size: 1rem; border-radius: 10px; }
+
+            .dropdown-content, .sub-dropdown-content {
+                position: static; opacity: 1; visibility: visible; transform: none; box-shadow: none;
+                border: none; padding-left: 20px; display: none; width: 100%;
+            }
+
+            .nav-links li.active-mobile > .dropdown-content,
+            .sub-dropdown.active-mobile > .sub-dropdown-content { display: block; }
+
+            .btn-masuk { margin: 20px 0 0 0; width: 100%; text-align: center; }
+            .hero { grid-template-columns: 1fr; text-align: center; padding-top: 140px; }
+            .hero-btns { justify-content: center; flex-wrap: wrap; }
+            .hero-content h1 { font-size: 2.5rem; }
+            .system-status { align-self: center; margin-bottom: 20px; }
+        }
+
+        @media (max-width: 768px) {
+            .services-grid { grid-template-columns: 1fr; }
+            .chat-container { bottom: 90px; right: 15px; width: calc(100vw - 30px); }
+            .chat-toggler { bottom: 20px; right: 20px; width: 50px; height: 50px; font-size: 20px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <div class="logo-box">
+                <img src="https://umkoe.ac.id/wp-content/uploads/2025/07/Logo-UMKOE-Warna-1.png" alt="Logo UMK">
+            </div>
+            <div class="logo-text">
+                <span>PUSDATIN</span>
+                <b>Universitas Muhammadiyah Kupang</b>
+            </div>
+        </div>
+
+        <div class="mobile-menu-btn" id="mobileMenuBtn">
+            <i class="fas fa-bars"></i>
+        </div>
+
+        <nav class="nav-wrapper" id="navWrapper">
+            <ul class="nav-links">
+                <li><a href="#" class="active">Beranda</a></li>
+                <li class="has-dropdown">
+                    <a href="javascript:void(0)">Satu Data <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i></a>
+                    <div class="dropdown-content">
+                        <div class="sub-dropdown">
+                            <a href="javascript:void(0)">
+                                <span><i class="fas fa-file-alt"></i> Persyaratan PDM</span>
+                                <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+                            </a>
+                            <div class="sub-dropdown-content">
+                                <a href="https://drive.google.com/drive/folders/1mBCK6mzDBl3CpZZgyVY8QwAvkaScIXnr?usp=sharing"><span>Cek Berkas Persyaratan PDM</span></a>
+                            </div>
+                        </div>
+
+                        <a href="#"><span><i class="fas fa-users"></i> Data Mahasiswa</span></a>
+
+                        <div class="sub-dropdown">
+                            <a href="javascript:void(0)">
+                                <span><i class="fas fa-file-invoice"></i> Data Akademik & Prodi</span>
+                                <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+                            </a>
+                            <div class="sub-dropdown-content">
+                                <a href="daftar prodi.html"><span><i class="fas fa-university"></i> Daftar Program Studi</span></a>
+                                <a href="https://drive.google.com/drive/folders/18nMqyEkwwL-PXJzEbms1TAVGaNk5d3sF?usp=sharing"><span><i class="fas fa-award"></i> Sertifikat Akreditasi</span></a>
+                                <a href="#"><span><i class="fas fa-calendar-alt"></i> Kalender Akademik</span></a>
+                            </div>
+                        </div>
+                    </div>
+                </li>
+                
+                <li class="has-dropdown">
+                    <a href="javascript:void(0)">E-Layanan <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i></a>
+                    <div class="dropdown-content">
+                        <div class="sub-dropdown">
+                            <a href="javascript:void(0)">
+                                <span><i class="fas fa-user-edit"></i> PDM Mahasiswa</span>
+                                <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+                            </a>
+                            <div class="sub-dropdown-content">
+                                <a href="pdm nama.html"><span><i class="fas fa-font"></i> Nama</span></a>
+                                <a href="pdm nim.html"><span><i class="fas fa-id-badge"></i> NIM</span></a>
+                            </div>
+                        </div>
+                        <a href="cek data mahasiswa.html"><span><i class="fas fa-search"></i> Cek Data Mahasiswa</span></a>
+                        <a href="#"><span><i class="fas fa-user-tie"></i> Cek Data Dosen</span></a>
+                        <a href="pdf compres split.html"><span><i class="fas fa-file-pdf"></i> Kompres File PDF</span></a>
+                    </div>
+                </li>
+
+                <li class="has-dropdown">
+                    <a href="javascript:void(0)">Infrastruktur <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i></a>
+                    <div class="dropdown-content">
+                        <a href="info infrastruktur.html"><span><i class="fas fa-network-wired"></i> Status Jaringan</span></a>
+                        <a href="#"><span><i class="fas fa-server"></i> Data Center</span></a>
+                        
+                        <div class="sub-dropdown">
+                            <a href="javascript:void(0)">
+                                <span><i class="fas fa-flask"></i> Laboratorium</span>
+                                <i class="fas fa-chevron-right" style="font-size: 0.7rem;"></i>
+                            </a>
+                            <div class="sub-dropdown-content">
+                                <a href="lab komputer.html"><span><i class="fas fa-desktop"></i> Lab Komputer</span></a>
+                                <a href="#"><span><i class="fas fa-language"></i> Lab Bahasa</span></a>
+                                <a href="#"><span><i class="fas fa-microscope"></i> Lab Biologi</span></a>
+                            </div>
+                        </div>
+                        
+                        <a href="hotspot area.html"><span><i class="fas fa-wifi"></i> Hotspot Area</span></a>
+                    </div>
+                </li>
+
+                <li class="has-dropdown">
+                    <a href="javascript:void(0)">Website <i class="fas fa-chevron-down" style="font-size: 0.7rem;"></i></a>
+                    <div class="dropdown-content">
+                        <a href="https://umkoe.ac.id/"><span><i class="fas fa-globe"></i> Website Universitas</span></a>
+                        <a href="https://admisi.umkoe.ac.id/"><span><i class="fas fa-school-circle-check"></i> Website PMB</span></a>
+                        <a href="#"><span><i class="fas fa-building"></i> Website Fakultas</span></a>
+                        <a href="#"><span><i class="fas fa-graduation-cap"></i> Website Prodi</span></a>
+                        <a href="#"><span><i class="fas fa-bullhorn"></i> Humas & Informasi</span></a>
+                    </div>
+                </li>
+                
+                <li><a href="#">Statistik</a></li>
+            </ul>
+            <a href="admin data mahasiswa.html" class="btn-masuk">Login</a>
+        </nav>
+    </header>
+
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Pusat Data <br><span style="color: var(--accent);">dan Informasi</span></h1>
+            <p>Mengelola infrastruktur IT, keamanan siber, dan integrasi sistem informasi untuk mewujudkan ekosistem digital Universitas Muhammadiyah Kupang yang handal.</p>
+            <div class="hero-btns">
+                <a href="info infrastruktur.html" class="btn-hero-white"><i class="fas fa-server"></i> Info Infrastruktur</a>
+                <a href="support it.html" class="btn-hero-outline"><i class="fas fa-headset"></i> Support IT</a>
+            </div>
+        </div>
+
+        <div class="hero-right">
+            <div class="system-status">
+                <div class="status-dot"></div>
+                Semua Sistem Berjalan Normal
+            </div>
+
+            <div class="services-grid">
+                <a href="#" style="text-decoration:none;"><div class="service-card"><i class="fas fa-graduation-cap service-icon"></i><div class="service-title">SIAKAD</div><div class="service-desc">Sistem Informasi Akademik</div></div></a>
+                <a href="cek data mahasiswa.html" style="text-decoration:none;"><div class="service-card"><i class="fas fa-user-edit service-icon"></i><div class="service-title">PDM DIKTI</div><div class="service-desc">Pemutakhiran Data</div></div></a>
+                <a href="hotspot area.html" style="text-decoration:none;"><div class="service-card"><i class="fas fa-wifi service-icon"></i><div class="service-title">Hotspot</div><div class="service-desc">Akses Internet Kampus</div></div></a>
+                <a href="support it.html" style="text-decoration:none;"><div class="service-card"><i class="fas fa-laptop-medical service-icon"></i><div class="service-title">Helpdesk</div><div class="service-desc">Layanan Bantuan IT</div></div></a>
+            </div>
+        </div>
+    </section>
+
+    <button class="chat-toggler" onclick="toggleChat()"><i class="fas fa-comment-dots"></i></button>
+
+    <div class="chat-container" id="chatContainer">
+        <div class="chat-header">
+            <h3><i class="fas fa-robot"></i> Helpdesk PUSDATIN UMK</h3>
+            <button class="close-btn" onclick="toggleChat()"><i class="fas fa-times"></i></button>
+        </div>
+        <div class="chat-box" id="chatBox">
+            <div class="message bot-message">
+                Halo! Selamat datang di layanan informasi Pusat Data dan Informasi (PUSDATIN) Universitas Muhammadiyah Kupang.<br><br>
+                Ada yang bisa saya bantu? Coba ketik <b>'pdm'</b>, <b>'wifi'</b>, <b>'lab'</b>, atau <b>'kontak'</b>.
+            </div>
+        </div>
+        <div class="chat-input">
+            <input type="text" id="userInput" placeholder="Ketik pesan Anda..." onkeypress="handleEnter(event)">
+            <button onclick="sendMessage()"><i class="fas fa-paper-plane"></i></button>
+        </div>
+    </div>
+
+    <script>
+        // --- LOGIKA NAVIGASI MENU ---
+        const mobileMenuBtn = document.getElementById('mobileMenuBtn');
+        const navWrapper = document.getElementById('navWrapper');
+        const dropdowns = document.querySelectorAll('.has-dropdown');
+        const subDropdowns = document.querySelectorAll('.sub-dropdown');
+
+        mobileMenuBtn.addEventListener('click', () => {
+            navWrapper.classList.toggle('active');
+            const icon = mobileMenuBtn.querySelector('i');
+            icon.classList.toggle('fa-bars');
+            icon.classList.toggle('fa-times');
+        });
+
+        dropdowns.forEach(dropdown => {
+            dropdown.querySelector('a').addEventListener('click', (e) => {
+                if (window.innerWidth <= 1200) {
+                    e.preventDefault();
+                    dropdown.classList.toggle('active-mobile');
+                }
+            });
+        });
+
+        subDropdowns.forEach(sub => {
+            sub.querySelector('a').addEventListener('click', (e) => {
+                if (window.innerWidth <= 1200) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    sub.classList.toggle('active-mobile');
+                }
+            });
+        });
+
+        document.addEventListener('click', (e) => {
+            if (!navWrapper.contains(e.target) && !mobileMenuBtn.contains(e.target)) {
+                navWrapper.classList.remove('active');
+                mobileMenuBtn.querySelector('i').classList.add('fa-bars');
+                mobileMenuBtn.querySelector('i').classList.remove('fa-times');
+            }
+        });
+
+        // --- LOGIKA CHATBOT HELPDESK ---
+        const chatContainer = document.getElementById('chatContainer');
+        const chatBox = document.getElementById('chatBox');
+        const userInput = document.getElementById('userInput');
+
+        function toggleChat() {
+            chatContainer.classList.toggle('show');
+            if (chatContainer.classList.contains('show')) userInput.focus();
+        }
+
+        function handleEnter(event) {
+            if (event.key === 'Enter') sendMessage();
+        }
+
+        function sendMessage() {
+            const userText = userInput.value.trim();
+            if (userText === "") return;
+
+            appendMessage(userText, 'user-message');
+            userInput.value = '';
+            chatBox.scrollTop = chatBox.scrollHeight;
+
+            setTimeout(() => {
+                const botResponse = generateBotResponse(userText.toLowerCase());
+                appendMessage(botResponse, 'bot-message');
+                chatBox.scrollTop = chatBox.scrollHeight;
+            }, 600);
+        }
+
+        function appendMessage(text, className) {
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${className}`;
+            messageDiv.innerHTML = text; 
+            chatBox.appendChild(messageDiv);
+        }
+
+       // Logika Respons Chatbot PUSDATIN Tersinkronisasi dengan Menu
+        function generateBotResponse(input) {
+            // --- KATEGORI: PDM & CEK STATUS ---
+            if (input.includes('pdm') || input.includes('cek status') || input.includes('progres') || input.includes('perkembangan')) {
+                return `Untuk memantau status PDM Anda:<br><br>
+                        1. Jika ingin melihat progres/status, kunjungi <b>E-Layanan > Cek Data Mahasiswa</b>.<br>
+                        2. Jika ingin memulai PDM, pilih <b>E-Layanan > PDM Mahasiswa</b> (pilih Nama atau NIM).<br>
+                        3. Jika ingin mengetahui persyaratannya, cek <b>Satu Data > Persyaratan PDM</b>.`;
+            
+            // --- KATEGORI: INFRASTRUKTUR & JARINGAN ---
+            } else if (input.includes('wifi') || input.includes('jaringan') || input.includes('internet') || input.includes('hotspot')) {
+                return `Informasi jaringan tersedia di menu <b>Infrastruktur > Status Jaringan</b> atau lihat titik lokasi WiFi di menu <b>Infrastruktur > Hotspot Area</b>. Jika WiFi lemot, silakan lapor ke Helpdesk kami.`;
+            
+            // --- KATEGORI: LABORATORIUM ---
+            } else if (input.includes('lab') || input.includes('jadwal') || input.includes('praktikum')) {
+                return `Jadwal praktikum, daftar mata kuliah, dosen pengampu, serta tata tertib Lab Komputer dapat dilihat di menu <b>Infrastruktur > Laboratorium > Lab Komputer</b>.`;
+
+            // --- KATEGORI: AKADEMIK & DATA ---
+            } else if (input.includes('akreditasi') || input.includes('sertifikat') || input.includes('akademik')) {
+                return `Untuk sertifikat akreditasi prodi, Anda bisa mengaksesnya melalui <b>Satu Data > Data Akademik & Prodi > Sertifikat Akreditasi</b>.`;
+            } else if (input.includes('mahasiswa') && input.includes('data')) {
+                return `Data rekapitulasi mahasiswa tersedia di menu <b>Satu Data > Data Mahasiswa</b>.`;
+
+            // --- KATEGORI: WEBSITE & LAYANAN LAIN ---
+            } else if (input.includes('pdf') || input.includes('kompres') || input.includes('resize')) {
+                return `Anda bisa mengecilkan ukuran berkas dokumen Anda dengan fitur <b>E-Layanan > Kompres File PDF</b> sebelum mengunggahnya ke portal PDM.`;
+            } else if (input.includes('pmb') || input.includes('website')) {
+                return `Untuk website resmi Universitas, PMB, atau informasi Humas, silakan akses melalui menu <b>Website</b> di bagian paling kanan navigasi.`;
+
+            // --- KATEGORI: KONTAK & BANTUAN ---
+            } else if (input.includes('kontak') || input.includes('bantuan') || input.includes('support') || input.includes('admin') || input.includes('lapor')) {
+                return `Ada kendala teknis? Hubungi kami:<br>
+                        📧 <b>Email:</b> support@umkoe.ac.id<br>
+                        🏢 <b>Lokasi:</b> Gedung Rektorat (PUSDATIN).<br>
+                        Untuk detail WhatsApp, silakan cek menu <b>Support IT</b>.`;
+            
+            // --- DEFAULT ---
+            } else if (input.includes('terima kasih') || input.includes('makasih')) {
+                return `Sama-sama! Senang bisa membantu. Ada lagi yang ingin ditanyakan terkait fitur website PUSDATIN? 😊`;
+            } else {
+                return `Maaf, saya belum memahami pertanyaan Anda. Coba tanya seputar <b>'PDM'</b>, <b>'WiFi'</b>, <b>'Jadwal Lab'</b>, atau <b>'Kontak IT'</b>.`;
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,232 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hotspot Area - PUSDATIN UMK</title>
+    <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1PIQb-v4vNSdTQMKLbOejmIp8ttSKpyag&sz=w32">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2d328a; 
+            --secondary: #5d5fef;
+            --accent: #ffcb05;
+            --bg-light: #f4f7fe;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg-light); color: #333; overflow-x: hidden; }
+
+        /* --- Header Simple --- */
+        header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            padding: 10px 5%; background: white; position: fixed; width: 100%; 
+            top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.04); 
+        }
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .logo-box { background: #f0f2ff; padding: 10px; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+        .logo-box img { height: 42px; }
+        .logo-text span { display: block; font-size: 0.7rem; font-weight: 700; color: var(--secondary); text-transform: uppercase; letter-spacing: 1px; line-height: 1; margin-bottom: 2px; }
+        .logo-text b { font-size: 1.15rem; color: var(--primary); font-weight: 800; white-space: nowrap; }
+
+        /* Tombol Kembali */
+        .btn-back {
+            text-decoration: none;
+            color: var(--primary);
+            font-weight: 700;
+            font-size: 0.95rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: var(--transition);
+        }
+        .btn-back:hover {
+            color: var(--secondary);
+            transform: translateX(-5px);
+        }
+
+        /* --- Sub-Hero Section --- */
+        .sub-hero {
+            padding: 140px 5% 60px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            text-align: center;
+            border-bottom-left-radius: 40px;
+            border-bottom-right-radius: 40px;
+        }
+        .sub-hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 15px; }
+        .sub-hero p { font-size: 1.1rem; opacity: 0.9; max-width: 600px; margin: 0 auto; }
+        .wifi-icon-large { font-size: 4rem; color: var(--accent); margin-bottom: 20px; animation: pulse 2s infinite; }
+
+        @keyframes pulse { 0% { transform: scale(1); opacity: 0.8; } 50% { transform: scale(1.1); opacity: 1; } 100% { transform: scale(1); opacity: 0.8; } }
+
+        /* --- Main Content --- */
+        .content-container { max-width: 1100px; margin: -40px auto 60px; padding: 0 20px; position: relative; z-index: 10; }
+        
+        .wifi-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; margin-bottom: 50px; }
+        .wifi-card { background: white; padding: 35px; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.05); text-align: center; transition: var(--transition); border: 1px solid #edf2f7; position: relative; overflow: hidden; }
+        .wifi-card:hover { transform: translateY(-10px); box-shadow: 0 20px 40px rgba(45, 50, 138, 0.1); border-color: var(--secondary); }
+        .wifi-card::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 5px; background: var(--secondary); }
+        .wifi-card:nth-child(2)::before { background: var(--accent); }
+        
+        .wifi-title { font-size: 1.4rem; font-weight: 700; color: var(--primary); margin: 20px 0 10px; display: flex; align-items: center; justify-content: center; gap: 10px; }
+        .wifi-badge { display: inline-block; padding: 5px 12px; background: #eef2ff; color: var(--secondary); font-size: 0.8rem; font-weight: 700; border-radius: 50px; margin-bottom: 20px; }
+        
+        .wifi-details { text-align: left; background: #f8f9ff; padding: 20px; border-radius: 12px; margin-top: 20px; }
+        .detail-row { display: flex; margin-bottom: 12px; align-items: flex-start; gap: 10px; }
+        .detail-row:last-child { margin-bottom: 0; }
+        .detail-row i { color: var(--secondary); margin-top: 4px; width: 20px; text-align: center; }
+        .detail-text h4 { font-size: 0.85rem; color: #64748b; font-weight: 600; margin-bottom: 3px; }
+        .detail-text p { font-size: 0.95rem; font-weight: 700; color: #333; }
+
+        /* --- Panduan Section --- */
+        .section-title { text-align: center; font-size: 2rem; font-weight: 800; color: var(--primary); margin-bottom: 40px; }
+        .steps-container { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; margin-bottom: 50px; }
+        .step-card { background: white; padding: 30px 20px; border-radius: 16px; text-align: center; box-shadow: 0 5px 15px rgba(0,0,0,0.03); border: 1px solid #edf2f7; }
+        .step-number { width: 50px; height: 50px; background: var(--primary); color: white; font-size: 1.2rem; font-weight: 800; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin: 0 auto 20px; box-shadow: 0 5px 15px rgba(45, 50, 138, 0.2); }
+        .step-card h3 { font-size: 1.1rem; color: var(--primary); margin-bottom: 10px; }
+        .step-card p { font-size: 0.9rem; color: #64748b; line-height: 1.6; }
+
+        /* --- Footer Placeholder --- */
+        footer { text-align: center; padding: 30px; background: white; color: #64748b; font-size: 0.9rem; margin-top: 50px; border-top: 1px solid #edf2f7; }
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            .sub-hero { padding-top: 120px; }
+            .sub-hero h1 { font-size: 2.2rem; }
+            .logo-text b { font-size: 1rem; }
+            .btn-back span { display: none; /* Sembunyikan teks di HP, sisakan ikon panah */ }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <div class="logo-box">
+                <img src="https://umkoe.ac.id/wp-content/uploads/2025/07/Logo-UMKOE-Warna-1.png" alt="Logo UMK">
+            </div>
+            <div class="logo-text">
+                <span>PUSDATIN</span>
+                <b>Universitas Muhammadiyah Kupang</b>
+            </div>
+        </div>
+
+        <a href="index.html" class="btn-back">
+            <i class="fas fa-arrow-left"></i> <span>Kembali ke Beranda</span>
+        </a>
+    </header>
+
+    <section class="sub-hero">
+        <i class="fas fa-wifi wifi-icon-large"></i>
+        <h1>Hotspot Area Kampus</h1>
+        <p>Akses internet gratis dan berkecepatan tinggi untuk menunjang kegiatan akademik civitas akademika Universitas Muhammadiyah Kupang.</p>
+    </section>
+
+    <div class="content-container">
+        
+        <div class="wifi-grid">
+            <div class="wifi-card">
+                <span class="wifi-badge">Jaringan Publik</span>
+                <i class="fas fa-broadcast-tower" style="font-size: 3rem; color: var(--primary);"></i>
+                <h2 class="wifi-title" id="displayWifi1Name">UMK-FREE-HOTSPOT</h2>
+                
+                <div class="wifi-details">
+                    <div class="detail-row">
+                        <i class="fas fa-signal"></i>
+                        <div class="detail-text">
+                            <h4>Kekuatan Sinyal / Kecepatan</h4>
+                            <p id="displayWifi1Signal">Sangat Kuat</p>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="detail-text">
+                            <h4>Cakupan Area</h4>
+                            <p id="displayWifi1Area">Halaman Utama, Kantin, & Taman</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="wifi-card">
+                <span class="wifi-badge" style="background: #fff8e1; color: #b8860b;">Jaringan Khusus</span>
+                <i class="fas fa-server" style="font-size: 3rem; color: var(--accent);"></i>
+                <h2 class="wifi-title" id="displayWifi2Name">PUSDATIN-HIGH-SPEED</h2>
+                
+                <div class="wifi-details">
+                    <div class="detail-row">
+                        <i class="fas fa-tachometer-alt"></i>
+                        <div class="detail-text">
+                            <h4>Kekuatan Sinyal / Kecepatan</h4>
+                            <p id="displayWifi2Signal">100 Mbps</p>
+                        </div>
+                    </div>
+                    <div class="detail-row">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div class="detail-text">
+                            <h4>Cakupan Area</h4>
+                            <p id="displayWifi2Area">Gedung Rektorat Lt. 2</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <h2 class="section-title">Cara Mengakses Hotspot</h2>
+        <div class="steps-container">
+            <div class="step-card">
+                <div class="step-number">1</div>
+                <h3>Pilih Jaringan</h3>
+                <p>Aktifkan WiFi pada perangkat Anda (HP/Laptop) dan pilih salah satu SSID/Nama Jaringan UMK yang tersedia di atas.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">2</div>
+                <h3>Login Portal</h3>
+                <p>Browser Anda akan otomatis membuka halaman Login Portal. Jika tidak, buka browser dan ketik <b>hotspot.umkoe.ac.id</b>.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number">3</div>
+                <h3>Masukkan Akun</h3>
+                <p>Gunakan kredensial <b>SIAKAD</b> Anda. Untuk mahasiswa, gunakan NIM sebagai Username dan Password bawaan SIAKAD Anda.</p>
+            </div>
+            <div class="step-card">
+                <div class="step-number"><i class="fas fa-check"></i></div>
+                <h3>Koneksi Berhasil</h3>
+                <p>Setelah login berhasil, Anda sudah dapat menikmati akses internet untuk keperluan e-learning dan referensi akademik.</p>
+            </div>
+        </div>
+
+    </div>
+
+    <footer>
+        &copy; 2026 Pusat Data dan Informasi (PUSDATIN) - Universitas Muhammadiyah Kupang
+    </footer>
+
+    <script>
+        // --- LOGIKA MENGAMBIL DATA DARI ADMIN PANEL ---
+        function loadHotspotData() {
+            // Mengambil data yang disimpan admin dari localStorage
+            const infraData = JSON.parse(localStorage.getItem('dbInfra_UMK'));
+            
+            // Jika data ada, timpa teks default di HTML dengan data dari Admin
+            if(infraData) {
+                // Info WiFi 1
+                if(infraData.wifi1Name) document.getElementById('displayWifi1Name').innerText = infraData.wifi1Name;
+                if(infraData.wifi1Signal) document.getElementById('displayWifi1Signal').innerText = infraData.wifi1Signal;
+                if(infraData.wifi1Area) document.getElementById('displayWifi1Area').innerText = infraData.wifi1Area;
+
+                // Info WiFi 2
+                if(infraData.wifi2Name) document.getElementById('displayWifi2Name').innerText = infraData.wifi2Name;
+                if(infraData.wifi2Signal) document.getElementById('displayWifi2Signal').innerText = infraData.wifi2Signal;
+                if(infraData.wifi2Area) document.getElementById('displayWifi2Area').innerText = infraData.wifi2Area;
+            }
+        }
+
+        // Panggil fungsi saat halaman selesai dimuat
+        document.addEventListener('DOMContentLoaded', loadHotspotData);
+    </script>
+</body>
+</html>

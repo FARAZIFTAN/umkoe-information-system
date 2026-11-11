@@ -1,0 +1,856 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistem Informasi Data Mahasiswa - PUSDATIN UMK</title>
+    <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1PIQb-v4vNSdTQMKLbOejmIp8ttSKpyag&sz=w32">
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --topbar-blue: #4a89dc; --sidebar-dark: #2c3e50; --bg-body: #f4f6f9;
+            --border-color: #dee2e6; --text-dark: #333; --text-muted: #6c757d;
+            --btn-teal: #20c997; --btn-red: #ff4d4d; --btn-warning: #ffc107;
+            --login-blue: #5b8dee; --login-green: #1cc88a; --login-bg-input: #eef2f7;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Roboto', sans-serif; }
+        body { background-color: var(--bg-body); color: var(--text-dark); height: 100vh; overflow: hidden; display: flex; }
+
+        /* --- LOGIN PAGE --- */
+        #loginPage { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: url('https://images.unsplash.com/photo-1541339907198-e08756dedf3f?auto=format&fit=crop&q=80') center/cover; display: flex; flex-direction: column; justify-content: center; align-items: center; z-index: 9999; }
+        .login-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: rgba(255, 255, 255, 0.4); backdrop-filter: blur(5px); }
+        .login-box { background: white; padding: 35px 40px; border-radius: 8px; width: 100%; max-width: 450px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); text-align: center; position: relative; z-index: 2; }
+        .login-header h2 { color: #2c3e50; font-size: 1.2rem; font-weight: 700; margin-bottom: 5px; }
+        .login-header p { color: #888; font-size: 0.85rem; margin-bottom: 30px; }
+        .login-form-group { position: relative; margin-bottom: 15px; }
+        .login-form-group input { width: 100%; padding: 15px 45px 15px 15px; border: 1px solid #dce3ed; border-radius: 4px; background: var(--login-bg-input); outline: none; font-size: 1rem; }
+        .login-form-group i { position: absolute; right: 15px; top: 50%; transform: translateY(-50%); color: #444; }
+        .btn-signin { background: var(--login-blue); color: white; width: 100%; padding: 12px; border: none; border-radius: 4px; cursor: pointer; margin-bottom: 15px; font-weight: bold;}
+        .login-error { display: none; background: #ffebeb; color: var(--btn-red); padding: 10px; border-radius: 4px; font-size: 0.85rem; font-weight: 600; margin-bottom: 20px; border: 1px solid #ffcece; animation: shake 0.4s ease-in-out; }
+        @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 50% { transform: translateX(5px); } 75% { transform: translateX(-5px); } }
+
+        /* --- DASHBOARD --- */
+        #dashboardPage { display: none; width: 100%; height: 100%; }
+        .sidebar { width: 260px; background: white; border-right: 1px solid var(--border-color); display: flex; flex-direction: column; height: 100%; flex-shrink: 0; }
+        .sidebar-profile { background: #2c3e50; padding: 20px 15px; display: flex; align-items: center; gap: 15px; color: white; }
+        .profile-img { width: 50px; height: 50px; background: white; border-radius: 50%; padding: 3px; display: flex; justify-content: center; align-items: center; }
+        .profile-img img { width: 100%; border-radius: 50%; }
+        .profile-info h4 { font-size: 0.85rem; margin-bottom: 3px; }
+        .profile-info p { font-size: 0.7rem; opacity: 0.9; }
+
+        .sidebar-menu { list-style: none; padding: 15px 0; overflow-y: auto; }
+        .sidebar-menu li { cursor: pointer; }
+        .sidebar-menu a { display: flex; align-items: center; gap: 15px; padding: 12px 20px; text-decoration: none; color: #555; font-size: 0.9rem; font-weight: 500; transition: 0.3s; }
+        .sidebar-menu a:hover { background: #f8f9fa; color: var(--topbar-blue); }
+        .sidebar-menu a.active { background: #f0f4f8; border-left: 4px solid var(--topbar-blue); color: var(--topbar-blue); font-weight: 700; }
+        .sidebar-menu i { width: 20px; text-align: center; }
+
+        .main-wrapper { flex-grow: 1; display: flex; flex-direction: column; overflow: hidden; background: var(--bg-body); }
+        .topbar { background: var(--topbar-blue); color: white; display: flex; justify-content: space-between; align-items: center; padding: 10px 20px; }
+        .brand { font-size: 1.2rem; font-weight: 700; }
+        .btn-logout { background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 0.75rem; margin-left: 15px; }
+
+        .content-section { display: none; padding: 25px; overflow-y: auto; flex-grow: 1; height: 100%;}
+        .content-section.active { display: block; }
+        .page-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
+        .page-header h2 { font-size: 1.3rem; color: #444; }
+        .btn-new { background: var(--topbar-blue); color: white; border: none; padding: 10px 18px; border-radius: 6px; font-weight: 600; cursor: pointer; display: flex; align-items: center; gap: 8px;}
+
+        .card { background: white; border-radius: 6px; box-shadow: 0 1px 3px rgba(0,0,0,0.05); margin-bottom: 20px; border: 1px solid var(--border-color); }
+        .card-header { padding: 12px 20px; border-bottom: 1px solid var(--border-color); background: #fcfcfc; font-size: 0.9rem; font-weight: 600; }
+        .card-body { padding: 20px; }
+
+        .form-setting { max-width: 850px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 15px; }
+        .form-group { margin-bottom: 15px; }
+        .form-group label { display: block; font-size: 0.85rem; font-weight: 600; color: #555; margin-bottom: 8px; }
+        .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 5px; outline: none; font-family: inherit;}
+        .form-group input:focus, .form-group select:focus, .form-group textarea:focus { border-color: var(--topbar-blue); }
+        .btn-save-setting { background: var(--btn-teal); color: white; padding: 12px 20px; border: none; border-radius: 5px; font-weight: 600; cursor: pointer; margin-top: 10px; font-size: 1rem;}
+        
+        /* --- STYLING KHUSUS TOMBOL SIMPAN JADWAL LAB --- */
+        .schedule-save-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 25px;
+            padding-top: 15px;
+            border-top: 1px solid #eee;
+        }
+        .btn-save-schedule {
+            background: var(--topbar-blue);
+            color: white;
+            padding: 12px 35px;
+            border: none;
+            border-radius: 50px;
+            font-weight: 700;
+            cursor: pointer;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(74, 137, 220, 0.2);
+        }
+        .btn-save-schedule:hover {
+            background: #357abd;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(74, 137, 220, 0.3);
+        }
+
+        .section-divider { margin: 25px 0 15px 0; border: 0; border-top: 2px dashed #e2e8f0; }
+        .section-subtitle { margin-bottom: 15px; color: var(--topbar-blue); font-size: 1rem; font-weight: 700; display: flex; align-items: center; gap: 8px;}
+        .faq-box, .rule-box { border: 1px solid #e2e8f0; padding: 15px; border-radius: 6px; margin-bottom: 15px; background: #f8fafc;}
+
+        .table-container { overflow-x: auto; padding-bottom: 15px; }
+        table { width: 100%; border-collapse: collapse; font-size: 0.85rem; min-width: 1200px; }
+        th { background: #f8f9fa; padding: 12px 10px; text-align: left; border-bottom: 2px solid var(--border-color); color: #555; }
+        td { padding: 8px 10px; border-bottom: 1px solid var(--border-color); vertical-align: middle; }
+        .inline-select, .inline-date, .inline-input { width: 100%; padding: 6px; border: 1px solid #ced4da; border-radius: 4px; font-size: 0.8rem; outline: none; }
+        .btn-delete { background: var(--btn-red); color: white; padding: 6px 10px; border: none; border-radius: 4px; cursor: pointer; }
+
+        .pagination-admin {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            margin: 20px 0;
+            padding: 15px;
+            background: #fff;
+            border-radius: 8px;
+        }
+        .pagination-admin button {
+            background: #fff;
+            border: 1px solid var(--topbar-blue);
+            color: var(--topbar-blue);
+            padding: 5px 12px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        .pagination-admin button:disabled { opacity: 0.4; cursor: not-allowed; }
+        .pagination-admin span { font-size: 0.85rem; font-weight: 600; color: #555; }
+
+        /* Hint kotak info di tabel SSID */
+        .net-info-hint {
+            background: #eef5ff;
+            border-left: 4px solid var(--topbar-blue);
+            padding: 10px 14px;
+            font-size: 0.8rem;
+            color: #445;
+            border-radius: 4px;
+            margin-bottom: 12px;
+        }
+        .net-info-hint b { color: var(--topbar-blue); }
+
+        #toast { visibility: hidden; min-width: 250px; background-color: var(--btn-teal); color: #fff; text-align: center; border-radius: 5px; padding: 12px; position: fixed; z-index: 9999; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 0.9rem; }
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 2.5s; }
+        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+        @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
+    </style>
+</head>
+<body>
+
+    <div id="loginPage">
+        <div class="login-overlay"></div>
+        <div class="login-box">
+            <div class="login-header"><h2>PUSDATIN UMK</h2><p>Login Administrator</p></div>
+            <div id="loginErrorMsg" class="login-error"><i class="fas fa-exclamation-triangle"></i> Username atau Password salah!</div>
+            <form onsubmit="handleLogin(event)">
+                <div class="login-form-group"><input type="text" id="usernameInput" placeholder="Username / NIP" required><i class="fas fa-envelope"></i></div>
+                <div class="login-form-group"><input type="password" id="passwordInput" placeholder="Password" required><i class="fas fa-lock"></i></div>
+                <button type="submit" class="btn-signin">Sign In</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="toast">Berhasil disimpan!</div>
+
+    <div id="dashboardPage">
+        <aside class="sidebar">
+            <div class="sidebar-profile">
+                <div class="profile-img"><i class="fas fa-user-shield" style="font-size: 1.5rem; color: #333;"></i></div>
+                <div class="profile-info"><h4>Admin PUSDATIN</h4><p>Universitas Muhammadiyah Kupang</p></div>
+            </div>
+            <ul class="sidebar-menu">
+                <li onclick="switchMenu('menuDataMahasiswa')"><a href="#" id="navDataMahasiswa" class="active"><i class="fas fa-database"></i> Data Mahasiswa</a></li>
+                <li onclick="switchMenu('menuInfra')"><a href="#" id="navInfra"><i class="fas fa-network-wired"></i> Info Infrastruktur</a></li>
+                <li onclick="switchMenu('menuLab')"><a href="#" id="navLab"><i class="fas fa-desktop"></i> Halaman Lab Komputer</a></li>
+                <li onclick="switchMenu('menuSupport')"><a href="#" id="navSupport"><i class="fas fa-headset"></i> Support IT</a></li>
+                <li onclick="switchMenu('menuPengaturanAkun')"><a href="#" id="navPengaturanAkun"><i class="fas fa-user-cog"></i> Pengaturan Akun</a></li>
+            </ul>
+        </aside>
+
+        <main class="main-wrapper">
+            <header class="topbar">
+                <div class="brand"><i class="fas fa-server"></i> PUSDATIN UMK</div>
+                <div>Halo, Admin <button class="btn-logout" onclick="handleLogout()">Keluar</button></div>
+            </header>
+
+            <section id="menuDataMahasiswa" class="content-section active">
+                <div class="page-header"><h2>Pemantauan Status Data Mahasiswa</h2><button class="btn-new" onclick="addNewRow()"><i class="fas fa-plus"></i> Tambah Baris Baru</button></div>
+                <div class="card">
+                    <div class="card-header">Rekapitulasi Pemutakhiran Data Mandiri (PDM)</div>
+                    <div class="card-body">
+                        <input type="text" id="searchInput" placeholder="Cari Nama/NIM..." onkeyup="filterTable()" style="padding: 8px; margin-bottom: 15px; width: 300px; border: 1px solid #ccc; border-radius: 4px;">
+                        <div class="table-container">
+                            <table>
+                                <thead><tr><th>No</th><th>Nama Lengkap</th><th>NIM</th><th>Keterangan</th><th>Dokumen & Status</th><th>Catatan</th><th>Tanggal</th><th>Status Akhir</th><th>Aksi</th></tr></thead>
+                                <tbody id="tableBody"></tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="menuInfra" class="content-section">
+                <div class="page-header"><h2>Pengaturan Konten Infrastruktur</h2></div>
+                <div class="card"><div class="card-body"><form class="form-setting" onsubmit="saveInfra(event)">
+                    <h4 class="section-subtitle"><i class="fas fa-server"></i> Status Server & Jaringan</h4>
+                    <div class="form-row"><div class="form-group"><label>SIAKAD Cloud</label><select id="setSiakad"><option value="Online">Online</option><option value="Gangguan">Gangguan</option></select></div><div class="form-group"><label>Web Utama</label><select id="setWeb"><option value="Online">Online</option><option value="Gangguan">Gangguan</option></select></div></div><div class="form-group"><label>Intranet Kampus</label><select id="setIntranet"><option value="Stabil">Stabil</option><option value="Lambat">Lambat</option><option value="Gangguan">Gangguan</option></select></div>
+                    <hr class="section-divider">
+                    <h4 class="section-subtitle"><i class="fas fa-wifi"></i> Hotspot</h4>
+                    <div class="form-row"><div class="form-group"><label>Nama WiFi 1</label><input type="text" id="setWifi1Name"></div><div class="form-group"><label>Signal WiFi 1</label><input type="text" id="setWifi1Signal"></div></div><div class="form-group"><label>Area WiFi 1</label><input type="text" id="setWifi1Area"></div>
+                    <div class="form-row"><div class="form-group"><label>Nama WiFi 2</label><input type="text" id="setWifi2Name"></div><div class="form-group"><label>Signal WiFi 2</label><input type="text" id="setWifi2Signal"></div></div><div class="form-group"><label>Area WiFi 2</label><input type="text" id="setWifi2Area"></div>
+                    <hr class="section-divider">
+                    <h4 class="section-subtitle"><i class="fas fa-shield-alt"></i> Security & Data Center</h4>
+                    <div class="form-row"><div class="form-group"><label>Bandwidth</label><input type="text" id="setDcBandwidth"></div><div class="form-group"><label>Storage</label><input type="text" id="setDcStorage"></div></div>
+                    <div class="form-row"><div class="form-group"><label>Security</label><input type="text" id="setDcSecurity"></div><div class="form-group"><label>Backup</label><input type="text" id="setDcBackup"></div></div>
+                    <div class="form-group"><label>Teks Keamanan</label><textarea id="setCyberText" rows="2"></textarea></div>
+                    <button type="submit" class="btn-save-setting" style="width: 100%;"><i class="fas fa-save"></i> SIMPAN INFRASTRUKTUR UTAMA</button>
+                </form></div></div>
+
+                <!-- ====== NEW: MANAJEMEN SSID WIFI (STATUS JARINGAN) ====== -->
+                <div class="card">
+                    <div class="card-header"><i class="fas fa-wifi"></i> Manajemen SSID WiFi &mdash; Status Jaringan Kampus</div>
+                    <div class="card-body">
+                        <div class="net-info-hint">
+                            <i class="fas fa-info-circle"></i> Daftar SSID di bawah ini akan tampil di tabel <b>"Status Jaringan WiFi Kampus"</b> pada halaman publik <code>info-infrastruktur.html</code>. Tambah, edit, atau hapus baris sesuai kondisi jaringan riil. Klik <b>SIMPAN DAFTAR SSID WIFI</b> untuk menerapkan.
+                        </div>
+
+                        <div class="page-header" style="margin-top: 10px;">
+                            <h4 class="section-subtitle" style="margin-bottom:0;"><i class="fas fa-broadcast-tower"></i> Daftar SSID Aktif</h4>
+                            <button class="btn-new" onclick="addNetworkRow()"><i class="fas fa-plus"></i> Tambah SSID</button>
+                        </div>
+                        <div class="table-container">
+                            <table style="min-width: 1150px;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 14%">Nama SSID</th>
+                                        <th style="width: 16%">Area Coverage</th>
+                                        <th style="width: 9%">Status</th>
+                                        <th style="width: 8%">Experience (%)</th>
+                                        <th style="width: 9%">Uptime</th>
+                                        <th style="width: 6%">Clients</th>
+                                        <th style="width: 9%">Bandwidth Up</th>
+                                        <th style="width: 9%">Bandwidth Down</th>
+                                        <th style="width: 9%">Security</th>
+                                        <th style="width: 5%">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="networksTableBody"></tbody>
+                            </table>
+                        </div>
+
+                        <div class="pagination-admin">
+                            <button id="netPrevBtn" onclick="changeNetworkPage(-1)"><i class="fas fa-chevron-left"></i></button>
+                            <span id="netPageInfo">Halaman 1 / 1</span>
+                            <button id="netNextBtn" onclick="changeNetworkPage(1)"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+
+                        <div class="schedule-save-container">
+                            <button class="btn-save-schedule" onclick="saveNetworksToLocal()">
+                                <i class="fas fa-cloud-upload-alt"></i> SIMPAN DAFTAR SSID WIFI
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="menuLab" class="content-section">
+                <div class="page-header"><h2>Pengaturan Konten Halaman Lab Komputer</h2></div>
+                <div class="card">
+                    <div class="card-body">
+                        <form class="form-setting" onsubmit="saveLab(event)">
+                            <h4 class="section-subtitle"><i class="fas fa-heading"></i> Info Halaman Utama</h4>
+                            <div class="form-group"><label>Judul Halaman Lab</label><input type="text" id="setLabHeroTitle"></div>
+                            <div class="form-group"><label>Deskripsi Halaman Lab</label><textarea id="setLabHeroDesc" rows="2"></textarea></div>
+                            <button type="submit" class="btn-save-setting" style="width: 100%;"><i class="fas fa-save"></i> SIMPAN KONTEN TEKS LAB</button>
+                        </form>
+
+                        <hr class="section-divider" style="margin-top: 40px;">
+                        
+                        <div class="page-header" style="margin-top: 20px;">
+                            <h4 class="section-subtitle" style="margin-bottom:0;"><i class="fas fa-calendar-alt"></i> Pengaturan Jadwal Praktikum</h4>
+                            <button class="btn-new" onclick="addScheduleRow()"><i class="fas fa-plus"></i> Tambah Jadwal</button>
+                        </div>
+                        <div class="table-container">
+                            <table style="min-width: 900px;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 15%">Hari</th>
+                                        <th style="width: 15%">Waktu</th>
+                                        <th style="width: 25%">Mata Kuliah / Kegiatan</th>
+                                        <th style="width: 20%">Program Studi</th>
+                                        <th style="width: 20%">Dosen Pengampu</th>
+                                        <th style="width: 5%">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="scheduleTableBody"></tbody>
+                            </table>
+                        </div>
+                        
+                        <div class="pagination-admin">
+                            <button id="adminPrevBtn" onclick="changeAdminPage(-1)"><i class="fas fa-chevron-left"></i></button>
+                            <span id="adminPageInfo">Halaman 1 / 1</span>
+                            <button id="adminNextBtn" onclick="changeAdminPage(1)"><i class="fas fa-chevron-right"></i></button>
+                        </div>
+
+                        <div class="schedule-save-container">
+                            <button class="btn-save-schedule" onclick="saveScheduleToLocal()">
+                                <i class="fas fa-cloud-upload-alt"></i> SIMPAN JADWAL LAB
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="menuSupport" class="content-section">
+                <div class="page-header"><h2>Pengaturan Halaman Support IT</h2></div>
+                <div class="card">
+                    <div class="card-body">
+                        <form class="form-setting" onsubmit="saveSupport(event)">
+                            <h4 class="section-subtitle"><i class="fas fa-headset"></i> Saluran Kontak Darurat</h4>
+                            <div class="form-row">
+                                <div class="form-group"><label>Nomor WhatsApp</label><input type="text" id="setSupWa" placeholder="6281234567890" required></div>
+                                <div class="form-group"><label>Alamat Email Helpdesk</label><input type="email" id="setSupEmail" placeholder="support@umkoe.ac.id" required></div>
+                            </div>
+                            <div class="form-group"><label>Alamat Fisik / Lokasi PUSDATIN</label><input type="text" id="setSupLoc" placeholder="Gedung Rektorat Lantai 2..." required></div>
+                            
+                            <hr class="section-divider">
+                            
+                            <h4 class="section-subtitle"><i class="fas fa-question-circle"></i> Pengaturan FAQ</h4>
+                            <div class="faq-box">
+                                <div class="form-group"><label>Pertanyaan FAQ 1</label><input type="text" id="setFaq1Q"></div>
+                                <div class="form-group"><label>Jawaban FAQ 1</label><textarea id="setFaq1A" rows="2"></textarea></div>
+                            </div>
+                            <div class="faq-box">
+                                <div class="form-group"><label>Pertanyaan FAQ 2</label><input type="text" id="setFaq2Q"></div>
+                                <div class="form-group"><label>Jawaban FAQ 2</label><textarea id="setFaq2A" rows="2"></textarea></div>
+                            </div>
+                            <div class="faq-box">
+                                <div class="form-group"><label>Pertanyaan FAQ 3</label><input type="text" id="setFaq3Q"></div>
+                                <div class="form-group"><label>Jawaban FAQ 3</label><textarea id="setFaq3A" rows="2"></textarea></div>
+                            </div>
+                            <div class="faq-box">
+                                <div class="form-group"><label>Pertanyaan FAQ 4</label><input type="text" id="setFaq4Q"></div>
+                                <div class="form-group"><label>Jawaban FAQ 4</label><textarea id="setFaq4A" rows="2"></textarea></div>
+                            </div>
+                            
+                            <button type="submit" class="btn-save-setting" style="width: 100%;"><i class="fas fa-save"></i> SIMPAN DAN TERAPKAN KE WEBSITE</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+
+            <section id="menuPengaturanAkun" class="content-section">
+                <div class="page-header">
+                    <h2>Manajemen Akun Administrator</h2>
+                    <button class="btn-new" onclick="addNewAdminRow()"><i class="fas fa-user-plus"></i> Tambah Akun Baru</button>
+                </div>
+                <div class="card">
+                    <div class="card-header">Daftar Username & Password Aktif</div>
+                    <div class="card-body">
+                        <div class="table-container">
+                            <table style="min-width: 100%;">
+                                <thead>
+                                    <tr>
+                                        <th style="width: 10%">No</th>
+                                        <th style="width: 35%">Username</th>
+                                        <th style="width: 35%">Password</th>
+                                        <th style="width: 20%">Aksi</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="adminTableBody">
+                                    <!-- Daftar Akun Akan Dimuat Di Sini -->
+                                </tbody>
+                            </table>
+                        </div>
+                        <div class="schedule-save-container">
+                            <button class="btn-save-schedule" onclick="saveAdminAccounts()">
+                                <i class="fas fa-save"></i> SIMPAN PERUBAHAN AKUN
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </main>
+    </div>
+
+<script>
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwGz5YxurtaxYI5OmmgCqBniyqhvxNZ9ETDDftk0LyZzpc1YXtsJzy8JrRMicJEz1bm/exec"; 
+    
+    let dbMahasiswa = [];
+    let dbSchedule = []; 
+    let currentAdminSchedulePage = 1;
+    const adminSchedulePerPage = 10;
+
+    // ====== NEW: STATE DAFTAR SSID WIFI ======
+    let dbNetworks = [];
+    let currentNetPage = 1;
+    const netPerPage = 10;
+
+    // Default 8 SSID (sinkron dengan halaman info-infrastruktur.html)
+    const DEFAULT_NETWORKS = [
+        { name: "UMK-FREE-HOTSPOT",    area: "Halaman Utama, Kantin & Taman",  status: "Online",   exp: 96, uptime: "24h 12m", clients: 312, up: "84 Mbps",  down: "210 Mbps", security: "WPA2" },
+        { name: "PUSDATIN-HIGH-SPEED", area: "Gedung Rektorat Lt. 2",          status: "Online",   exp: 99, uptime: "7d 4h",  clients: 28,  up: "120 Mbps", down: "940 Mbps", security: "WPA3" },
+        { name: "UMK-Mahasiswa",       area: "Gedung B (Seluruh Lantai)",      status: "Online",   exp: 92, uptime: "1d 8h",  clients: 187, up: "56 Mbps",  down: "180 Mbps", security: "WPA2" },
+        { name: "UMK-Dosen-Staf",      area: "Ruang Dosen & Kantor Pusat",     status: "Online",   exp: 98, uptime: "12d 6h", clients: 64,  up: "78 Mbps",  down: "320 Mbps", security: "WPA3" },
+        { name: "UMK-Visitor",         area: "Lobby & Aula Utama",             status: "Lambat",   exp: 64, uptime: "5h 22m", clients: 41,  up: "12 Mbps",  down: "30 Mbps",  security: "Open" },
+        { name: "Eduroam-UMK",         area: "Global Roaming (Seluruh Kampus)",status: "Online",   exp: 95, uptime: "30d 1h", clients: 19,  up: "65 Mbps",  down: "240 Mbps", security: "802.1x" },
+        { name: "UMK-IoT-Lab",         area: "Lab Jaringan Gedung B Lt. 2",    status: "Gangguan", exp: 28, uptime: "0h 14m", clients: 7,   up: "0 Mbps",   down: "0 Mbps",   security: "WPA2" },
+        { name: "UMK-VoIP",            area: "Internal Voice (Seluruh Kampus)",status: "Online",   exp: 97, uptime: "20d 9h", clients: 22,  up: "4 Mbps",   down: "4 Mbps",   security: "WPA2" }
+    ];
+
+    // --- RENDER TABEL MAHASISWA ---
+    function renderTable(keyword = "") {
+        const tbody = document.getElementById("tableBody");
+        tbody.innerHTML = "";
+        const filtered = dbMahasiswa.filter(item => item.nama.toLowerCase().includes(keyword.toLowerCase()) || item.nim.includes(keyword));
+        
+        filtered.forEach((item, index) => {
+            let catText = item.catatan || "";
+            let fileUrl = ""; let linkBtn = "";
+            if(catText.includes("[LINK BERKAS]: ")) {
+                let urlParts = catText.split("[LINK BERKAS]: ");
+                catText = urlParts[0].trim(); fileUrl = urlParts[1].trim(); 
+                linkBtn = `<a href="${fileUrl}" target="_blank" style="display:inline-block; margin-top:5px; padding:4px 8px; font-size:0.75rem; background:var(--topbar-blue); color:white; border-radius:4px; text-decoration:none;"><i class="fas fa-folder-open"></i> Buka File</a><br>`;
+            }
+            
+            let dateVal = "";
+            if(item.tgl) {
+                let d = new Date(item.tgl);
+                if(!isNaN(d)) dateVal = d.toISOString().split('T')[0];
+            }
+
+            tbody.innerHTML += `<tr>
+                <td>${index + 1}</td>
+                <td><input type="text" class="inline-input" value="${item.nama}" onchange="updateData(${item.id}, 'nama', this.value)"></td>
+                <td><input type="text" class="inline-input" value="${item.nim}" onchange="updateData(${item.id}, 'nim', this.value)"></td>
+                <td><select class="inline-select" onchange="updateData(${item.id}, 'ket', this.value)">
+                    <option value="Draft" ${item.ket==='Draft'?'selected':''}>Draft</option>
+                    <option value="Diusulkan" ${item.ket==='Diusulkan'?'selected':''}>Diusulkan</option>
+                    <option value="Disetujui" ${item.ket==='Disetujui'?'selected':''}>Disetujui</option>
+                    <option value="Ditolak" ${item.ket==='Ditolak'?'selected':''}>Ditolak</option>
+                    <option value="Ditangguhkan" ${item.ket==='Ditangguhkan'?'selected':''}>Ditangguhkan</option>
+                </select></td>
+                <td><select class="inline-select" onchange="updateData(${item.id}, 'doc', this.value)">
+                    <option value="Dokumen belum diperiksa" ${item.doc==='Dokumen belum diperiksa'?'selected':''}>Belum Diperiksa</option>
+                    <option value="Valid" ${item.doc==='Valid'?'selected':''}>Valid</option>
+                    <option value="Tidak valid" ${item.doc==='Tidak valid'?'selected':''}>Tidak Valid</option>
+                </select></td>
+                <td><input type="text" class="inline-input" value="${catText}" onchange="updateData(${item.id}, 'catatan', this.value)"> ${linkBtn}</td>
+                <td><input type="date" class="inline-date" value="${dateVal}" onchange="updateData(${item.id}, 'tgl', this.value)"></td>
+                <td><select class="inline-select" onchange="updateData(${item.id}, 'status', this.value)">
+                    <option value="Belum selesai" ${item.status==='Belum selesai'?'selected':''}>Belum Selesai</option>
+                    <option value="Selesai" ${item.status==='Selesai'?'selected':''}>Selesai</option>
+                </select></td>
+                <td><button class="btn-delete" onclick="deleteRow(${item.id})"><i class="fas fa-trash"></i></button></td>
+            </tr>`;
+        });
+    }
+
+    // --- RENDER JADWAL LAB ---
+    function renderScheduleTable() {
+        const tbody = document.getElementById("scheduleTableBody");
+        const prevBtn = document.getElementById("adminPrevBtn");
+        const nextBtn = document.getElementById("adminNextBtn");
+        const pageInfo = document.getElementById("adminPageInfo");
+        
+        tbody.innerHTML = "";
+        const start = (currentAdminSchedulePage - 1) * adminSchedulePerPage;
+        const paginated = dbSchedule.slice(start, start + adminSchedulePerPage);
+
+        if (paginated.length > 0) {
+            paginated.forEach((item) => {
+                tbody.innerHTML += `<tr>
+                    <td><select class="inline-select" onchange="updateSchedule(${item.id}, 'hari', this.value)">
+                        <option value="Senin" ${item.hari==='Senin'?'selected':''}>Senin</option>
+                        <option value="Selasa" ${item.hari==='Selasa'?'selected':''}>Selasa</option>
+                        <option value="Rabu" ${item.hari==='Rabu'?'selected':''}>Rabu</option>
+                        <option value="Kamis" ${item.hari==='Kamis'?'selected':''}>Kamis</option>
+                        <option value="Jumat" ${item.hari==='Jumat'?'selected':''}>Jumat</option>
+                        <option value="Sabtu" ${item.hari==='Sabtu'?'selected':''}>Sabtu</option>
+                    </select></td>
+                    <td><input type="text" class="inline-input" value="${item.waktu}" onchange="updateSchedule(${item.id}, 'waktu', this.value)"></td>
+                    <td><input type="text" class="inline-input" value="${item.matkul}" onchange="updateSchedule(${item.id}, 'matkul', this.value)"></td>
+                    <td><input type="text" class="inline-input" value="${item.prodi}" onchange="updateSchedule(${item.id}, 'prodi', this.value)"></td>
+                    <td><input type="text" class="inline-input" value="${item.dosen}" onchange="updateSchedule(${item.id}, 'dosen', this.value)"></td>
+                    <td><button class="btn-delete" onclick="deleteSchedule(${item.id})"><i class="fas fa-trash"></i></button></td>
+                </tr>`;
+            });
+        }
+        const totalPages = Math.ceil(dbSchedule.length / adminSchedulePerPage) || 1;
+        pageInfo.innerText = `Halaman ${currentAdminSchedulePage} / ${totalPages}`;
+        prevBtn.disabled = currentAdminSchedulePage === 1;
+        nextBtn.disabled = currentAdminSchedulePage === totalPages;
+    }
+
+    // ====== NEW: RENDER TABEL SSID WIFI (dengan pagination, pola sama dengan jadwal lab) ======
+    function renderNetworksTable() {
+        const tbody = document.getElementById("networksTableBody");
+        const prevBtn = document.getElementById("netPrevBtn");
+        const nextBtn = document.getElementById("netNextBtn");
+        const pageInfo = document.getElementById("netPageInfo");
+
+        if (!tbody) return; // safety: belum ada di DOM
+
+        tbody.innerHTML = "";
+        const start = (currentNetPage - 1) * netPerPage;
+        const paginated = dbNetworks.slice(start, start + netPerPage);
+
+        if (paginated.length > 0) {
+            paginated.forEach((item) => {
+                tbody.innerHTML += `<tr>
+                    <td><input type="text" class="inline-input" value="${escapeAttr(item.name)}" onchange="updateNetwork(${item.id}, 'name', this.value)"></td>
+                    <td><input type="text" class="inline-input" value="${escapeAttr(item.area)}" onchange="updateNetwork(${item.id}, 'area', this.value)"></td>
+                    <td><select class="inline-select" onchange="updateNetwork(${item.id}, 'status', this.value)">
+                        <option value="Online"   ${item.status==='Online'?'selected':''}>Online</option>
+                        <option value="Lambat"   ${item.status==='Lambat'?'selected':''}>Lambat</option>
+                        <option value="Gangguan" ${item.status==='Gangguan'?'selected':''}>Gangguan</option>
+                        <option value="Offline"  ${item.status==='Offline'?'selected':''}>Offline</option>
+                    </select></td>
+                    <td><input type="number" min="0" max="100" class="inline-input" value="${item.exp}" onchange="updateNetwork(${item.id}, 'exp', this.value)"></td>
+                    <td><input type="text" class="inline-input" value="${escapeAttr(item.uptime)}" placeholder="cth: 7d 4h" onchange="updateNetwork(${item.id}, 'uptime', this.value)"></td>
+                    <td><input type="number" min="0" class="inline-input" value="${item.clients}" onchange="updateNetwork(${item.id}, 'clients', this.value)"></td>
+                    <td><input type="text" class="inline-input" value="${escapeAttr(item.up)}" placeholder="cth: 84 Mbps" onchange="updateNetwork(${item.id}, 'up', this.value)"></td>
+                    <td><input type="text" class="inline-input" value="${escapeAttr(item.down)}" placeholder="cth: 210 Mbps" onchange="updateNetwork(${item.id}, 'down', this.value)"></td>
+                    <td><select class="inline-select" onchange="updateNetwork(${item.id}, 'security', this.value)">
+                        <option value="WPA2"    ${item.security==='WPA2'?'selected':''}>WPA2</option>
+                        <option value="WPA3"    ${item.security==='WPA3'?'selected':''}>WPA3</option>
+                        <option value="WPA"     ${item.security==='WPA'?'selected':''}>WPA</option>
+                        <option value="802.1x"  ${item.security==='802.1x'?'selected':''}>802.1x</option>
+                        <option value="Open"    ${item.security==='Open'?'selected':''}>Open</option>
+                    </select></td>
+                    <td><button class="btn-delete" onclick="deleteNetwork(${item.id})"><i class="fas fa-trash"></i></button></td>
+                </tr>`;
+            });
+        } else {
+            tbody.innerHTML = `<tr><td colspan="10" style="text-align:center; padding:20px; color:#999;">Belum ada SSID. Klik "Tambah SSID" untuk menambah jaringan.</td></tr>`;
+        }
+
+        const totalPages = Math.ceil(dbNetworks.length / netPerPage) || 1;
+        pageInfo.innerText = `Halaman ${currentNetPage} / ${totalPages}`;
+        prevBtn.disabled = currentNetPage === 1;
+        nextBtn.disabled = currentNetPage === totalPages;
+    }
+
+    // Helper: escape attribute untuk value input (hindari XSS / broken HTML)
+    function escapeAttr(str) {
+        if (str === undefined || str === null) return "";
+        return String(str).replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    // --- FUNGSI AUTH & FETCH ---
+    // --- FUNGSI AUTH & MANAJEMEN AKUN ---
+    let adminAccounts = [];
+
+    function initAuth() { 
+        let storedAccounts = localStorage.getItem('adminAccounts_UMK');
+        
+        if (!storedAccounts) {
+            // Migrasi dari sistem single-user lama (jika ada) ke multi-user
+            let oldUser = localStorage.getItem('adminUser');
+            let oldPass = localStorage.getItem('adminPass');
+            
+            if(oldUser && oldPass) {
+                adminAccounts = [{ id: Date.now(), user: oldUser, pass: oldPass }];
+                localStorage.removeItem('adminUser'); // Hapus memori lama
+                localStorage.removeItem('adminPass');
+            } else {
+                // Default jika benar-benar baru
+                adminAccounts = [{ id: Date.now(), user: 'admin_umk', pass: 'Pusdatin2026!' }]; 
+            }
+            localStorage.setItem('adminAccounts_UMK', JSON.stringify(adminAccounts));
+        } else {
+            adminAccounts = JSON.parse(storedAccounts);
+        }
+    } 
+    initAuth();
+
+    function handleLogin(e) { 
+        e.preventDefault(); 
+        const inputUser = document.getElementById("usernameInput").value;
+        const inputPass = document.getElementById("passwordInput").value;
+
+        // Mengecek apakah input cocok dengan salah satu akun di database lokal
+        const isValidUser = adminAccounts.some(acc => acc.user === inputUser && acc.pass === inputPass);
+
+        if (isValidUser) { 
+            document.getElementById('loginPage').style.display = 'none'; 
+            document.getElementById('dashboardPage').style.display = 'flex'; 
+            fetchFromSheet(); 
+            loadCMSData(); 
+            renderAdminTable(); // Muat tabel akun
+            renderNetworksTable(); // ====== NEW: Muat tabel SSID ======
+        } else { 
+            document.getElementById("loginErrorMsg").style.display = 'block'; 
+        } 
+    }
+
+    // --- FUNGSI CRUD UNTUK TABEL AKUN ADMIN ---
+    function renderAdminTable() {
+        const tbody = document.getElementById("adminTableBody");
+        tbody.innerHTML = "";
+        adminAccounts.forEach((acc, index) => {
+            tbody.innerHTML += `<tr>
+                <td>${index + 1}</td>
+                <td><input type="text" class="inline-input" value="${acc.user}" onchange="updateAdmin(${acc.id}, 'user', this.value)"></td>
+                <td><input type="text" class="inline-input" value="${acc.pass}" onchange="updateAdmin(${acc.id}, 'pass', this.value)"></td>
+                <td><button class="btn-delete" onclick="deleteAdmin(${acc.id})"><i class="fas fa-trash"></i> Hapus</button></td>
+            </tr>`;
+        });
+    }
+
+    function addNewAdminRow() {
+        adminAccounts.push({ id: Date.now(), user: 'admin_baru', pass: 'password123' });
+        renderAdminTable();
+    }
+
+    function updateAdmin(id, field, val) {
+        const idx = adminAccounts.findIndex(a => a.id === id);
+        if (idx !== -1) adminAccounts[idx][field] = val;
+    }
+
+    function deleteAdmin(id) {
+        if(adminAccounts.length === 1) {
+            alert("Gagal: Harus tersisa minimal 1 akun Administrator!");
+            return;
+        }
+        if(confirm("Apakah Anda yakin ingin menghapus akun ini?")) {
+            adminAccounts = adminAccounts.filter(a => a.id !== id);
+            renderAdminTable();
+        }
+    }
+
+    function saveAdminAccounts() {
+        localStorage.setItem('adminAccounts_UMK', JSON.stringify(adminAccounts));
+        showToast("Manajemen Akun berhasil disimpan!");
+    }    
+    async function fetchFromSheet() { 
+        try { 
+            let res = await fetch(SCRIPT_URL + "?ts=" + Date.now()); 
+            let result = await res.json(); 
+            dbMahasiswa = result.mahasiswa || []; 
+            dbSchedule = result.jadwal || [];
+            renderTable(); renderScheduleTable();
+        } catch(e) { console.error("Error Fetch"); } 
+    }
+
+    // --- BACKEND CONNECTOR (SINKRONISASI UTAMA) ---
+    async function sendToBackend(action, dataObj = null, id = null) { 
+        showToast("Menyinkronkan..."); 
+        const params = new URLSearchParams(); 
+        params.append('action', action); 
+        
+        if(dataObj) {
+            params.append('data', JSON.stringify(dataObj)); 
+        }
+        if(id) {
+            params.append('id', id); 
+        }
+
+        try { 
+            await fetch(SCRIPT_URL, { 
+                method: 'POST', 
+                mode: 'no-cors', 
+                headers: { 
+                    'Content-Type': 'application/x-www-form-urlencoded' 
+                }, 
+                body: params.toString() 
+            }); 
+            showToast("Sinkron Berhasil!"); 
+        } catch(e) { 
+            console.error("Error Koneksi:", e);
+            showToast("Koneksi Gagal!", true); 
+        } 
+    }
+
+    // --- FUNGSI CRUD MAHASISWA ---
+    function updateData(id, field, val) { const idx = dbMahasiswa.findIndex(m => m.id === id); if (idx !== -1) { dbMahasiswa[idx][field] = val; sendToBackend('edit', dbMahasiswa[idx]); } }
+    function addNewRow() { const newData = { id: Date.now(), nama: "Nama Baru", nim: "0000", ket: "Draft", doc: "Dokumen belum diperiksa", catatan: "", tgl: new Date().toISOString().split('T')[0], status: "Belum selesai" }; dbMahasiswa.unshift(newData); renderTable(); sendToBackend('add', newData); }
+    function deleteRow(id) { if(confirm("Hapus Mahasiswa?")) { dbMahasiswa = dbMahasiswa.filter(m => m.id !== id); renderTable(); sendToBackend('delete', null, id); } }
+    
+    // --- FUNGSI CRUD JADWAL ---
+    async function saveScheduleToLocal() {
+        await sendToBackend('saveSchedule', dbSchedule);
+        setTimeout(fetchFromSheet, 2000);
+    }
+
+    function changeAdminPage(dir) { currentAdminSchedulePage += dir; renderScheduleTable(); }
+    function addScheduleRow() { dbSchedule.unshift({ id: Date.now(), hari: "Senin", waktu: "08:00", matkul: "", prodi: "", dosen: "" }); currentAdminSchedulePage = 1; renderScheduleTable(); }
+    function updateSchedule(id, field, val) { const idx = dbSchedule.findIndex(s => s.id === id); if (idx !== -1) dbSchedule[idx][field] = val; }
+    function deleteSchedule(id) { if(confirm("Hapus baris?")) { dbSchedule = dbSchedule.filter(s => s.id !== id); renderScheduleTable(); } }
+
+    // ====== NEW: FUNGSI CRUD SSID WIFI ======
+    function changeNetworkPage(dir) { currentNetPage += dir; renderNetworksTable(); }
+    function addNetworkRow() {
+        dbNetworks.unshift({
+            id: Date.now(),
+            name: "SSID-BARU",
+            area: "Area Belum Diset",
+            status: "Online",
+            exp: 80,
+            uptime: "0h 1m",
+            clients: 0,
+            up: "0 Mbps",
+            down: "0 Mbps",
+            security: "WPA2"
+        });
+        currentNetPage = 1;
+        renderNetworksTable();
+    }
+    function updateNetwork(id, field, val) {
+        const idx = dbNetworks.findIndex(n => n.id === id);
+        if (idx !== -1) {
+            // Cast numeric fields
+            if (field === 'exp' || field === 'clients') {
+                val = parseInt(val, 10); if (isNaN(val)) val = 0;
+                if (field === 'exp') { if (val < 0) val = 0; if (val > 100) val = 100; }
+                if (field === 'clients' && val < 0) val = 0;
+            }
+            dbNetworks[idx][field] = val;
+        }
+    }
+    function deleteNetwork(id) {
+        if (confirm("Hapus SSID ini dari daftar?")) {
+            dbNetworks = dbNetworks.filter(n => n.id !== id);
+            // Reset page jika overflow
+            const totalPages = Math.ceil(dbNetworks.length / netPerPage) || 1;
+            if (currentNetPage > totalPages) currentNetPage = totalPages;
+            renderNetworksTable();
+        }
+    }
+
+    /**
+     * Simpan daftar SSID ke localStorage 'dbInfra_UMK' (key: networks)
+     * Tidak mengubah field infrastruktur lain (siakad, web, intranet, wifi1, wifi2, dc*, dll)
+     */
+    function saveNetworksToLocal() {
+        // Validasi minimal
+        if (dbNetworks.length === 0) {
+            showToast("Daftar SSID kosong! Tambahkan minimal 1 SSID.", true);
+            return;
+        }
+        // Ambil dbInfra_UMK yang sudah ada, merge networks
+        const existing = JSON.parse(localStorage.getItem('dbInfra_UMK')) || {};
+        existing.networks = dbNetworks;
+        localStorage.setItem('dbInfra_UMK', JSON.stringify(existing));
+        showToast("Daftar SSID WiFi berhasil disimpan & diterapkan!");
+    }
+    
+    // --- UI HELPERS ---
+    function switchMenu(t) {
+        document.querySelectorAll('.content-section').forEach(s=>s.classList.remove('active'));
+        document.querySelectorAll('.sidebar-menu a').forEach(a=>a.classList.remove('active'));
+        document.getElementById(t).classList.add('active');
+        document.getElementById('nav'+t.replace('menu','')).classList.add('active');
+        // ====== NEW: refresh tabel SSID saat masuk menu infra ======
+        if (t === 'menuInfra') renderNetworksTable();
+    }
+    function filterTable() { renderTable(document.getElementById("searchInput").value); }
+    function showToast(msg, isErr) { const t = document.getElementById("toast"); t.innerHTML = msg; t.style.backgroundColor = isErr ? "var(--btn-red)" : "var(--btn-teal)"; t.className = "show"; setTimeout(()=> t.className = "", 2500); }
+    function handleLogout() { window.location.href = "index.html"; }
+    
+    // --- FUNGSI LOAD & SAVE CMS (SUDAH DILENGKAPI KEMBALI) ---
+    function loadCMSData() {
+        // Load Infra (dengan default yang sudah termasuk networks)
+        const defaultInfra = {
+            siakad: "Online", web: "Online", intranet: "Stabil",
+            wifi1Name: "UMK-FREE-HOTSPOT", wifi1Signal: "Sangat Kuat", wifi1Area: "Halaman Utama, Kantin, & Taman",
+            wifi2Name: "PUSDATIN-HIGH-SPEED", wifi2Signal: "100 Mbps", wifi2Area: "Gedung Rektorat Lt. 2",
+            dcBandwidth: "1 Gbps", dcStorage: "50 TB", dcSecurity: "Firewall v3", dcBackup: "Daily Off-site",
+            cyberText: "Sistem Keamanan Aktif.",
+            networks: DEFAULT_NETWORKS   // ====== NEW ======
+        };
+        const infraData = JSON.parse(localStorage.getItem('dbInfra_UMK')) || defaultInfra;
+
+        // ====== NEW: Load daftar SSID (fallback ke default jika belum ada) ======
+        dbNetworks = Array.isArray(infraData.networks) && infraData.networks.length > 0
+            ? infraData.networks.map(n => ({ ...n, id: n.id || Date.now() + Math.random() }))
+            : DEFAULT_NETWORKS.map(n => ({ ...n, id: Date.now() + Math.random() }));
+
+        if(document.getElementById('setSiakad')) {
+            document.getElementById('setSiakad').value = infraData.siakad; document.getElementById('setWeb').value = infraData.web; document.getElementById('setIntranet').value = infraData.intranet;
+            document.getElementById('setWifi1Name').value = infraData.wifi1Name; document.getElementById('setWifi1Signal').value = infraData.wifi1Signal; document.getElementById('setWifi1Area').value = infraData.wifi1Area;
+            document.getElementById('setWifi2Name').value = infraData.wifi2Name; document.getElementById('setWifi2Signal').value = infraData.wifi2Signal; document.getElementById('setWifi2Area').value = infraData.wifi2Area;
+            document.getElementById('setDcBandwidth').value = infraData.dcBandwidth; document.getElementById('setDcStorage').value = infraData.dcStorage; document.getElementById('setDcSecurity').value = infraData.dcSecurity; document.getElementById('setDcBackup').value = infraData.dcBackup; document.getElementById('setCyberText').value = infraData.cyberText;
+        }
+
+        // Load Lab
+        const labData = JSON.parse(localStorage.getItem('dbLab_UMK')) || { heroT: "Laboratorium Komputer", heroD: "Fasilitas praktikum mahasiswa..." };
+        if(document.getElementById('setLabHeroTitle')) {
+            document.getElementById('setLabHeroTitle').value = labData.heroT; document.getElementById('setLabHeroDesc').value = labData.heroD;
+        }
+
+        // Load Support IT (Sudah Kembali Utuh!)
+        const supData = JSON.parse(localStorage.getItem('dbSupport_UMK')) || { wa: "628123456789", email: "support@umkoe.ac.id", loc: "Gedung Rektorat", f1q: "", f1a: "", f2q: "", f2a: "", f3q: "", f3a: "", f4q: "", f4a: "" };
+        if(document.getElementById('setSupWa')) {
+            document.getElementById('setSupWa').value = supData.wa;
+            document.getElementById('setSupEmail').value = supData.email;
+            document.getElementById('setSupLoc').value = supData.loc;
+            document.getElementById('setFaq1Q').value = supData.f1q; document.getElementById('setFaq1A').value = supData.f1a;
+            document.getElementById('setFaq2Q').value = supData.f2q; document.getElementById('setFaq2A').value = supData.f2a;
+            document.getElementById('setFaq3Q').value = supData.f3q; document.getElementById('setFaq3A').value = supData.f3a;
+            document.getElementById('setFaq4Q').value = supData.f4q; document.getElementById('setFaq4A').value = supData.f4a;
+        }
+    }
+
+    function saveInfra(e) { 
+        e.preventDefault(); 
+        // Ambil data infra yang sudah ada (agar networks tidak hilang)
+        const existing = JSON.parse(localStorage.getItem('dbInfra_UMK')) || {};
+        const d = { 
+            ...existing, // pertahankan field lain (termasuk networks!)
+            siakad: document.getElementById('setSiakad').value, web: document.getElementById('setWeb').value, intranet: document.getElementById('setIntranet').value, 
+            wifi1Name: document.getElementById('setWifi1Name').value, wifi1Signal: document.getElementById('setWifi1Signal').value, wifi1Area: document.getElementById('setWifi1Area').value, 
+            wifi2Name: document.getElementById('setWifi2Name').value, wifi2Signal: document.getElementById('setWifi2Signal').value, wifi2Area: document.getElementById('setWifi2Area').value, 
+            dcBandwidth: document.getElementById('setDcBandwidth').value, dcStorage: document.getElementById('setDcStorage').value, dcSecurity: document.getElementById('setDcSecurity').value, dcBackup: document.getElementById('setDcBackup').value, cyberText: document.getElementById('setCyberText').value 
+        }; 
+        localStorage.setItem('dbInfra_UMK', JSON.stringify(d)); 
+        showToast("Info Infrastruktur Utama diperbarui!");
+    }
+
+    function saveLab(e) { 
+        e.preventDefault(); 
+        const d = { heroT: document.getElementById('setLabHeroTitle').value, heroD: document.getElementById('setLabHeroDesc').value }; 
+        localStorage.setItem('dbLab_UMK', JSON.stringify(d)); 
+        showToast("Teks Halaman Lab diperbarui!");
+    }
+
+    // Fungsi Save Support IT (Sudah Kembali Utuh!)
+    function saveSupport(e) { 
+        e.preventDefault(); 
+        const d = { 
+            wa: document.getElementById('setSupWa').value, 
+            email: document.getElementById('setSupEmail').value, 
+            loc: document.getElementById('setSupLoc').value, 
+            f1q: document.getElementById('setFaq1Q').value, 
+            f1a: document.getElementById('setFaq1A').value, 
+            f2q: document.getElementById('setFaq2Q').value, 
+            f2a: document.getElementById('setFaq2A').value, 
+            f3q: document.getElementById('setFaq3Q').value, 
+            f3a: document.getElementById('setFaq3A').value, 
+            f4q: document.getElementById('setFaq4Q').value, 
+            f4a: document.getElementById('setFaq4A').value 
+        }; 
+        localStorage.setItem('dbSupport_UMK', JSON.stringify(d)); 
+        showToast("Halaman Support IT diperbarui!");
+    }
+
+   
+</script>
+</body>
+</html>

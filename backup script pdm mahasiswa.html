@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDM Mahasiswa - PUSDATIN UMK</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2d328a;
+            --secondary: #5d5fef;
+            --danger: #e74c3c;
+            --success: #27ae60;
+            --bg-light: #f4f7fe;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: linear-gradient(135deg, #f4f7fe 0%, #e0e7ff 100%); min-height: 100vh; padding: 40px 20px; display: flex; justify-content: center; }
+        
+        .upload-container {
+            background: rgba(255, 255, 255, 0.95);
+            backdrop-filter: blur(10px);
+            width: 100%; max-width: 900px;
+            border-radius: 30px; padding: 40px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.1);
+            border: 1px solid rgba(255,255,255,0.6);
+            position: relative;
+        }
+
+        .header { text-align: center; margin-bottom: 35px; }
+        .header h2 { color: var(--primary); font-weight: 800; font-size: 1.8rem; }
+        .header p { color: #666; font-size: 0.9rem; margin-top: 5px; }
+
+        .identity-section {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+            margin-bottom: 30px; padding: 25px; background: #f8faff; border-radius: 20px;
+            border: 1px solid #edf2f7;
+        }
+        .input-group label { display: block; font-size: 0.85rem; font-weight: 700; color: var(--primary); margin-bottom: 8px; }
+        .input-group input { width: 100%; padding: 12px 15px; border: 2px solid #eee; border-radius: 12px; outline: none; transition: 0.3s; }
+        .input-group input:focus { border-color: var(--secondary); }
+
+        .upload-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 15px; }
+        .upload-item { background: #fff; border: 2px dashed #e2e8f0; padding: 15px; border-radius: 18px; display: flex; align-items: center; gap: 15px; transition: 0.3s; }
+        
+        .icon-doc { width: 50px; height: 50px; background: #f0f2ff; color: var(--primary); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 1.3rem; flex-shrink: 0; }
+        .doc-info h4 { font-size: 0.85rem; color: #333; margin-bottom: 5px; }
+        .btn-upload { background: var(--secondary); color: white; padding: 8px 15px; border-radius: 8px; font-size: 0.75rem; font-weight: 600; cursor: pointer; display: inline-block; transition: 0.3s; }
+        .file-input { position: absolute; opacity: 0; width: 1px; }
+        .file-name { display: block; font-size: 0.75rem; color: #888; margin-top: 5px; font-style: italic; }
+
+        /* Style Tombol & Loading */
+        .btn-submit-all { 
+            width: 100%; background: var(--primary); color: white; padding: 18px; 
+            border: none; border-radius: 15px; font-size: 1rem; font-weight: 700; 
+            margin-top: 25px; cursor: pointer; transition: 0.3s; 
+            display: flex; align-items: center; justify-content: center; gap: 10px;
+        }
+        .btn-submit-all:hover { background: var(--secondary); transform: translateY(-2px); }
+        .btn-submit-all:disabled { background: #94a3b8; cursor: not-allowed; transform: none; }
+
+        .spinner {
+            display: none;
+            width: 20px; height: 20px;
+            border: 3px solid rgba(255,255,255,0.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+        }
+
+        @keyframes spin { to { transform: rotate(360deg); } }
+
+        /* Overlay saat loading */
+        #overlay {
+            display: none;
+            position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.7);
+            z-index: 10; border-radius: 30px;
+            cursor: wait;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="upload-container">
+        <div id="overlay"></div>
+        <div class="header">
+            <h2>Pemutakhiran Data Mandiri (PDM)</h2>
+            <p>Unggah berkas digital Anda ke Database PUSDATIN UMK</p>
+        </div>
+
+        <form id="uploadForm">
+            <div class="identity-section">
+                <div class="input-group">
+                    <label>Nama Lengkap (Sesuai KTP)</label>
+                    <input type="text" id="nama" name="nama" placeholder="Contoh: Ahmad Fauzi" required>
+                </div>
+                <div class="input-group">
+                    <label>NIM (Nomor Induk Mahasiswa)</label>
+                    <input type="text" id="nim" name="nim" placeholder="Contoh: 0000" required>
+                </div>
+            </div>
+
+            <div class="upload-grid">
+                <div class="upload-item">
+                    <div class="icon-doc"><i class="fas fa-graduation-cap"></i></div>
+                    <div class="doc-info">
+                        <h4>Ijazah Terakhir</h4>
+                        <label class="btn-upload">Pilih PDF <input type="file" name="ijazah" class="file-input" accept=".pdf" onchange="validateFile(this)" required></label>
+                        <span class="file-name">Belum ada file</span>
+                    </div>
+                </div>
+                <div class="upload-item">
+                    <div class="icon-doc"><i class="fas fa-file-alt"></i></div>
+                    <div class="doc-info">
+                        <h4>Transkrip Nilai</h4>
+                        <label class="btn-upload">Pilih PDF <input type="file" name="transkrip" class="file-input" accept=".pdf" onchange="validateFile(this)" required></label>
+                        <span class="file-name">Belum ada file</span>
+                    </div>
+                </div>
+                <div class="upload-item">
+                    <div class="icon-doc"><i class="fas fa-id-card"></i></div>
+                    <div class="doc-info">
+                        <h4>KTP</h4>
+                        <label class="btn-upload">Pilih PDF <input type="file" name="ktp" class="file-input" accept=".pdf" onchange="validateFile(this)" required></label>
+                        <span class="file-name">Belum ada file</span>
+                    </div>
+                </div>
+                <div class="upload-item">
+                    <div class="icon-doc"><i class="fas fa-id-badge"></i></div>
+                    <div class="doc-info">
+                        <h4>KTM</h4>
+                        <label class="btn-upload">Pilih PDF <input type="file" name="ktm" class="file-input" accept=".pdf" onchange="validateFile(this)" required></label>
+                        <span class="file-name">Belum ada file</span>
+                    </div>
+                </div>
+                <div class="upload-item">
+                    <div class="icon-doc"><i class="fas fa-baby"></i></div>
+                    <div class="doc-info">
+                        <h4>Akte Lahir</h4>
+                        <label class="btn-upload">Pilih PDF <input type="file" name="akte_lahir" class="file-input" accept=".pdf" onchange="validateFile(this)" required></label>
+                        <span class="file-name">Belum ada file</span>
+                    </div>
+                </div>
+                <div class="upload-item">
+                    <div class="icon-doc"><i class="fas fa-users"></i></div>
+                    <div class="doc-info">
+                        <h4>Kartu Keluarga</h4>
+                        <label class="btn-upload">Pilih PDF <input type="file" name="kk" class="file-input" accept=".pdf" onchange="validateFile(this)" required></label>
+                        <span class="file-name">Belum ada file</span>
+                    </div>
+                </div>
+                <div class="upload-item" style="grid-column: 1 / -1;">
+                    <div class="icon-doc"><i class="fas fa-file-signature"></i></div>
+                    <div class="doc-info">
+                        <h4>Surat Pernyataan Rektor</h4>
+                        <label class="btn-upload">Pilih PDF <input type="file" name="surat_rektor" class="file-input" accept=".pdf" onchange="validateFile(this)" required></label>
+                        <span class="file-name">Belum ada file</span>
+                    </div>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit-all" id="submitBtn">
+                <div class="spinner" id="spinner"></div>
+                <span id="btnText">SIMPAN & UNGGAH SEMUA DOKUMEN</span>
+            </button>
+        </form>
+    </div>
+
+    <script>
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxPYA_Ly-idhXxlYtdL2Wa8POWzkGcPlDtYg0USzE7HyXCrG2FY6iwnTZYHrNaLdwhD/exec";
+
+        function validateFile(input) {
+            const fileNameSpan = input.parentElement.nextElementSibling;
+            if (input.files[0]) {
+                if (input.files[0].size > 1048576) {
+                    alert("File terlalu besar! Maksimal 1MB.");
+                    input.value = "";
+                    fileNameSpan.textContent = "Gagal: Melebihi 1MB";
+                    fileNameSpan.style.color = "red";
+                } else {
+                    fileNameSpan.textContent = "Terpilih: " + input.files[0].name;
+                    fileNameSpan.style.color = "green";
+                }
+            }
+        }
+
+        document.getElementById("uploadForm").addEventListener("submit", function(e) {
+            e.preventDefault();
+            
+            const btn = document.getElementById("submitBtn");
+            const btnText = document.getElementById("btnText");
+            const spinner = document.getElementById("spinner");
+            const overlay = document.getElementById("overlay");
+            const namaMhs = document.getElementById("nama").value;
+
+            // Aktifkan Loading
+            btn.disabled = true;
+            btnText.innerText = "SEDANG MENGUNGGAH...";
+            spinner.style.display = "block";
+            overlay.style.display = "block";
+
+            const formData = new URLSearchParams();
+            formData.append("nama", namaMhs);
+            formData.append("nim", document.getElementById("nim").value);
+
+            const fileInputs = document.querySelectorAll('input[type="file"]');
+            const promises = Array.from(fileInputs).map(input => {
+                return new Promise((resolve) => {
+                    const file = input.files[0];
+                    if (!file) return resolve();
+                    const reader = new FileReader();
+                    reader.onload = (e) => {
+                        formData.append(input.name, e.target.result);
+                        resolve();
+                    };
+                    reader.readAsDataURL(file);
+                });
+            });
+
+            Promise.all(promises).then(() => {
+                fetch(SCRIPT_URL, {
+                    method: 'POST',
+                    body: formData.toString(),
+                    headers: { "Content-Type": "application/x-www-form-urlencoded" }
+                })
+                .then(() => {
+                    alert("Berhasil! Data " + namaMhs + " telah tersimpan.");
+                    location.reload();
+                })
+                .catch(() => {
+                    alert("Proses Selesai. Silakan cek Drive/Spreadsheet Anda.");
+                    location.reload();
+                });
+            });
+        });
+    </script>
+</body>
+</html>

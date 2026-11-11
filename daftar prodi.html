@@ -1,0 +1,375 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Daftar Program Studi - PUSDATIN UMK</title>
+    <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1PIQb-v4vNSdTQMKLbOejmIp8ttSKpyag&sz=w32">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2d328a; 
+            --secondary: #5d5fef;
+            --accent: #ffcb05;
+            --bg-light: #f4f7fe;
+            --text-dark: #1e293b;
+            --text-muted: #64748b;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
+
+        /* --- HEADER --- */
+        header { display: flex; justify-content: space-between; align-items: center; padding: 10px 5%; background: white; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
+        .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none;}
+        .logo-box { background: #f0f2ff; padding: 10px; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+        .logo-box img { height: 42px; }
+        .logo-text span { display: block; font-size: 0.7rem; font-weight: 700; color: var(--secondary); text-transform: uppercase; letter-spacing: 1px; line-height: 1; margin-bottom: 2px; }
+        .logo-text b { font-size: 1.15rem; color: var(--primary); font-weight: 800; white-space: nowrap; }
+        
+        .btn-back { text-decoration: none; color: var(--primary); font-weight: 700; font-size: 0.9rem; transition: var(--transition); display: flex; align-items: center; gap: 8px; }
+        .btn-back:hover { color: var(--secondary); transform: translateX(-5px); }
+
+        /* --- HERO --- */
+        .lab-hero { padding: 140px 5% 80px; background: linear-gradient(135deg, var(--primary) 0%, #1a1d5c 100%); color: white; text-align: center; position: relative; overflow: hidden; }
+        .lab-hero h1 { font-size: 2.8rem; font-weight: 800; margin-bottom: 15px; position: relative; z-index: 2;}
+        .lab-hero p { max-width: 600px; margin: 0 auto; opacity: 0.9; font-size: 1.1rem; position: relative; z-index: 2;}
+
+        /* --- LAYOUT --- */
+        .container { max-width: 1200px; margin: -40px auto 80px; padding: 0 20px; position: relative; z-index: 3; }
+        .grid-layout { display: grid; grid-template-columns: 1fr; gap: 30px; }
+        
+        .card { background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); padding: 35px; margin-bottom: 30px; }
+        .card-full { grid-column: 1 / -1; }
+        .section-title { font-size: 1.3rem; color: var(--primary); margin-bottom: 25px; display: flex; align-items: center; gap: 12px; font-weight: 800; }
+        
+        /* --- JADWAL, PENCARIAN, FILTER & PRINT --- */
+        .header-with-btn { display: flex; justify-content: space-between; align-items: center; margin-bottom: 15px; width: 100%; flex-wrap: wrap; gap: 15px; }
+        
+        .controls-wrapper { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; width: 100%; flex-wrap: wrap; gap: 15px; }
+        
+        .length-menu label { font-size: 0.9rem; color: var(--text-muted); font-weight: 600; display: flex; align-items: center; gap: 8px; }
+        .length-menu select { padding: 8px 12px; border: 1px solid #e2e8f0; border-radius: 8px; outline: none; color: var(--text-dark); background: #f8fafc; font-weight: 600; cursor: pointer; transition: var(--transition); }
+        .length-menu select:focus { border-color: var(--secondary); background: white; box-shadow: 0 0 0 4px rgba(93, 95, 239, 0.1); }
+
+        .search-box { position: relative; width: 100%; max-width: 350px; }
+        .search-box input { 
+            width: 100%; 
+            padding: 12px 15px 12px 42px; 
+            border: 1px solid #e2e8f0; 
+            border-radius: 12px; 
+            font-size: 0.9rem; 
+            outline: none; 
+            transition: var(--transition); 
+            color: var(--text-dark);
+            background: #f8fafc;
+        }
+        .search-box input:focus { border-color: var(--secondary); background: white; box-shadow: 0 0 0 4px rgba(93, 95, 239, 0.1); }
+        .search-box i { position: absolute; left: 16px; top: 50%; transform: translateY(-50%); color: var(--text-muted); font-size: 0.95rem; }
+
+        .btn-print { 
+            background: var(--primary); 
+            color: white; 
+            border: none; 
+            padding: 10px 20px; 
+            border-radius: 12px; 
+            font-weight: 700; 
+            font-size: 0.85rem; 
+            cursor: pointer; 
+            display: flex; 
+            align-items: center; 
+            gap: 10px; 
+            transition: var(--transition);
+            box-shadow: 0 4px 12px rgba(45, 50, 138, 0.2);
+            text-decoration: none;
+        }
+        .btn-print:hover { background: var(--secondary); transform: translateY(-2px); box-shadow: 0 6px 15px rgba(93, 95, 239, 0.3); }
+
+        /* --- TABLE STYLING --- */
+        .table-responsive { overflow-x: auto; border-radius: 16px; border: 1px solid #e2e8f0; }
+        table { width: 100%; border-collapse: collapse; min-width: 900px; }
+        th { background: #f8fafc; padding: 15px; text-align: left; font-size: 0.9rem; color: var(--primary); font-weight: 700; border-bottom: 2px solid #e2e8f0; }
+        td { padding: 15px; border-bottom: 1px solid #e2e8f0; font-size: 0.9rem; }
+        
+        .badge { display: inline-block; padding: 5px 12px; border-radius: 6px; font-size: 0.8rem; font-weight: 700; }
+        .badge-s1 { background: rgba(93, 95, 239, 0.12); color: var(--secondary); }
+        .badge-s2 { background: rgba(39, 174, 96, 0.12); color: #27ae60; }
+        .text-center { text-align: center; }
+
+        /* --- PAGINATION STYLING --- */
+        .pagination-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 25px;
+            padding-top: 20px;
+            border-top: 1px solid #e2e8f0;
+        }
+
+        .pagination-container button {
+            background: white;
+            color: var(--primary);
+            border: 1px solid var(--primary);
+            padding: 8px 18px;
+            border-radius: 10px;
+            font-weight: 700;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: var(--transition);
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .pagination-container button:hover:not(:disabled) { background: var(--primary); color: white; }
+        .pagination-container button:disabled { opacity: 0.3; cursor: not-allowed; border-color: #cbd5e1; color: #94a3b8; }
+        #pageInfo { font-size: 0.9rem; font-weight: 600; color: var(--text-muted); }
+
+        /* --- PRINT TABLE (HIDDEN ON WEB) --- */
+        #printTableFull { display: none; }
+
+        @media (max-width: 992px) { .grid-layout { grid-template-columns: 1fr; } }
+        @media (max-width: 600px) { 
+            .header-with-btn { flex-direction: column; align-items: flex-start; } 
+            .controls-wrapper { flex-direction: column; align-items: flex-start; } 
+            .search-box { max-width: 100%; } 
+        }
+
+        /* --- CSS KHUSUS CETAK (PRINT) --- */
+        @media print {
+            body { background: white; }
+            header, .lab-hero, .btn-back, .btn-print, .controls-wrapper, .pagination-container { 
+                display: none !important; 
+            }
+            #printableTable { display: none !important; } 
+            
+            #printTableFull { 
+                display: table !important; 
+                width: 100%;
+                border-collapse: collapse;
+            }
+
+            .container { margin: 0; padding: 0; max-width: 100%; }
+            .card-full { box-shadow: none !important; border: none !important; padding: 0 !important; margin: 0 !important; }
+            
+            #printTableFull th, #printTableFull td { 
+                border: 1px solid #000 !important; 
+                color: black !important; 
+                padding: 10px !important; 
+                font-size: 10pt !important;
+            }
+            #printTableFull th { background: #eee !important; }
+            
+            .card-full::before {
+                content: "UNIVERSITAS MUHAMMADIYAH KUPANG - PUSDATIN\A DAFTAR PROGRAM STUDI\A";
+                white-space: pre;
+                display: block;
+                text-align: center;
+                font-weight: 800;
+                font-size: 1.2rem;
+                margin-bottom: 30px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-container">
+            <div class="logo-box"><img src="https://umkoe.ac.id/wp-content/uploads/2025/07/Logo-UMKOE-Warna-1.png" alt="Logo UMK"></div>
+            <div class="logo-text"><span>PUSDATIN</span><b>Universitas Muhammadiyah Kupang</b></div>
+        </a>
+        <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
+    </header>
+
+    <section class="lab-hero">
+        <h1>Daftar Program Studi</h1>
+        <p>Pusat Data dan Informasi (PUSDATIN) Universitas Muhammadiyah Kupang</p>
+    </section>
+
+    <div class="container">
+        <div class="grid-layout">
+            <div class="card card-full" id="tabel-prodi">
+                
+                <div class="header-with-btn">
+                    <h2 class="section-title" style="margin-bottom: 0;">Data Program Studi UMKoe</h2>
+                    <button class="btn-print" onclick="window.print()"><i class="fas fa-print"></i> Cetak Data</button>
+                </div>
+
+                <div class="controls-wrapper">
+                    <div class="length-menu">
+                        <label>Tampilkan 
+                            <select id="lengthSelect" onchange="changeLength()">
+                                <option value="10">10</option>
+                                <option value="25">25</option>
+                                <option value="50">50</option>
+                            </select> entri
+                        </label>
+                    </div>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="searchInput" onkeyup="filterData()" placeholder="Cari nama prodi atau kode...">
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table id="printableTable">
+                        <thead>
+                            <tr>
+                                <th class="text-center" style="width: 60px;">No</th>
+                                <th>Kode</th>
+                                <th>Nama Program Studi</th>
+                                <th class="text-center">Jenjang</th>
+                                <th>Semester Mulai</th>
+                                <th>Nomor SK</th>
+                                <th>Tanggal SK</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyProdi">
+                            <tr><td colspan="7" style="text-align:center; padding:40px;"><i class="fas fa-spinner fa-spin"></i> Memuat data...</td></tr>
+                        </tbody>
+                    </table>
+
+                    <table id="printTableFull">
+                        <thead>
+                            <tr>
+                                <th class="text-center">No</th>
+                                <th>Kode</th>
+                                <th>Nama Program Studi</th>
+                                <th class="text-center">Jenjang</th>
+                                <th>Semester Mulai</th>
+                                <th>Nomor SK</th>
+                                <th>Tanggal SK</th>
+                            </tr>
+                        </thead>
+                        <tbody id="tbodyPrintFull"></tbody>
+                    </table>
+                </div>
+
+                <div class="pagination-container">
+                    <button id="prevBtn" onclick="changePage(-1)"><i class="fas fa-chevron-left"></i> Sebelumnya</button>
+                    <span id="pageInfo">Halaman 1 dari 1</span>
+                    <button id="nextBtn" onclick="changePage(1)">Selanjutnya <i class="fas fa-chevron-right"></i></button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Data master dari File Excel
+        const totalProdiData = [
+            { no: 1, kode: "67201", nama: "Ilmu Politik", jenjang: "S1", semester: "2016/2017 Ganjil", no_sk: "4/KPT/I/2015", tgl_sk: "28/08/2015" },
+            { no: 2, kode: "86206", nama: "Pendidikan Guru Sekolah Dasar", jenjang: "S1", semester: "2016/2017 Ganjil", no_sk: "89/KPT/I/2015", tgl_sk: "18/11/2015" },
+            { no: 3, kode: "72201", nama: "Ilmu Kesejahteraan Sosial", jenjang: "S1", semester: "2002/2003 Ganjil", no_sk: "8724/D/T/K-VIII/2011", tgl_sk: "15/09/2011" },
+            { no: 4, kode: "74201", nama: "Ilmu Hukum", jenjang: "S1", semester: "2016/2017 Ganjil", no_sk: "89/KPT/I/2015", tgl_sk: "18/11/2015" },
+            { no: 5, kode: "88201", nama: "Pendidikan Bahasa Dan Sastra Indonesia", jenjang: "S1", semester: "2002/2003 Ganjil", no_sk: "8733/D/T/K-VIII/2011", tgl_sk: "15/09/2011" },
+            { no: 6, kode: "69201", nama: "Sosiologi", jenjang: "S1", semester: "2002/2003 Ganjil", no_sk: "3544/D/T/K-VIII/2009", tgl_sk: "30/09/2009" },
+            { no: 7, kode: "69101", nama: "Sosiologi", jenjang: "S2", semester: "2023/2024 Ganjil", no_sk: "248/E/O/2023", tgl_sk: "03/08/2023" },
+            { no: 8, kode: "61201", nama: "Manajemen", jenjang: "S1", semester: "2002/2003 Ganjil", no_sk: "7162/D/T/K-VIII/2011", tgl_sk: "23/05/2011" },
+            { no: 9, kode: "62201", nama: "Akuntansi", jenjang: "S1", semester: "2002/2003 Ganjil", no_sk: "8723/D/T/K-VIII/2011", tgl_sk: "15/09/2011" },
+            { no: 10, kode: "87204", nama: "Pendidikan Sosiologi", jenjang: "S1", semester: "2016/2017 Ganjil", no_sk: "91/KPT/I/2016", tgl_sk: "02/09/2016" },
+            { no: 11, kode: "54245", nama: "Agrobisnis Perikanan", jenjang: "S1", semester: "2002/2003 Ganjil", no_sk: "7365/D/T/K-VIII/2011", tgl_sk: "13/06/2011" },
+            { no: 12, kode: "84205", nama: "Pendidikan Biologi", jenjang: "S1", semester: "2002/2003 Ganjil", no_sk: "8734/D/T/K-VIII/2011", tgl_sk: "15/09/2011" },
+            { no: 13, kode: "74230", nama: "Ahwal Al Syakhshiyah", jenjang: "S1", semester: "2013/2014 Ganjil", no_sk: "Dj.I/1308/2011", tgl_sk: "27/09/2011" },
+            { no: 14, kode: "54246", nama: "Pemanfaatan Sumber Daya Perikanan", jenjang: "S1", semester: "2002/2003 Ganjil", no_sk: "7161/D/T/K-VIII/2011", tgl_sk: "23/05/2011" },
+            { no: 15, kode: "86208", nama: "Pendidikan Agama Islam", jenjang: "S1", semester: "2013/2014 Ganjil", no_sk: "E.229/1999", tgl_sk: "-" },
+            { no: 16, kode: "84202", nama: "Pendidikan Matematika", jenjang: "S1", semester: "2016/2017 Ganjil", no_sk: "189/KPT/I/2015", tgl_sk: "12/11/2015" },
+            { no: 17, kode: "82201", nama: "Antropologi Sosial", jenjang: "S1", semester: "2002/2003 Ganjil", no_sk: "7164/D/T/K-VIII/2011", tgl_sk: "23/05/2011" }
+        ];
+
+        // Variabel Dinamis
+        let filteredData = [...totalProdiData];
+        let currentPage = 1;
+        let recordsPerPage = 10; // Default 10 baris
+
+        // Fungsi mengubah jumlah baris yang tampil (10, 25, 50)
+        function changeLength() {
+            recordsPerPage = parseInt(document.getElementById('lengthSelect').value);
+            currentPage = 1; // Kembali ke halaman 1 setiap merubah limit
+            renderTable();
+        }
+
+        // Fungsi Filter / Pencarian Data
+        function filterData() {
+            const keyword = document.getElementById('searchInput').value.toLowerCase();
+            
+            filteredData = totalProdiData.filter(item => {
+                return item.nama.toLowerCase().includes(keyword) || 
+                       item.kode.toLowerCase().includes(keyword) ||
+                       item.jenjang.toLowerCase().includes(keyword);
+            });
+            
+            currentPage = 1; 
+            renderTable();
+        }
+
+        function renderTable() {
+            const tbody = document.getElementById('tbodyProdi');
+            const tbodyPrint = document.getElementById('tbodyPrintFull');
+            const prevBtn = document.getElementById('prevBtn');
+            const nextBtn = document.getElementById('nextBtn');
+            const pageInfo = document.getElementById('pageInfo');
+            
+            // 1. Render Tampilan Web berdasarkan Limit dan Pencarian
+            tbody.innerHTML = '';
+            const startIndex = (currentPage - 1) * recordsPerPage;
+            const endIndex = startIndex + recordsPerPage;
+            const paginatedItems = filteredData.slice(startIndex, endIndex);
+            
+            if (paginatedItems.length > 0) {
+                let displayNo = startIndex + 1; 
+                paginatedItems.forEach(item => {
+                    let badgeClass = item.jenjang === 'S1' ? 'badge-s1' : 'badge-s2';
+                    tbody.innerHTML += `
+                        <tr>
+                            <td class="text-center">${displayNo++}</td>
+                            <td>${item.kode}</td>
+                            <td><strong>${item.nama}</strong></td>
+                            <td class="text-center"><span class="badge ${badgeClass}">${item.jenjang}</span></td>
+                            <td>${item.semester}</td>
+                            <td>${item.no_sk}</td>
+                            <td>${item.tgl_sk}</td>
+                        </tr>`;
+                });
+            } else {
+                tbody.innerHTML = `<tr><td colspan="7" style="text-align:center; padding:30px; color:#94a3b8;">Tidak ada data yang cocok dengan pencarian.</td></tr>`;
+            }
+            
+            // 2. Render Tampilan Cetak
+            tbodyPrint.innerHTML = '';
+            let printNo = 1;
+            filteredData.forEach(item => {
+                tbodyPrint.innerHTML += `
+                    <tr>
+                        <td class="text-center">${printNo++}</td>
+                        <td>${item.kode}</td>
+                        <td>${item.nama}</td>
+                        <td class="text-center">${item.jenjang}</td>
+                        <td>${item.semester}</td>
+                        <td>${item.no_sk}</td>
+                        <td>${item.tgl_sk}</td>
+                    </tr>`;
+            });
+            
+            // Logika Pagination Tombol
+            const totalPages = Math.ceil(filteredData.length / recordsPerPage) || 1;
+            pageInfo.innerText = `Halaman ${currentPage} dari ${totalPages}`;
+            prevBtn.disabled = currentPage === 1;
+            nextBtn.disabled = currentPage === totalPages;
+        }
+
+        function changePage(direction) {
+            currentPage += direction;
+            renderTable();
+            document.getElementById('tabel-prodi').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Muat pertama kali
+        window.onload = renderTable;
+    </script>
+</body>
+</html>

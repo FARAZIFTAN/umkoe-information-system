@@ -1,0 +1,281 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Support IT & Helpdesk - PUSDATIN UMK</title>
+    <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1PIQb-v4vNSdTQMKLbOejmIp8ttSKpyag&sz=w32">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2d328a; --secondary: #5d5fef; --accent: #ffcb05; --success: #20c997;
+            --bg-light: #f4f7fe; --text-dark: #1e293b; --text-muted: #64748b;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+        body { background: var(--bg-light); color: var(--text-dark); line-height: 1.6; }
+
+        header { display: flex; justify-content: space-between; align-items: center; padding: 10px 5%; background: white; position: fixed; width: 100%; top: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.04); }
+        .logo-container { display: flex; align-items: center; gap: 12px; text-decoration: none; }
+        .logo-box { background: #f0f2ff; padding: 8px; border-radius: 12px; }
+        .logo-box img { height: 35px; }
+        .logo-text b { font-size: 1rem; color: var(--primary); font-weight: 800; }
+        .btn-back { text-decoration: none; color: var(--primary); font-weight: 700; font-size: 0.9rem; transition: var(--transition); }
+        .btn-back:hover { color: var(--secondary); transform: translateX(-5px); }
+
+        .help-hero { padding: 130px 8% 70px; background: linear-gradient(135deg, var(--primary) 0%, #1a1d5c 100%); color: white; text-align: center; position: relative; overflow: hidden; }
+        .help-hero::after { content: ''; position: absolute; top: -50%; left: -50%; width: 200%; height: 200%; background: radial-gradient(circle, rgba(255,203,5,0.05) 0%, transparent 60%); z-index: 1; pointer-events: none; }
+        .help-hero h1 { font-size: 2.6rem; font-weight: 800; margin-bottom: 15px; position: relative; z-index: 2;}
+        .help-hero p { max-width: 600px; margin: 0 auto; opacity: 0.9; font-size: 1.1rem; position: relative; z-index: 2;}
+
+        .container { max-width: 1200px; margin: -40px auto 80px; padding: 0 20px; position: relative; z-index: 3; }
+        .grid-layout { display: grid; grid-template-columns: 1fr 1.2fr; gap: 30px; }
+
+        .card { background: white; border-radius: 24px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); padding: 35px; margin-bottom: 30px; }
+        .section-title { font-size: 1.3rem; color: var(--primary); margin-bottom: 25px; display: flex; align-items: center; gap: 12px; }
+        .section-title i { background: #f0f2ff; width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 10px; color: var(--secondary); }
+
+        .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-bottom: 30px; }
+        .contact-box { padding: 20px; border-radius: 16px; border: 1px solid #e2e8f0; display: flex; flex-direction: column; gap: 10px; transition: var(--transition); text-decoration: none; color: inherit; }
+        .contact-box:hover { border-color: var(--secondary); background: #f8f9ff; transform: translateY(-3px); box-shadow: 0 10px 20px rgba(0,0,0,0.03); }
+        .contact-box i { font-size: 1.8rem; color: var(--primary); }
+        .contact-box h4 { font-size: 1rem; margin-top: 5px; }
+        .contact-box p { font-size: 0.8rem; color: var(--text-muted); }
+
+        .contact-box.whatsapp { border-color: #dcfce7; background: #f0fdf4; }
+        .contact-box.whatsapp i { color: #16a34a; }
+        .contact-box.whatsapp:hover { border-color: #16a34a; box-shadow: 0 10px 20px rgba(22,163,74,0.1); }
+
+        .faq-item { border: 1px solid #e2e8f0; border-radius: 12px; margin-bottom: 12px; overflow: hidden; }
+        .faq-question { padding: 18px 20px; background: white; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-weight: 600; font-size: 0.95rem; color: var(--text-dark); transition: var(--transition); }
+        .faq-question:hover { background: #f8f9fa; }
+        .faq-question i { color: var(--text-muted); transition: transform 0.3s; }
+        .faq-answer { padding: 0 20px; max-height: 0; overflow: hidden; background: #f8fafc; font-size: 0.9rem; color: var(--text-muted); transition: max-height 0.3s ease-out, padding 0.3s ease; }
+        
+        .faq-item.active .faq-question { color: var(--primary); border-bottom: 1px solid #e2e8f0; }
+        .faq-item.active .faq-question i { transform: rotate(180deg); color: var(--primary); }
+        .faq-item.active .faq-answer { padding: 20px; max-height: 300px; } 
+
+        .ticket-form { display: flex; flex-direction: column; gap: 20px; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label { font-size: 0.85rem; font-weight: 700; color: #475569; }
+        .form-control { padding: 14px 16px; border: 1px solid #cbd5e1; border-radius: 12px; font-size: 0.95rem; outline: none; transition: var(--transition); font-family: inherit; background: #f8fafc; }
+        .form-control:focus { border-color: var(--secondary); background: white; box-shadow: 0 0 0 4px rgba(93, 95, 239, 0.1); }
+        
+        .btn-submit { background: var(--primary); color: white; border: none; padding: 16px; border-radius: 12px; font-weight: 700; font-size: 1rem; cursor: pointer; display: flex; align-items: center; justify-content: center; gap: 10px; transition: var(--transition); margin-top: 10px; box-shadow: 0 10px 20px rgba(45, 50, 138, 0.15); }
+        .btn-submit:hover { background: var(--secondary); transform: translateY(-2px); box-shadow: 0 15px 25px rgba(93, 95, 239, 0.25); }
+
+        #toast { visibility: hidden; min-width: 300px; background-color: var(--success); color: #fff; text-align: center; border-radius: 10px; padding: 16px; position: fixed; z-index: 9999; left: 50%; bottom: 30px; transform: translateX(-50%); font-size: 0.95rem; font-weight: 600; box-shadow: 0 10px 30px rgba(32, 201, 151, 0.3); display: flex; align-items: center; justify-content: center; gap: 10px;}
+        #toast.show { visibility: visible; animation: fadein 0.5s, fadeout 0.5s 4.5s; }
+        @keyframes fadein { from { bottom: 0; opacity: 0; } to { bottom: 30px; opacity: 1; } }
+        @keyframes fadeout { from { bottom: 30px; opacity: 1; } to { bottom: 0; opacity: 0; } }
+
+        @media (max-width: 992px) { .grid-layout { grid-template-columns: 1fr; } .container { margin-top: 20px; } }
+        @media (max-width: 600px) { .contact-grid { grid-template-columns: 1fr; } }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="index.html" class="logo-container">
+            <div class="logo-box"><img src="https://umkoe.ac.id/wp-content/uploads/2025/07/Logo-UMKOE-Warna-1.png" alt="Logo UMK"></div>
+            <div class="logo-text"><b>PUSDATIN UMK</b></div>
+        </a>
+        <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Beranda</a>
+    </header>
+
+    <section class="help-hero">
+        <h1>Pusat Bantuan & Layanan IT</h1>
+        <p>Kami di sini untuk membantu. Temukan jawaban dari pertanyaan Anda atau laporkan kendala teknis kepada tim Support PUSDATIN UMK.</p>
+    </section>
+
+    <div class="container">
+        <div class="grid-layout">
+            
+            <div class="left-column">
+                <div class="card" style="padding: 25px;">
+                    <div class="section-title"><i class="fas fa-headset"></i> Saluran Bantuan Cepat</div>
+                    <div class="contact-grid">
+                        <a href="#" id="dispSupWaLink" target="_blank" class="contact-box whatsapp">
+                            <i class="fab fa-whatsapp"></i>
+                            <h4>WhatsApp IT Support</h4>
+                            <p>Respon cepat (Jam Kerja)</p>
+                        </a>
+                        <a href="#" id="dispSupEmailLink" class="contact-box">
+                            <i class="fas fa-envelope-open-text"></i>
+                            <h4>Email Helpdesk</h4>
+                            <p id="dispSupEmail">support@umkoe.ac.id</p>
+                        </a>
+                        <div class="contact-box" style="grid-column: 1 / -1; flex-direction: row; align-items: center;">
+                            <i class="fas fa-map-marker-alt" style="font-size: 1.5rem; width: 30px;"></i>
+                            <div>
+                                <h4 style="margin-top: 0;">Lokasi PUSDATIN</h4>
+                                <p id="dispSupLoc">Gedung Rektorat Lantai 2, Kampus Utama UMK.</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card" style="padding: 25px;">
+                    <div class="section-title"><i class="fas fa-question-circle"></i> Pertanyaan Populer (FAQ)</div>
+                    <div class="faq-container">
+                        <div class="faq-item">
+                            <div class="faq-question"><span id="dispFaq1Q">Tanya 1</span> <i class="fas fa-chevron-down"></i></div>
+                            <div class="faq-answer" id="dispFaq1A">Jawab 1</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question"><span id="dispFaq2Q">Tanya 2</span> <i class="fas fa-chevron-down"></i></div>
+                            <div class="faq-answer" id="dispFaq2A">Jawab 2</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question"><span id="dispFaq3Q">Tanya 3</span> <i class="fas fa-chevron-down"></i></div>
+                            <div class="faq-answer" id="dispFaq3A">Jawab 3</div>
+                        </div>
+                        <div class="faq-item">
+                            <div class="faq-question"><span id="dispFaq4Q">Tanya 4</span> <i class="fas fa-chevron-down"></i></div>
+                            <div class="faq-answer" id="dispFaq4A">Jawab 4</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-column">
+                <div class="card">
+                    <div class="section-title"><i class="fas fa-ticket-alt"></i> Buat Tiket Laporan</div>
+                    <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 25px;">Silakan isi formulir di bawah ini dengan detail. Tim kami akan segera menindaklanjuti laporan Anda.</p>
+
+                    <form class="ticket-form" id="helpdeskForm" onsubmit="submitTicket(event)">
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="form-group"><label>Nama Lengkap</label><input type="text" id="ticketNama" class="form-control" placeholder="Masukkan nama..." required></div>
+                            <div class="form-group"><label>NIM / NIP</label><input type="text" id="ticketNim" class="form-control" placeholder="Nomor Induk..." required></div>
+                        </div>
+                        <div class="form-group">
+                            <label>Kategori Kendala</label>
+                            <select id="ticketKategori" class="form-control" required>
+                                <option value="" disabled selected>-- Pilih Kategori --</option>
+                                <option value="siakad">Akun & Akses SIAKAD</option>
+                                <option value="jaringan">Koneksi Jaringan / Wi-Fi</option>
+                                <option value="pdm">Pemutakhiran Data (PDM)</option>
+                                <option value="hardware">Kerusakan Perangkat / Lab</option>
+                                <option value="lainnya">Lainnya</option>
+                            </select>
+                        </div>
+                        <div class="form-group"><label>Deskripsi Detail Masalah</label><textarea id="ticketDeskripsi" class="form-control" rows="5" placeholder="Jelaskan kendala yang Anda alami secara rinci..." required></textarea></div>
+                        <button type="submit" class="btn-submit"><i class="fas fa-paper-plane"></i> Kirim Laporan</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div id="toast"></div>
+
+<script>
+    // ==========================================
+    // LOGIC MENERIMA DATA CMS DARI ADMIN
+    // ==========================================
+    function applySupportSettings() {
+        const defaultSupport = {
+            wa: "6281234567890", email: "support@umkoe.ac.id", loc: "Gedung Rektorat Lantai 2, Kampus Utama UMK.",
+            f1q: "Bagaimana cara mereset password SIAKAD?", f1a: "Anda dapat mereset password melalui fitur 'Lupa Password' di halaman login SIAKAD.",
+            f2q: "Cara menghubungkan laptop ke UMK-FREE-HOTSPOT?", f2a: "Pilih jaringan 'UMK-FREE-HOTSPOT', kemudian sebuah halaman login (Captive Portal) akan otomatis terbuka.",
+            f3q: "Data Mahasiswa saya di PDDIKTI tidak valid.", f3a: "Silakan akses menu E-Layanan > Cek Data Mahasiswa di beranda untuk melihat status dokumen Anda.",
+            f4q: "Bagaimana cara meminjam Laboratorium Komputer?", f4a: "Peminjaman Lab Komputer untuk keperluan di luar jadwal wajib menyertakan surat permohonan."
+        };
+
+        const supData = JSON.parse(localStorage.getItem('dbSupport_UMK')) || defaultSupport;
+
+        let cleanWa = supData.wa.replace(/[^0-9]/g, '');
+        document.getElementById('dispSupWaLink').href = `https://wa.me/${cleanWa}`;
+        document.getElementById('dispSupEmail').innerText = supData.email;
+        document.getElementById('dispSupEmailLink').href = `mailto:${supData.email}`;
+        document.getElementById('dispSupLoc').innerText = supData.loc;
+
+        document.getElementById('dispFaq1Q').innerText = supData.f1q;
+        document.getElementById('dispFaq1A').innerText = supData.f1a;
+        document.getElementById('dispFaq2Q').innerText = supData.f2q;
+        document.getElementById('dispFaq2A').innerText = supData.f2a;
+        document.getElementById('dispFaq3Q').innerText = supData.f3q;
+        document.getElementById('dispFaq3A').innerText = supData.f3a;
+        document.getElementById('dispFaq4Q').innerText = supData.f4q;
+        document.getElementById('dispFaq4A').innerText = supData.f4a;
+    }
+
+    applySupportSettings();
+
+    // --- Logic Buka-Tutup FAQ (Accordion) ---
+    document.querySelectorAll('.faq-question').forEach(item => {
+        item.addEventListener('click', () => {
+            const parent = item.parentElement;
+            document.querySelectorAll('.faq-item').forEach(child => { if(child !== parent) child.classList.remove('active'); });
+            parent.classList.toggle('active');
+        });
+    });
+
+    // ==========================================
+    // LOGIC PENGIRIMAN TIKET KE SPREADSHEET
+    // ==========================================
+    const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxl_3eSaAA6rdKlv5HLM_3wG0ov8fVLneqX7k_arWka0BhZ6Pz1uTC5WYaKFohTQx6ncg/exec"; 
+
+    async function submitTicket(e) {
+        e.preventDefault(); 
+        const btn = document.querySelector('.btn-submit');
+        const form = document.getElementById('helpdeskForm');
+        
+        const inputNama = document.getElementById('ticketNama').value;
+        const inputNim = document.getElementById('ticketNim').value;
+        const inputKategori = document.getElementById('ticketKategori').value;
+        const inputDeskripsi = document.getElementById('ticketDeskripsi').value;
+
+        if(!inputKategori) {
+            alert("Silakan pilih Kategori Kendala terlebih dahulu!");
+            return;
+        }
+
+        const originalText = btn.innerHTML;
+        btn.innerHTML = `<i class="fas fa-circle-notch fa-spin"></i> Mengirim Laporan...`;
+        btn.style.opacity = "0.8"; btn.disabled = true;
+
+        const ticketNumber = "TKT-" + Math.floor(1000 + Math.random() * 9000);
+        const todayDate = new Date().toLocaleString('id-ID');
+
+        const ticketData = {
+            ticketId: ticketNumber,
+            tanggal: todayDate,
+            nama: inputNama,
+            nim: inputNim,
+            kategori: inputKategori,
+            deskripsi: inputDeskripsi
+        };
+
+        const formData = new URLSearchParams();
+        formData.append('action', 'addTicket'); 
+        formData.append('data', JSON.stringify(ticketData));
+
+        try {
+            await fetch(SCRIPT_URL, {
+                method: 'POST',
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+                body: formData.toString()
+            });
+
+            const toast = document.getElementById("toast");
+            toast.innerHTML = `<i class="fas fa-check-circle" style="font-size:1.2rem;"></i> Laporan terkirim! Nomor Tiket: ${ticketNumber}`;
+            toast.className = "show";
+            setTimeout(function(){ toast.className = toast.className.replace("show", ""); }, 5000);
+
+            form.reset();
+            
+        } catch (error) {
+            alert("Terjadi kesalahan saat mengirim laporan. Silakan periksa koneksi Anda.");
+        } finally {
+            btn.innerHTML = originalText; btn.style.opacity = "1"; btn.disabled = false;
+        }
+    }
+</script>
+</body>
+</html>
