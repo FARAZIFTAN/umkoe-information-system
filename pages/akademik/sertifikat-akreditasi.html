@@ -1,0 +1,1021 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Informasi akreditasi institusi dan program studi Universitas Muhammadiyah Kupang.">
+    <title>Sertifikat Akreditasi - PUSDATIN UMKOE</title>
+
+    <link rel="icon" type="image/png"
+        href="https://drive.google.com/thumbnail?id=1PIQb-v4vNSdTQMKLbOejmIp8ttSKpyag&sz=w32">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #2d328a;
+            --secondary: #5d5fef;
+            --accent: #ffcb05;
+            --bg: #f4f7fe;
+            --text: #1e293b;
+            --muted: #64748b;
+            --border: #e2e8f0;
+            --success: #15803d;
+            --warning: #b45309;
+            --danger: #b91c1c;
+            --shadow: 0 10px 35px rgba(30, 41, 59, .06);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        header {
+            height: 76px;
+            padding: 0 5%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            background: #fff;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 3px 18px rgba(0, 0, 0, .05);
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo img {
+            width: 46px;
+            height: 46px;
+            object-fit: contain;
+        }
+
+        .logo-text span {
+            display: block;
+            color: var(--secondary);
+            font-size: .68rem;
+            font-weight: 800;
+            letter-spacing: 1px;
+        }
+
+        .logo-text strong {
+            color: var(--primary);
+            font-size: 1.05rem;
+        }
+
+        .back-link {
+            color: var(--primary);
+            font-size: .88rem;
+            font-weight: 700;
+            display: flex;
+            gap: 9px;
+            align-items: center;
+        }
+
+        .back-link:hover {
+            color: var(--secondary);
+        }
+
+        .hero {
+            padding: 75px 20px 105px;
+            text-align: center;
+            color: #fff;
+            background: linear-gradient(135deg, var(--primary), #171b59);
+        }
+
+        .hero .eyebrow {
+            display: inline-block;
+            padding: 7px 15px;
+            border: 1px solid rgba(255,255,255,.25);
+            border-radius: 30px;
+            font-size: .75rem;
+            font-weight: 700;
+            margin-bottom: 17px;
+            color: #fff;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.8rem, 4vw, 2.7rem);
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+
+        .hero p {
+            max-width: 680px;
+            margin: auto;
+            color: rgba(255,255,255,.85);
+            font-size: .95rem;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: -48px auto 70px;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .card {
+            background: #fff;
+            border-radius: 20px;
+            padding: 28px;
+            box-shadow: var(--shadow);
+            margin-bottom: 24px;
+        }
+
+        .section-heading {
+            color: var(--primary);
+            font-size: 1.15rem;
+            font-weight: 800;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+
+        .institution {
+            display: grid;
+            grid-template-columns: 1fr auto;
+            gap: 25px;
+            align-items: center;
+        }
+
+        .institution-label {
+            color: var(--muted);
+            font-size: .78rem;
+            font-weight: 700;
+            margin-bottom: 5px;
+        }
+
+        .institution h2 {
+            color: var(--primary);
+            font-size: 1.45rem;
+            margin-bottom: 12px;
+        }
+
+        .institution-details {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px 22px;
+            font-size: .82rem;
+            color: var(--muted);
+        }
+
+        .institution-details strong {
+            color: var(--text);
+        }
+
+        .rank-box {
+            background: #f0f2ff;
+            border: 1px solid #e0e3ff;
+            border-radius: 18px;
+            min-width: 145px;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .rank-box span {
+            display: block;
+            font-size: .75rem;
+            color: var(--muted);
+            font-weight: 700;
+        }
+
+        .rank-box strong {
+            display: block;
+            font-size: 2.5rem;
+            line-height: 1.3;
+            color: var(--primary);
+        }
+
+        .document-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            margin-top: 18px;
+            padding: 10px 15px;
+            color: #fff;
+            background: var(--primary);
+            border-radius: 10px;
+            font-size: .8rem;
+            font-weight: 700;
+            transition: .2s;
+        }
+
+        .document-link:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 15px;
+            margin-bottom: 24px;
+        }
+
+        .stat-card {
+            background: #fff;
+            border-radius: 16px;
+            padding: 20px;
+            box-shadow: var(--shadow);
+            border: 1px solid transparent;
+        }
+
+        .stat-card .stat-icon {
+            width: 38px;
+            height: 38px;
+            border-radius: 11px;
+            display: grid;
+            place-items: center;
+            background: #f0f2ff;
+            color: var(--secondary);
+            margin-bottom: 12px;
+        }
+
+        .stat-card strong {
+            display: block;
+            color: var(--primary);
+            font-size: 1.65rem;
+            line-height: 1.3;
+        }
+
+        .stat-card span {
+            color: var(--muted);
+            font-size: .75rem;
+            font-weight: 600;
+        }
+
+        .filter-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr;
+            gap: 12px;
+            margin-bottom: 20px;
+        }
+
+        .input-wrap {
+            position: relative;
+        }
+
+        .input-wrap i {
+            position: absolute;
+            top: 50%;
+            left: 14px;
+            transform: translateY(-50%);
+            color: var(--muted);
+        }
+
+        .filter-grid input,
+        .filter-grid select {
+            width: 100%;
+            min-height: 46px;
+            border: 1px solid var(--border);
+            background: #f8fafc;
+            border-radius: 10px;
+            padding: 10px 13px;
+            color: var(--text);
+            font-size: .82rem;
+            outline: none;
+        }
+
+        .filter-grid input {
+            padding-left: 40px;
+        }
+
+        .filter-grid input:focus,
+        .filter-grid select:focus {
+            border-color: var(--secondary);
+            box-shadow: 0 0 0 3px rgba(93,95,239,.1);
+        }
+
+        .result-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 10px;
+            flex-wrap: wrap;
+            margin-bottom: 15px;
+            color: var(--muted);
+            font-size: .78rem;
+        }
+
+        .table-wrap {
+            width: 100%;
+            overflow-x: auto;
+            border: 1px solid var(--border);
+            border-radius: 13px;
+        }
+
+        table {
+            width: 100%;
+            min-width: 1000px;
+            border-collapse: collapse;
+        }
+
+        th {
+            background: #f8fafc;
+            color: var(--primary);
+            font-size: .76rem;
+            text-align: left;
+            padding: 15px 13px;
+            white-space: nowrap;
+        }
+
+        td {
+            padding: 15px 13px;
+            border-top: 1px solid var(--border);
+            font-size: .78rem;
+            vertical-align: middle;
+        }
+
+        tbody tr:hover {
+            background: #fafbff;
+        }
+
+        .prodi-name {
+            font-weight: 800;
+            color: var(--text);
+            min-width: 190px;
+        }
+
+        .faculty {
+            color: var(--muted);
+            font-size: .72rem;
+            margin-top: 3px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 9px;
+            border-radius: 7px;
+            font-size: .69rem;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .badge-good {
+            background: #dcfce7;
+            color: #166534;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #92400e;
+        }
+
+        .badge-danger {
+            background: #fee2e2;
+            color: #991b1b;
+        }
+
+        .badge-neutral {
+            background: #e2e8f0;
+            color: #475569;
+        }
+
+        .status-text {
+            display: block;
+            color: var(--muted);
+            font-size: .68rem;
+            margin-top: 5px;
+            max-width: 190px;
+        }
+
+        .small-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            color: var(--secondary);
+            font-weight: 800;
+            white-space: nowrap;
+            font-size: .73rem;
+        }
+
+        .small-link:hover {
+            color: var(--primary);
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 35px !important;
+            color: var(--muted);
+        }
+
+        .notice {
+            display: flex;
+            gap: 13px;
+            padding: 18px;
+            border-radius: 13px;
+            background: #fffbeb;
+            border: 1px solid #fde68a;
+            color: #92400e;
+            font-size: .78rem;
+            line-height: 1.7;
+        }
+
+        .notice i {
+            font-size: 1.1rem;
+            margin-top: 3px;
+        }
+
+        .update-info {
+            color: var(--muted);
+            font-size: .75rem;
+            text-align: right;
+            margin-top: 15px;
+        }
+
+        footer {
+            background: #171b59;
+            color: rgba(255,255,255,.8);
+            text-align: center;
+            padding: 28px 20px;
+            font-size: .78rem;
+        }
+
+        footer strong {
+            color: #fff;
+        }
+
+        @media (max-width: 800px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr 1fr;
+            }
+
+            .filter-grid .search-filter {
+                grid-column: 1 / -1;
+            }
+        }
+
+        @media (max-width: 560px) {
+            header {
+                height: 66px;
+                padding: 0 16px;
+            }
+
+            .logo img {
+                width: 38px;
+                height: 38px;
+            }
+
+            .logo-text strong {
+                font-size: .85rem;
+            }
+
+            .logo-text span {
+                font-size: .58rem;
+            }
+
+            .back-link {
+                font-size: .75rem;
+            }
+
+            .hero {
+                padding: 55px 18px 85px;
+            }
+
+            .hero p {
+                font-size: .82rem;
+            }
+
+            .container {
+                padding: 0 13px;
+            }
+
+            .card {
+                padding: 20px 15px;
+                border-radius: 16px;
+            }
+
+            .institution {
+                grid-template-columns: 1fr;
+            }
+
+            .institution h2 {
+                font-size: 1.15rem;
+            }
+
+            .rank-box {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                gap: 15px;
+                padding: 12px;
+            }
+
+            .rank-box strong {
+                font-size: 1.8rem;
+            }
+
+            .stats-grid {
+                gap: 10px;
+            }
+
+            .stat-card {
+                padding: 15px;
+            }
+
+            .stat-card strong {
+                font-size: 1.4rem;
+            }
+
+            .filter-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .filter-grid .search-filter {
+                grid-column: auto;
+            }
+
+            .update-info {
+                text-align: left;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <a class="logo" href="../../index.html">
+        <img src="https://umkoe.ac.id/wp-content/uploads/2025/07/Logo-UMKOE-Warna-1.png" alt="Logo UMKOE">
+        <div class="logo-text">
+            <span>PUSAT DATA DAN INFORMASI</span>
+            <strong>UMKoe</strong>
+        </div>
+    </a>
+
+    <a href="../../index.html" class="back-link">
+        <i class="fas fa-arrow-left"></i> Kembali
+    </a>
+</header>
+
+<section class="hero">
+    <span class="eyebrow"><i class="fas fa-award"></i> DATA AKADEMIK UMKOE</span>
+    <h1>Sertifikat Akreditasi</h1>
+    <p>
+        Informasi peringkat akreditasi institusi dan program studi
+        Universitas Muhammadiyah Kupang.
+    </p>
+</section>
+
+<main class="container">
+
+    <section class="card">
+        <h2 class="section-heading">
+            <i class="fas fa-university"></i> Akreditasi Institusi
+        </h2>
+
+        <div class="institution">
+            <div>
+                <div class="institution-label">UNIVERSITAS MUHAMMADIYAH KUPANG</div>
+                <h2>Akreditasi Perguruan Tinggi</h2>
+
+                <div class="institution-details">
+                    <span><i class="fas fa-file-alt"></i> Nomor SK:
+                        <strong>328/SK/BAN-PT/Ak.Ppj/PT/V/2023</strong>
+                    </span>
+                    <span><i class="fas fa-star"></i> Nilai:
+                        <strong>303</strong>
+                    </span>
+                    <span><i class="fas fa-calendar"></i> Ditetapkan:
+                        <strong>2 Mei 2023</strong>
+                    </span>
+                    <span><i class="fas fa-clock"></i> Berlaku:
+                        <strong>11 Oktober 2022 – 11 Oktober 2027</strong>
+                    </span>
+                </div>
+
+                <a class="document-link"
+                   href="https://drive.google.com/drive/folders/18nMqyEkwwL-PXJzEbms1TAVGaNk5d3sF?usp=sharing"
+                   target="_blank" rel="noopener">
+                    <i class="fas fa-folder-open"></i> Buka Folder Dokumen
+                </a>
+            </div>
+
+            <div class="rank-box">
+                <span>PERINGKAT</span>
+                <strong>B</strong>
+            </div>
+        </div>
+    </section>
+
+    <section class="stats-grid">
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-graduation-cap"></i></div>
+            <strong id="totalProdi">17</strong>
+            <span>Total Program Studi</span>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-award"></i></div>
+            <strong id="totalBaikSekali">8</strong>
+            <span>Baik Sekali</span>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-certificate"></i></div>
+            <strong id="totalBaik">5</strong>
+            <span>Baik</span>
+        </div>
+
+        <div class="stat-card">
+            <div class="stat-icon"><i class="fas fa-clipboard-check"></i></div>
+            <strong id="totalPerluCek">4</strong>
+            <span>B / Sementara</span>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2 class="section-heading">
+            <i class="fas fa-list-alt"></i> Akreditasi Program Studi
+        </h2>
+
+        <div class="filter-grid">
+            <div class="input-wrap search-filter">
+                <i class="fas fa-search"></i>
+                <input type="search" id="searchInput"
+                       placeholder="Cari nama program studi atau nomor SK...">
+            </div>
+
+            <select id="facultyFilter" aria-label="Filter fakultas">
+                <option value="">Semua Fakultas</option>
+                <option value="Agama Islam">Fakultas Agama Islam</option>
+                <option value="KIP">Fakultas Keguruan dan Ilmu Pendidikan</option>
+                <option value="Ekonomi">Fakultas Ekonomi</option>
+                <option value="FISIP">Fakultas Ilmu Sosial dan Ilmu Politik</option>
+                <option value="Perikanan">Fakultas Perikanan</option>
+                <option value="Hukum">Fakultas Hukum</option>
+            </select>
+
+            <select id="agencyFilter" aria-label="Filter lembaga akreditasi">
+                <option value="">Semua Lembaga</option>
+                <option value="BAN-PT">BAN-PT</option>
+                <option value="LAMDIK">LAMDIK</option>
+                <option value="LAMEMBA">LAMEMBA</option>
+            </select>
+        </div>
+
+        <div class="result-info">
+            <span id="resultCount">Menampilkan 17 program studi</span>
+            <span>Data berdasarkan informasi yang tersedia</span>
+        </div>
+
+        <div class="table-wrap">
+            <table>
+                <thead>
+                    <tr>
+                        <th>No.</th>
+                        <th>Program Studi</th>
+                        <th>Lembaga</th>
+                        <th>Peringkat</th>
+                        <th>Nilai</th>
+                        <th>Nomor SK</th>
+                        <th>Berlaku Sampai</th>
+                        <th>Status Data</th>
+                        <th>Dokumen</th>
+                    </tr>
+                </thead>
+                <tbody id="accreditationBody"></tbody>
+            </table>
+        </div>
+
+        <p class="update-info">
+            <i class="fas fa-sync-alt"></i>
+            Pembaruan data: 14 November 2026
+        </p>
+    </section>
+
+    <section class="card">
+        <h2 class="section-heading">
+            <i class="fas fa-info-circle"></i> Keterangan Data
+        </h2>
+
+        <div class="notice">
+            <i class="fas fa-exclamation-triangle"></i>
+            <div>
+                <strong>Perhatian:</strong>
+                Informasi pada halaman ini disusun berdasarkan ringkasan
+                dokumen dan tabel rekap yang diberikan. Beberapa data masih
+                memerlukan pemeriksaan terhadap SK asli atau konfirmasi
+                terbaru dari lembaga terkait. Status yang ditampilkan bukan
+                pengganti dokumen akreditasi resmi.
+                <br><br>
+                Nomor SK dan masa berlaku perlu dicocokkan kembali dengan
+                dokumen aslinya sebelum informasi ini dijadikan rujukan resmi.
+            </div>
+        </div>
+    </section>
+
+</main>
+
+<footer>
+    <strong>PUSDATIN UMKOE</strong>
+    <p>Pusat Data dan Informasi Universitas Muhammadiyah Kupang</p>
+</footer>
+
+<script>
+const driveFolder =
+    "https://drive.google.com/drive/folders/18nMqyEkwwL-PXJzEbms1TAVGaNk5d3sF?usp=sharing";
+
+const accreditationData = [
+    {
+        faculty: "Agama Islam",
+        prodi: "Pendidikan Agama Islam",
+        level: "S1",
+        agency: "LAMDIK",
+        rank: "Baik Sekali",
+        score: "328",
+        sk: "897/2025",
+        expiry: "2 Juli 2030",
+        status: "Perlu pencocokan dokumen",
+        type: "warning"
+    },
+    {
+        faculty: "Agama Islam",
+        prodi: "Ahwal Al Syakhshiyah",
+        level: "S1",
+        agency: "BAN-PT",
+        rank: "B",
+        score: "-",
+        sk: "507/2022",
+        expiry: "4 November 2026",
+        status: "Masa berlaku berakhir",
+        type: "danger"
+    },
+    {
+        faculty: "KIP",
+        prodi: "Pendidikan Bahasa dan Sastra Indonesia",
+        level: "S1",
+        agency: "LAMDIK",
+        rank: "Baik Sekali",
+        score: "309",
+        sk: "705/SK/LAMDIK/Ak/S/VI/2025",
+        expiry: "4 Juni 2030",
+        status: "Perlu pencocokan dokumen",
+        type: "warning"
+    },
+    {
+        faculty: "KIP",
+        prodi: "Pendidikan Biologi",
+        level: "S1",
+        agency: "LAMDIK",
+        rank: "Baik Sekali",
+        score: "334",
+        sk: "786/2025",
+        expiry: "4 Juni 2030",
+        status: "Perlu pencocokan dokumen",
+        type: "warning"
+    },
+    {
+        faculty: "KIP",
+        prodi: "Pendidikan Matematika",
+        level: "S1",
+        agency: "LAMDIK",
+        rank: "Baik Sekali",
+        score: "319",
+        sk: "860/2024",
+        expiry: "14 Juli 2029",
+        status: "Perlu pencocokan dokumen",
+        type: "warning"
+    },
+    {
+        faculty: "KIP",
+        prodi: "Pendidikan Guru Sekolah Dasar",
+        level: "S1",
+        agency: "LAMDIK",
+        rank: "Baik Sekali",
+        score: "334",
+        sk: "394/2024",
+        expiry: "24 Juli 2029",
+        status: "Perlu pencocokan dokumen",
+        type: "warning"
+    },
+    {
+        faculty: "KIP",
+        prodi: "Pendidikan Sosiologi",
+        level: "S1",
+        agency: "LAMDIK",
+        rank: "Baik Sekali",
+        score: "348",
+        sk: "550/2024",
+        expiry: "6 Agustus 2029",
+        status: "Perlu pencocokan dokumen",
+        type: "warning"
+    },
+    {
+        faculty: "Ekonomi",
+        prodi: "Akuntansi",
+        level: "S1",
+        agency: "LAMEMBA",
+        rank: "Baik Sekali",
+        score: "-",
+        sk: "389/2023",
+        expiry: "17 April 2028",
+        status: "Perlu pencocokan dokumen",
+        type: "warning"
+    },
+    {
+        faculty: "Ekonomi",
+        prodi: "Manajemen",
+        level: "S1",
+        agency: "LAMEMBA",
+        rank: "Baik",
+        score: "-",
+        sk: "2407/2025",
+        expiry: "8 November 2030",
+        status: "Verifikasi nomor dan tanggal SK",
+        type: "warning"
+    },
+    {
+        faculty: "FISIP",
+        prodi: "Ilmu Politik",
+        level: "S1",
+        agency: "BAN-PT",
+        rank: "Baik",
+        score: "287",
+        sk: "7811/2025",
+        expiry: "1 Oktober 2030",
+        status: "Perlu pencocokan dokumen",
+        type: "warning"
+    },
+    {
+        faculty: "FISIP",
+        prodi: "Sosiologi",
+        level: "S2",
+        agency: "BAN-PT",
+        rank: "Baik",
+        score: "220",
+        sk: "7605/SK/BAN-PT/Ak/M/IX/2025",
+        expiry: "16 September 2030",
+        status: "Perlu pencocokan dokumen",
+        type: "warning"
+    },
+    {
+        faculty: "FISIP",
+        prodi: "Sosiologi",
+        level: "S1",
+        agency: "BAN-PT",
+        rank: "B (sementara)",
+        score: "306",
+        sk: "7644/2025",
+        expiry: "Menunggu SK definitif",
+        status: "SK definitif perlu dikonfirmasi",
+        type: "warning"
+    },
+    {
+        faculty: "FISIP",
+        prodi: "Antropologi Sosial",
+        level: "S1",
+        agency: "BAN-PT",
+        rank: "B (sementara)",
+        score: "308",
+        sk: "8248/2025",
+        expiry: "Menunggu SK definitif",
+        status: "SK definitif perlu dikonfirmasi",
+        type: "warning"
+    },
+    {
+        faculty: "FISIP",
+        prodi: "Ilmu Kesejahteraan Sosial",
+        level: "S1",
+        agency: "BAN-PT",
+        rank: "B",
+        score: "-",
+        sk: "10904/2021",
+        expiry: "9 September 2026",
+        status: "Masa berlaku berakhir",
+        type: "danger"
+    },
+    {
+        faculty: "Perikanan",
+        prodi: "Agrobisnis Perikanan",
+        level: "S1",
+        agency: "BAN-PT",
+        rank: "Baik",
+        score: "-",
+        sk: "700/2024",
+        expiry: "14 September 2028",
+        status: "Verifikasi masa berlaku",
+        type: "warning"
+    },
+    {
+        faculty: "Perikanan",
+        prodi: "Pemanfaatan Sumber Daya Perikanan",
+        level: "S1",
+        agency: "BAN-PT",
+        rank: "Baik",
+        score: "325",
+        sk: "8699/SK/BAN-PT/Ak/S/XII/2025",
+        expiry: "16 Desember 2030",
+        status: "Perlu pencocokan dokumen",
+        type: "warning"
+    },
+    {
+        faculty: "Hukum",
+        prodi: "Ilmu Hukum",
+        level: "S1",
+        agency: "BAN-PT",
+        rank: "Baik Sekali",
+        score: "330",
+        sk: "7010/2024",
+        expiry: "11 Desember 2029",
+        status: "Perlu pencocokan dokumen",
+        type: "warning"
+    }
+];
+
+function renderAccreditation() {
+    const keyword = document.getElementById("searchInput").value.toLowerCase().trim();
+    const faculty = document.getElementById("facultyFilter").value;
+    const agency = document.getElementById("agencyFilter").value;
+
+    const filtered = accreditationData.filter(item => {
+        const matchKeyword =
+            item.prodi.toLowerCase().includes(keyword) ||
+            item.sk.toLowerCase().includes(keyword) ||
+            item.rank.toLowerCase().includes(keyword);
+
+        const matchFaculty = !faculty || item.faculty === faculty;
+        const matchAgency = !agency || item.agency === agency;
+
+        return matchKeyword && matchFaculty && matchAgency;
+    });
+
+    const tbody = document.getElementById("accreditationBody");
+
+    document.getElementById("resultCount").textContent =
+        `Menampilkan ${filtered.length} dari ${accreditationData.length} program studi`;
+
+    if (!filtered.length) {
+        tbody.innerHTML = `
+            <tr>
+                <td colspan="9" class="empty-state">
+                    <i class="fas fa-search"></i><br>
+                    Tidak ditemukan program studi yang sesuai.
+                </td>
+            </tr>`;
+        return;
+    }
+
+    tbody.innerHTML = filtered.map((item, index) => `
+        <tr>
+            <td>${index + 1}</td>
+            <td>
+                <div class="prodi-name">${item.prodi} (${item.level})</div>
+                <div class="faculty">${item.faculty}</div>
+            </td>
+            <td>${item.agency}</td>
+            <td><span class="badge badge-neutral">${item.rank}</span></td>
+            <td>${item.score}</td>
+            <td>${item.sk}</td>
+            <td>${item.expiry}</td>
+            <td>
+                <span class="badge badge-${item.type}">${item.status}</span>
+            </td>
+            <td>
+                <a class="small-link" href="${driveFolder}" target="_blank" rel="noopener">
+                    <i class="fas fa-folder-open"></i> Folder
+                </a>
+            </td>
+        </tr>
+    `).join("");
+}
+
+document.getElementById("searchInput")
+    .addEventListener("input", renderAccreditation);
+
+document.getElementById("facultyFilter")
+    .addEventListener("change", renderAccreditation);
+
+document.getElementById("agencyFilter")
+    .addEventListener("change", renderAccreditation);
+
+renderAccreditation();
+</script>
+
+<script src="../../assets/js/visitor-counter.js"></script>
+
+</body>
+</html>

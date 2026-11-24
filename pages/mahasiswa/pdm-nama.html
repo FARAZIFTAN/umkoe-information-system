@@ -1,0 +1,1648 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PDM Mahasiswa - PUSDATIN UMK</title>
+    <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1PIQb-v4vNSdTQMKLbOejmIp8ttSKpyag&sz=w32">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #2d328a; --secondary: #5d5fef; --danger: #e74c3c; --success: #27ae60; --bg-light: #f4f7fe;
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Plus Jakarta Sans', sans-serif; }
+
+        /* Ubah padding-top body agar tidak tertimpa header baru */
+        body { background: linear-gradient(135deg, #f4f7fe 0%, #e0e7ff 100%); min-height: 100vh; padding: 120px 20px 40px; display: flex; justify-content: center; align-items: flex-start; }
+
+        /* --- Header Simple --- */
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 10px 5%; background: white; position: fixed; width: 100%;
+            top: 0; left: 0; z-index: 1000; box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+        }
+        .logo-container { display: flex; align-items: center; gap: 12px; }
+        .logo-box { background: #f0f2ff; padding: 10px; border-radius: 14px; display: flex; align-items: center; justify-content: center; }
+        .logo-box img { height: 42px; }
+        .logo-text span { display: block; font-size: 0.7rem; font-weight: 700; color: var(--secondary); text-transform: uppercase; letter-spacing: 1px; line-height: 1; margin-bottom: 2px; }
+        .logo-text b { font-size: 1.15rem; color: var(--primary); font-weight: 800; white-space: nowrap; }
+
+        /* Tombol Kembali */
+        .btn-back {
+            text-decoration: none; color: var(--primary); font-weight: 700;
+            font-size: 0.95rem; display: flex; align-items: center; gap: 8px; transition: var(--transition);
+        }
+        .btn-back:hover { color: var(--secondary); transform: translateX(-5px); }
+
+        .upload-container {
+            background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px);
+            width: 100%; max-width: 900px; border-radius: 30px; padding: 40px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.1); border: 1px solid rgba(255,255,255,0.6);
+            position: relative; overflow: hidden;
+        }
+
+        /* Loading Overlay */
+        #overlay {
+            display: none; position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(255,255,255,0.8); z-index: 100; flex-direction: column;
+            align-items: center; justify-content: center; text-align: center;
+        }
+        .spinner {
+            width: 50px; height: 50px; border: 5px solid #f3f3f3; border-top: 5px solid var(--primary);
+            border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 15px;
+        }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        .header-title { text-align: center; margin-bottom: 30px; }
+        .header-title h2 { color: var(--primary); font-weight: 800; }
+
+        .identity-section {
+            display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
+            margin-bottom: 20px; padding: 20px; background: #f8faff; border-radius: 15px;
+        }
+        .input-group label { display: block; font-size: 0.8rem; font-weight: 700; color: var(--primary); margin-bottom: 5px; }
+        .input-group input { width: 100%; padding: 12px; border: 2px solid #eee; border-radius: 10px; outline: none; }
+
+        .tab-menu { display: flex; gap: 10px; margin-bottom: 20px; justify-content: center; }
+        .tab-btn { padding: 8px 18px; border: none; border-radius: 50px; cursor: pointer; font-weight: 700; font-size: 0.8rem; background: #e2e8f0; color: #64748b; transition: 0.3s;}
+        .tab-btn.active { background: var(--primary); color: white; }
+
+        .method-content { display: none; }
+        .method-content.active { display: block; animation: fadeIn 0.3s; }
+        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+        /* Grid Upload Satuan yang Lebih Rapi */
+        .upload-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); gap: 15px; }
+        .upload-item { background: #fff; border: 2px dashed #e2e8f0; padding: 15px; border-radius: 15px; display: flex; align-items: center; gap: 15px; }
+        .icon-box { width: 45px; height: 45px; background: #f0f2ff; color: var(--primary); border-radius: 10px; display: flex; justify-content: center; align-items: center; font-size: 1.2rem; flex-shrink: 0;}
+
+        .btn-upload { background: var(--secondary); color: white; padding: 6px 12px; border-radius: 6px; font-size: 0.7rem; cursor: pointer; display: inline-block;}
+        .file-input { position: absolute; opacity: 0; width: 1px; }
+        .file-name { font-size: 0.7rem; color: #888; display: block; margin-top: 5px; font-style: italic;}
+
+        .btn-submit { width: 100%; background: var(--primary); color: white; padding: 18px; border: none; border-radius: 15px; font-weight: 800; cursor: pointer; margin-top: 20px; transition: 0.3s; }
+        .btn-submit:hover { background: var(--secondary); transform: translateY(-2px);}
+
+        /* Responsive Layout */
+        @media (max-width: 768px) {
+            body { padding-top: 100px; }
+            .logo-text b { font-size: 1rem; }
+            .btn-back span { display: none; /* Sembunyikan teks di HP, sisakan ikon panah */ }
+        }
+        @media (max-width: 600px) { .upload-grid { grid-template-columns: 1fr; } .identity-section{ grid-template-columns: 1fr; } }
+
+
+        /* ==========================================
+           PDM NAMA - VISUAL REFINEMENT
+           Mengikuti identitas visual halaman utama
+        ========================================== */
+
+        body {
+            background: #f4f7fe;
+            color: #334155;
+            padding: 110px 24px 50px;
+        }
+
+        header {
+            min-height: 76px;
+            padding: 10px 5%;
+            background: rgba(241, 242, 246, 0.97);
+            border-bottom: 1px solid #e2e5f0;
+            box-shadow: 0 4px 18px rgba(30, 41, 59, 0.06);
+            backdrop-filter: blur(12px);
+        }
+
+        .logo-box {
+            background: #e6e8f0;
+            border-radius: 12px;
+        }
+
+        .logo-box img {
+            height: 40px;
+            object-fit: contain;
+        }
+
+        .logo-text span {
+            color: var(--secondary);
+            letter-spacing: 1.2px;
+        }
+
+        .logo-text b {
+            color: var(--primary);
+        }
+
+        .btn-back {
+            padding: 11px 17px;
+            border-radius: 10px;
+            background: #e5e7f2;
+            color: var(--primary);
+            transition: var(--transition);
+        }
+
+        .btn-back:hover {
+            background: #dce0ed;
+            color: var(--primary);
+            transform: translateX(-3px);
+        }
+
+        .upload-container {
+            max-width: 1000px;
+            padding: 38px;
+            border: 1px solid #e5e9f3;
+            border-radius: 22px;
+            background: #ffffff;
+            box-shadow: 0 15px 45px rgba(45, 50, 138, 0.08);
+        }
+
+        .upload-container::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(
+                90deg,
+                var(--primary),
+                var(--secondary),
+                var(--accent)
+            );
+        }
+
+        .header-title {
+            margin-bottom: 32px;
+        }
+
+        .header-title h2 {
+            color: var(--primary);
+            font-size: 1.7rem;
+            font-weight: 800;
+            margin-bottom: 9px;
+            letter-spacing: -0.5px;
+        }
+
+        .header-title p {
+            color: #64748b;
+            font-size: 0.9rem;
+        }
+
+        .identity-section {
+            background: #f7f8fc;
+            border: 1px solid #e8eaf2;
+            border-radius: 16px;
+            padding: 23px;
+            gap: 22px;
+        }
+
+        .input-group label {
+            color: #42465b;
+            font-size: 0.83rem;
+            margin-bottom: 9px;
+        }
+
+        .input-group input,
+        #inputLink {
+            min-height: 47px;
+            padding: 12px 15px !important;
+            border: 1px solid #dfe2ec !important;
+            border-radius: 10px !important;
+            background: #ffffff;
+            color: #334155;
+            font-size: 0.9rem;
+            transition: var(--transition);
+        }
+
+        .input-group input:focus,
+        #inputLink:focus {
+            border-color: var(--secondary) !important;
+            box-shadow: 0 0 0 3px rgba(93, 95, 239, 0.12);
+        }
+
+        .tab-menu {
+            gap: 10px;
+            flex-wrap: wrap;
+            padding: 5px;
+            border-radius: 14px;
+            background: #f1f2f8;
+        }
+
+        .tab-btn {
+            padding: 11px 20px;
+            background: transparent;
+            color: #64748b;
+            font-size: 0.82rem;
+            border-radius: 10px;
+            transition: var(--transition);
+        }
+
+        .tab-btn:hover {
+            background: #e5e7f2;
+            color: var(--primary);
+        }
+
+        .tab-btn.active {
+            background: var(--primary);
+            color: #ffffff;
+            box-shadow: 0 5px 12px rgba(45, 50, 138, 0.18);
+        }
+
+        .upload-grid {
+            grid-template-columns: repeat(
+                auto-fit,
+                minmax(min(100%, 320px), 1fr)
+            );
+            gap: 14px;
+        }
+
+        .upload-item {
+            min-width: 0;
+            padding: 18px;
+            border: 1px solid #e5e8f0;
+            border-radius: 14px;
+            background: #ffffff;
+            transition: var(--transition);
+        }
+
+        .upload-item:hover {
+            border-color: #b9bdf0;
+            background: #fafaff;
+            box-shadow: 0 7px 18px rgba(45, 50, 138, 0.06);
+            transform: translateY(-2px);
+        }
+
+        .icon-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 12px;
+            background: #f0f2ff;
+            color: var(--primary);
+            font-size: 1.15rem;
+        }
+
+        .upload-item h4 {
+            color: #334155;
+            font-size: 0.9rem !important;
+            font-weight: 700;
+        }
+
+        .btn-upload {
+            padding: 8px 14px;
+            border-radius: 8px;
+            background: var(--primary);
+            color: #ffffff;
+            font-size: 0.76rem;
+            font-weight: 700;
+            transition: var(--transition);
+        }
+
+        .btn-upload:hover {
+            background: var(--secondary);
+        }
+
+        .file-name {
+            color: #64748b;
+            font-size: 0.73rem;
+            overflow-wrap: anywhere;
+        }
+
+        #zip > div {
+            background: #f7f8fc !important;
+            border: 2px dashed #b9bdf0 !important;
+            padding: 38px 20px !important;
+        }
+
+        #zip h4 {
+            color: var(--primary);
+        }
+
+        .btn-submit {
+            min-height: 54px;
+            margin-top: 28px;
+            padding: 15px 22px;
+            border-radius: 12px;
+            background: var(--primary);
+            font-size: 0.9rem;
+            letter-spacing: 0.3px;
+            box-shadow: 0 7px 16px rgba(45, 50, 138, 0.16);
+        }
+
+        .btn-submit:hover {
+            background: var(--secondary);
+            box-shadow: 0 10px 22px rgba(93, 95, 239, 0.2);
+            transform: translateY(-2px);
+        }
+
+        #overlay {
+            backdrop-filter: blur(5px);
+        }
+
+        .spinner {
+            border-color: #e5e7f2;
+            border-top-color: var(--primary);
+        }
+
+        @media (max-width: 768px) {
+            body {
+                padding: 100px 16px 30px;
+            }
+
+            header {
+                padding: 10px 16px;
+            }
+
+            .upload-container {
+                padding: 27px 22px;
+                border-radius: 18px;
+            }
+
+            .header-title h2 {
+                font-size: 1.4rem;
+            }
+
+            .identity-section {
+                padding: 17px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 90px 12px 24px;
+            }
+
+            header {
+                min-height: 68px;
+            }
+
+            .logo-box {
+                padding: 7px;
+            }
+
+            .logo-box img {
+                height: 34px;
+            }
+
+            .logo-text b {
+                font-size: 0.78rem;
+            }
+
+            .logo-text span {
+                font-size: 0.62rem;
+            }
+
+            .upload-container {
+                padding: 24px 16px;
+            }
+
+            .header-title h2 {
+                font-size: 1.2rem;
+            }
+
+            .tab-menu {
+                display: grid;
+                grid-template-columns: 1fr;
+            }
+
+            .tab-btn {
+                width: 100%;
+            }
+
+            .upload-item {
+                padding: 14px;
+            }
+
+            .btn-back {
+                padding: 9px 12px;
+            }
+        }
+
+
+/* FONT REFINEMENT */
+html, body,
+button, input, select, textarea {
+    font-family: 'Plus Jakarta Sans', sans-serif !important;
+}
+
+body {
+    font-size: 14px;
+    line-height: 1.65;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.header-title,
+h1, h2, h3, h4 {
+    font-weight: 700;
+    letter-spacing: -0.4px;
+}
+
+button {
+    font-weight: 600;
+}
+
+
+/* ===== LAYOUT DUA KOLOM PDM ===== */
+
+.upload-container {
+    max-width: 1250px !important;
+}
+
+.pdm-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(290px, 0.85fr);
+    gap: 25px;
+    align-items: start;
+}
+
+#uploadForm {
+    min-width: 0;
+    margin: 0;
+}
+
+.method-info-panel {
+    position: sticky;
+    top: 100px;
+    min-width: 0;
+    padding: 27px 23px;
+    border: 1px solid #e5e8f5;
+    border-radius: 20px;
+    background: linear-gradient(155deg, #ffffff, #f7f8ff);
+    box-shadow: 0 12px 32px rgba(45, 50, 138, .08);
+}
+
+.method-info-heading {
+    text-align: center;
+}
+
+.method-info-label {
+    display: inline-block;
+    margin-bottom: 18px;
+    color: #7779b7;
+    font-size: 10px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+}
+
+.method-info-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 65px;
+    height: 65px;
+    margin: 0 auto 15px;
+    border-radius: 19px;
+    background: #eef0ff;
+    color: #2d328a;
+    font-size: 27px;
+}
+
+.method-info-heading h3 {
+    margin-bottom: 9px;
+    color: #20244f;
+    font-size: 19px;
+    font-weight: 800;
+}
+
+.method-info-heading p {
+    margin-bottom: 20px;
+    color: #64748b;
+    font-size: 12.5px;
+    line-height: 1.8;
+}
+
+.method-info-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    padding: 13px;
+    border: 1px solid #e8eaff;
+    border-radius: 15px;
+    background: #f0f2ff;
+}
+
+.method-info-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px;
+    border: 1px solid #edf0f7;
+    border-radius: 11px;
+    background: #ffffff;
+    color: #475569;
+    font-size: 12px;
+    line-height: 1.7;
+}
+
+.method-info-item i {
+    flex-shrink: 0;
+    margin-top: 3px;
+    color: #27ae60;
+}
+
+.method-info-tip {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    margin-top: 16px;
+    padding: 13px;
+    border: 1px solid #f3e5bd;
+    border-radius: 12px;
+    background: #fffaf0;
+    color: #8a6824;
+    font-size: 11.5px;
+    line-height: 1.7;
+}
+
+.method-info-tip i {
+    margin-top: 3px;
+    color: #d99a24;
+}
+
+@media (max-width: 900px) {
+    .pdm-layout {
+        grid-template-columns: 1fr;
+    }
+
+    .method-info-panel {
+        position: static;
+    }
+}
+
+@media (max-width: 600px) {
+    .method-info-panel {
+        padding: 23px 17px;
+    }
+}
+
+
+
+/* ==========================================
+   PDM NAMA - FINAL LAYOUT REFINEMENT
+========================================== */
+
+.upload-container {
+    width: min(100%, 1320px);
+    max-width: 1320px !important;
+    padding: clamp(24px, 3vw, 42px);
+    margin: 0 auto;
+    border-radius: 24px;
+}
+
+.header-title {
+    margin-bottom: 34px;
+}
+
+.header-title h2 {
+    font-size: clamp(1.45rem, 2.5vw, 1.9rem);
+    line-height: 1.35;
+}
+
+.header-title p {
+    margin-top: 8px;
+    line-height: 1.7;
+}
+
+.pdm-layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.65fr) minmax(300px, 0.85fr);
+    gap: 28px;
+    align-items: start;
+}
+
+#uploadForm {
+    width: 100%;
+    min-width: 0;
+}
+
+.identity-section {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 18px;
+    padding: 22px;
+    margin-bottom: 22px;
+}
+
+.input-group {
+    min-width: 0;
+}
+
+.input-group input {
+    width: 100%;
+}
+
+.tab-menu {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 8px;
+    margin-bottom: 22px;
+    padding: 6px;
+}
+
+.tab-btn {
+    min-width: 0;
+    padding: 12px 8px;
+    font-size: 0.78rem;
+    line-height: 1.4;
+}
+
+.upload-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 13px;
+}
+
+.upload-item {
+    min-height: 112px;
+    min-width: 0;
+    padding: 16px;
+    gap: 12px;
+}
+
+.upload-item > div:last-child {
+    min-width: 0;
+}
+
+.upload-item h4 {
+    line-height: 1.5;
+    overflow-wrap: anywhere;
+}
+
+.icon-box {
+    width: 44px;
+    height: 44px;
+    flex: 0 0 44px;
+}
+
+.btn-upload {
+    margin-top: 4px;
+}
+
+.file-name {
+    display: block;
+    line-height: 1.6;
+    overflow-wrap: anywhere;
+}
+
+.file-name.is-error {
+    display: block;
+    margin-top: 8px;
+    padding: 8px 10px;
+    border: 1px solid #fecaca;
+    border-radius: 8px;
+    background: #fef2f2;
+    color: #b91c1c !important;
+    font-size: 0.72rem;
+    font-style: normal;
+    line-height: 1.6;
+}
+
+.method-info-panel {
+    position: sticky;
+    top: 100px;
+    padding: 28px 24px;
+    border: 1px solid #e4e8f3;
+    border-radius: 20px;
+    background: #ffffff;
+    box-shadow: 0 12px 32px rgba(45, 50, 138, 0.07);
+}
+
+.method-info-heading {
+    text-align: left;
+}
+
+.method-info-label {
+    margin-bottom: 20px;
+    font-size: 0.68rem;
+}
+
+.method-info-icon {
+    width: 58px;
+    height: 58px;
+    margin: 0 0 18px;
+    border-radius: 16px;
+}
+
+.method-info-heading h3 {
+    font-size: 1.15rem;
+    line-height: 1.5;
+}
+
+.method-info-heading p {
+    font-size: 0.82rem;
+    line-height: 1.8;
+}
+
+.method-info-list {
+    gap: 9px;
+    padding: 10px;
+}
+
+.method-info-item {
+    padding: 11px;
+    font-size: 0.77rem;
+}
+
+.method-info-tip {
+    font-size: 0.75rem;
+    line-height: 1.8;
+}
+
+.method-info-pdf-link {
+    color: #2d328a;
+    font-weight: 800;
+    text-decoration: underline;
+}
+
+#link,
+#zip {
+    min-width: 0;
+}
+
+#link {
+    padding: 20px;
+    border: 1px solid #e5e8f0;
+    border-radius: 15px;
+    background: #fafbff;
+}
+
+#zip > div {
+    min-height: 245px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-submit {
+    min-height: 56px;
+    margin-top: 24px;
+    font-size: 0.86rem;
+}
+
+@media (max-width: 1050px) {
+    .upload-container {
+        padding: 28px;
+    }
+
+    .pdm-layout {
+        grid-template-columns: minmax(0, 1.4fr) minmax(270px, 0.9fr);
+        gap: 20px;
+    }
+
+    .upload-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .upload-item[style*="grid-column"] {
+        grid-column: auto !important;
+    }
+}
+
+@media (max-width: 850px) {
+    body {
+        padding: 105px 18px 35px;
+    }
+
+    .pdm-layout {
+        grid-template-columns: minmax(0, 1fr);
+        gap: 22px;
+    }
+
+    .method-info-panel {
+        position: static;
+        order: 2;
+    }
+
+    #uploadForm {
+        order: 1;
+    }
+
+    .upload-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+}
+
+@media (max-width: 600px) {
+    body {
+        padding: 95px 12px 25px;
+    }
+
+    header {
+        min-height: 68px;
+        padding: 9px 14px;
+    }
+
+    .logo-box {
+        padding: 7px;
+    }
+
+    .logo-box img {
+        height: 34px;
+    }
+
+    .logo-text b {
+        font-size: 0.82rem;
+    }
+
+    .upload-container {
+        padding: 22px 16px;
+        border-radius: 18px;
+    }
+
+    .header-title {
+        margin-bottom: 25px;
+    }
+
+    .header-title h2 {
+        font-size: 1.35rem;
+    }
+
+    .header-title p {
+        font-size: 0.78rem;
+    }
+
+    .identity-section {
+        grid-template-columns: 1fr;
+        gap: 15px;
+        padding: 17px;
+    }
+
+    .tab-menu {
+        grid-template-columns: 1fr;
+        gap: 6px;
+    }
+
+    .tab-btn {
+        width: 100%;
+        padding: 12px;
+    }
+
+    .upload-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .upload-item {
+        min-height: 100px;
+    }
+
+    .method-info-panel {
+        padding: 22px 17px;
+    }
+
+    .method-info-heading {
+        text-align: left;
+    }
+
+    .btn-submit {
+        padding: 15px 12px;
+        font-size: 0.78rem;
+    }
+}
+
+
+/* ===== MODAL BATAS UKURAN PDF ===== */
+.pdf-limit-modal {
+    display: none;
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    padding: 20px;
+    background: rgba(15, 23, 42, 0.60);
+    backdrop-filter: blur(5px);
+    align-items: center;
+    justify-content: center;
+}
+
+.pdf-limit-modal.is-open {
+    display: flex;
+}
+
+.pdf-limit-card {
+    position: relative;
+    width: 100%;
+    max-width: 430px;
+    padding: 32px 28px;
+    border-radius: 20px;
+    background: #ffffff;
+    text-align: center;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.20);
+    animation: pdfLimitAppear 0.25s ease;
+}
+
+@keyframes pdfLimitAppear {
+    from {
+        opacity: 0;
+        transform: translateY(12px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
+}
+
+.pdf-limit-icon {
+    width: 68px;
+    height: 68px;
+    margin: 0 auto 18px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: #fff1f2;
+    color: #e11d48;
+    font-size: 30px;
+}
+
+.pdf-limit-card h3 {
+    margin: 0 0 12px;
+    color: #1e293b;
+    font-size: 21px;
+}
+
+.pdf-limit-card p {
+    margin: 0 0 22px;
+    color: #64748b;
+    font-size: 14px;
+    line-height: 1.7;
+}
+
+.pdf-limit-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.pdf-limit-tools {
+    display: block;
+    padding: 13px 18px;
+    border-radius: 10px;
+    background: #4f46e5;
+    color: #ffffff;
+    font-weight: 700;
+    text-decoration: none;
+    transition: background 0.2s ease;
+}
+
+.pdf-limit-tools:hover {
+    background: #4338ca;
+}
+
+.pdf-limit-close {
+    padding: 12px;
+    border: none;
+    border-radius: 10px;
+    background: #f1f5f9;
+    color: #475569;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.pdf-limit-close:hover {
+    background: #e2e8f0;
+}
+
+@media (max-width: 480px) {
+    .pdf-limit-card {
+        padding: 28px 20px;
+    }
+}
+
+</style>
+</head>
+<body>
+
+    <header>
+        <div class="logo-container">
+            <div class="logo-box">
+                <img src="https://umkoe.ac.id/wp-content/uploads/2025/07/Logo-UMKOE-Warna-1.png" alt="Logo UMK">
+            </div>
+            <div class="logo-text">
+                <span>PUSDATIN</span>
+                <b>Universitas Muhammadiyah Kupang</b>
+            </div>
+        </div>
+
+        <a href="../../index.html" class="btn-back">
+            <i class="fas fa-arrow-left"></i> <span>Kembali ke Beranda</span>
+        </a>
+    </header>
+
+    <div class="upload-container">
+        <div id="overlay">
+            <div class="spinner"></div>
+            <h3 style="color: var(--primary)">Sedang Memproses Dokumen...</h3>
+            <p>Mohon jangan menutup halaman ini.</p>
+        </div>
+
+        <div class="header-title">
+            <h2>Pemutakhiran Data Mandiri</h2>
+            <p>PUSDATIN Universitas Muhammadiyah Kupang</p>
+        </div>
+
+        <div class="pdm-layout">
+
+<!-- MODAL PERINGATAN UKURAN PDF -->
+<div id="pdfLimitModal" class="pdf-limit-modal"
+     role="dialog" aria-modal="true"
+     aria-labelledby="pdfLimitTitle">
+
+    <div class="pdf-limit-card">
+        <div class="pdf-limit-icon">
+            <i class="fas fa-file-pdf"></i>
+        </div>
+
+        <h3 id="pdfLimitTitle">Ukuran PDF Terlalu Besar</h3>
+
+        <p>
+            File PDF yang kamu pilih melebihi batas maksimal
+            <strong>500 KB</strong>.
+            Silakan kompres dokumen terlebih dahulu melalui PDF Tools,
+            kemudian pilih kembali file hasil kompresi.
+        </p>
+
+        <div class="pdf-limit-actions">
+            <a href="../tools/pdf-tools.html"
+               class="pdf-limit-tools"
+               target="_blank"
+               rel="noopener noreferrer">
+                <i class="fas fa-compress-alt"></i>
+                Buka PDF Tools
+            </a>
+
+            <button type="button"
+                    class="pdf-limit-close"
+                    onclick="closePdfLimitModal()">
+                Tutup
+            </button>
+        </div>
+    </div>
+</div>
+
+<form id="uploadForm">
+            <div class="identity-section">
+                <div class="input-group">
+                    <label>Nama Lengkap (Sesuai KTP)</label>
+                    <input type="text" id="nama" name="nama" placeholder="Contoh: Ahmad Fauzi" required>
+                </div>
+                <div class="input-group">
+                    <label>NIM</label>
+                    <input type="text" id="nim" name="nim" placeholder="Contoh: 0000" required>
+                </div>
+            </div>
+
+            <div class="tab-menu">
+                <button type="button" class="tab-btn active" onclick="switchTab(event, 'satuan')">File PDF (Satuan)</button>
+                <button type="button" class="tab-btn" onclick="switchTab(event, 'link')">Link Cloud</button>
+                <button type="button" class="tab-btn" onclick="switchTab(event, 'zip')">File ZIP</button>
+            </div>
+
+            <div id="satuan" class="method-content active">
+                <div class="upload-grid">
+                    <div class="upload-item">
+                        <div class="icon-box"><i class="fas fa-graduation-cap"></i></div>
+                        <div>
+                            <h4 style="font-size: 0.85rem; margin-bottom: 5px;">Ijazah Terakhir</h4>
+                            <label class="btn-upload">Pilih File <input type="file" name="ijazah" class="file-input" accept=".pdf" onchange="checkFile(this)"></label>
+                            <span class="file-name">Belum ada file dipilih</span>
+                        </div>
+                    </div>
+                    <div class="upload-item">
+                        <div class="icon-box"><i class="fas fa-file-invoice"></i></div>
+                        <div>
+                            <h4 style="font-size: 0.85rem; margin-bottom: 5px;">Transkrip Nilai</h4>
+                            <label class="btn-upload">Pilih File <input type="file" name="transkrip" class="file-input" accept=".pdf" onchange="checkFile(this)"></label>
+                            <span class="file-name">Belum ada file dipilih</span>
+                        </div>
+                    </div>
+                    <div class="upload-item">
+                        <div class="icon-box"><i class="fas fa-id-card"></i></div>
+                        <div>
+                            <h4 style="font-size: 0.85rem; margin-bottom: 5px;">KTP</h4>
+                            <label class="btn-upload">Pilih File <input type="file" name="ktp" class="file-input" accept=".pdf" onchange="checkFile(this)"></label>
+                            <span class="file-name">Belum ada file dipilih</span>
+                        </div>
+                    </div>
+                    <div class="upload-item">
+                        <div class="icon-box"><i class="fas fa-id-badge"></i></div>
+                        <div>
+                            <h4 style="font-size: 0.85rem; margin-bottom: 5px;">KTM</h4>
+                            <label class="btn-upload">Pilih File <input type="file" name="ktm" class="file-input" accept=".pdf" onchange="checkFile(this)"></label>
+                            <span class="file-name">Belum ada file dipilih</span>
+                        </div>
+                    </div>
+                    <div class="upload-item">
+                        <div class="icon-box"><i class="fas fa-baby"></i></div>
+                        <div>
+                            <h4 style="font-size: 0.85rem; margin-bottom: 5px;">Akta Lahir</h4>
+                            <label class="btn-upload">Pilih File <input type="file" name="akte_lahir" class="file-input" accept=".pdf" onchange="checkFile(this)"></label>
+                            <span class="file-name">Belum ada file dipilih</span>
+                        </div>
+                    </div>
+                    <div class="upload-item">
+                        <div class="icon-box"><i class="fas fa-users"></i></div>
+                        <div>
+                            <h4 style="font-size: 0.85rem; margin-bottom: 5px;">Kartu Keluarga</h4>
+                            <label class="btn-upload">Pilih File <input type="file" name="kk" class="file-input" accept=".pdf" onchange="checkFile(this)"></label>
+                            <span class="file-name">Belum ada file dipilih</span>
+                        </div>
+                    </div>
+                    <div class="upload-item" style="grid-column: 1 / -1;">
+                        <div class="icon-box"><i class="fas fa-file-signature"></i></div>
+                        <div>
+                            <h4 style="font-size: 0.85rem; margin-bottom: 5px;">Surat Pernyataan Rektor</h4>
+                            <label class="btn-upload">Pilih File <input type="file" name="surat_rektor" class="file-input" accept=".pdf" onchange="checkFile(this)"></label>
+                            <span class="file-name">Belum ada file dipilih</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div id="link" class="method-content">
+                <input type="url" id="inputLink" name="link_dokumen" placeholder="Masukkan Link (Drive / Dropbox / dll)" style="width: 100%; padding: 15px; border-radius: 10px; border: 2px solid #eee;">
+            </div>
+
+            <div id="zip" class="method-content">
+                <div style="text-align: center; padding: 30px; border: 2px dashed var(--secondary); border-radius: 15px; background: #f0f2ff;">
+                    <i class="fas fa-file-archive fa-3x" style="color: var(--primary); margin-bottom: 10px;"></i>
+                    <h4 style="font-size: 0.9rem; margin-bottom: 10px;">Unggah Satu File ZIP</h4>
+                    <label class="btn-upload">Pilih ZIP <input type="file" name="file_zip" class="file-input" accept=".zip,.rar,.7z,application/zip" onchange="checkFile(this)"></label>
+                    <span class="file-name" style="margin-top: 10px;">Belum ada file dipilih</span>
+                </div>
+            </div>
+
+            <button type="submit" class="btn-submit">SIMPAN & UNGGAH DATA</button>
+        </form>
+
+        <aside class="method-info-panel" aria-live="polite">
+            <div class="method-info-heading">
+                <span class="method-info-label">PANDUAN PENGUNGGAHAN</span>
+                <div class="method-info-icon" id="methodInfoIcon">
+                    <i class="fas fa-file-pdf"></i>
+                </div>
+                <h3 id="methodInfoTitle">Ketentuan Unggah PDF</h3>
+                <p id="methodInfoDescription">
+                    Perhatikan ketentuan berikut sebelum mengunggah dokumen.
+                </p>
+            </div>
+
+            <div class="method-info-list" id="methodInfoList"></div>
+
+            <div class="method-info-tip" id="methodInfoTip">
+                <i class="fas fa-lightbulb"></i>
+                <span>Pastikan dokumen sudah sesuai sebelum dikirim.</span>
+            </div>
+        </aside>
+        </div>
+    </div>
+
+    <script>
+        // MASUKKAN LINK APPS SCRIPT FINAL ANDA DI SINI
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyljLAOv83YEs9vr2wgw7neWfThjz4uGG71bN9ccPPWFW7SJivIH_iA_QL2HJdgUYA3/exec";
+        let activeTab = 'satuan';
+
+        function updateMethodInfoPanel(method) {
+            const icon = document.getElementById("methodInfoIcon");
+            const title = document.getElementById("methodInfoTitle");
+            const description = document.getElementById("methodInfoDescription");
+            const list = document.getElementById("methodInfoList");
+            const tip = document.getElementById("methodInfoTip");
+
+            const content = {
+                satuan: {
+                    icon: "fas fa-file-pdf",
+                    color: "#2d328a",
+                    background: "#eef0ff",
+                    title: "Ketentuan Unggah PDF",
+                    description: "Perhatikan ketentuan berikut sebelum mengunggah dokumen.",
+                    items: [
+                        "Format dokumen harus PDF.",
+                        "Ukuran maksimal setiap file adalah 500 KB.",
+                        "Pastikan dokumen terbaca dengan jelas dan tidak rusak.",
+                        "Pastikan setiap dokumen sesuai dengan persyaratan."
+                    ],
+                    tip: 'Jika ukuran PDF terlalu besar, gunakan <a href="../tools/pdf-tools.html" class="method-info-pdf-link">PDF Tools</a> untuk mengompres dokumen.'
+                },
+                link: {
+                    icon: "fab fa-google-drive",
+                    color: "#2874c7",
+                    background: "#eaf5ff",
+                    title: "Ketentuan Link Cloud",
+                    description: "Pastikan dokumen yang dibagikan dapat diakses oleh petugas.",
+                    items: [
+                        "Unggah dokumen ke Google Drive atau layanan cloud lainnya.",
+                        "Atur akses menjadi Anyone with the link (Siapa saja yang memiliki link).",
+                        "Atur izin akses minimal sebagai Viewer.",
+                        "Pastikan link benar dan dapat dibuka tanpa meminta izin akses.",
+                        "Pastikan dokumen yang dibagikan sesuai persyaratan."
+                    ],
+                    tip: "Coba buka tautan menggunakan browser atau akun lain untuk memastikan aksesnya tidak dibatasi."
+                },
+                zip: {
+                    icon: "fas fa-file-archive",
+                    color: "#d99020",
+                    background: "#fff7e8",
+                    title: "Ketentuan File ZIP",
+                    description: "Perhatikan ketentuan berikut sebelum mengunggah arsip dokumen.",
+                    items: [
+                        "Format yang diterima: ZIP, RAR, atau 7Z.",
+                        "Ukuran maksimal file adalah 1 MB.",
+                        "Masukkan dokumen persyaratan yang diminta ke dalam arsip.",
+                        "Pastikan file tidak rusak dan tidak dilindungi password.",
+                        "Gunakan nama file yang jelas dan mudah dikenali."
+                    ],
+                    tip: "Periksa kembali isi arsip sebelum mengunggahnya."
+                }
+            };
+
+            const data = content[method] || content.satuan;
+
+            icon.innerHTML = '<i class="' + data.icon + '"></i>';
+            icon.style.color = data.color;
+            icon.style.background = data.background;
+            title.textContent = data.title;
+            description.textContent = data.description;
+
+            list.innerHTML = data.items.map(item =>
+                '<div class="method-info-item"><i class="fas fa-check-circle"></i><span>' +
+                item + '</span></div>'
+            ).join("");
+
+            tip.innerHTML = '<i class="fas fa-lightbulb"></i><span>' +
+                data.tip + '</span>';
+        }
+
+        updateMethodInfoPanel("satuan");
+
+        function switchTab(e, tabId) {
+            activeTab = tabId;
+
+            document.querySelectorAll('.tab-btn').forEach(b =>
+                b.classList.remove('active')
+            );
+
+            e.currentTarget.classList.add('active');
+
+            document.querySelectorAll('.method-content').forEach(c =>
+                c.classList.remove('active')
+            );
+
+            document.getElementById(tabId).classList.add('active');
+
+            // Perbarui panel informasi sesuai metode yang dipilih.
+            updateMethodInfoPanel(tabId);
+        }
+
+        function showInlineFileError(input, message) {
+            const status = input.parentElement.nextElementSibling;
+
+            if (!status) return;
+
+            status.textContent = message;
+            status.classList.add("is-error");
+            status.style.color = "#dc2626";
+        }
+
+        function clearInlineFileError(input) {
+            const status = input.parentElement.nextElementSibling;
+
+            if (!status) return;
+
+            status.textContent = "Belum ada file dipilih";
+            status.classList.remove("is-error");
+            status.style.color = "";
+        }
+
+        function openPdfLimitModal() {
+            const modal = document.getElementById("pdfLimitModal");
+
+            if (modal) {
+                modal.classList.add("is-open");
+            }
+        }
+
+        function closePdfLimitModal() {
+            const modal = document.getElementById("pdfLimitModal");
+
+            if (modal) {
+                modal.classList.remove("is-open");
+            }
+        }
+
+        document.addEventListener("keydown", function(event) {
+            if (event.key === "Escape") {
+                closePdfLimitModal();
+            }
+        });
+
+        function checkFile(input) {
+            const span = input.parentElement.nextElementSibling;
+            const file = input.files[0];
+
+            if (!file) return;
+
+            const isPdf = input.closest("#satuan") !== null;
+            const isZip = input.closest("#zip") !== null;
+            const extension = file.name.split(".").pop().toLowerCase();
+
+            clearInlineFileError(input);
+
+            if (isPdf && extension !== "pdf") {
+                input.value = "";
+                showInlineFileError(input, "Format file harus PDF.");
+                return;
+            }
+
+            if (isPdf && file.size > 500 * 1024) {
+                input.value = "";
+                span.innerText = "Belum ada file dipilih";
+                span.style.color = "";
+
+                openPdfLimitModal();
+                return;
+            }
+
+            if (isZip && !["zip", "rar", "7z"].includes(extension)) {
+                input.value = "";
+                showInlineFileError(
+                    input,
+                    "Format tidak valid. Gunakan file ZIP, RAR, atau 7Z."
+                );
+                return;
+            }
+
+            if (isZip && file.size > 1048576) {
+                input.value = "";
+                showInlineFileError(
+                    input,
+                    "Ukuran maksimal file arsip adalah 1 MB."
+                );
+                return;
+            }
+
+            span.innerText = "Terpilih: " + file.name;
+            span.style.color = "green";
+        }
+
+        document.getElementById("uploadForm").addEventListener("submit", async function(e) {
+            e.preventDefault();
+
+            const namaInput = document.getElementById("nama");
+            const nimInput = document.getElementById("nim");
+
+            const namaMhs = namaInput.value.trim();
+            const nimMhs = nimInput.value.trim();
+
+            namaInput.value = namaMhs;
+            nimInput.value = nimMhs;
+
+            // Validasi identitas mahasiswa.
+            if (!namaMhs) {
+                alert("Nama lengkap wajib diisi.");
+                namaInput.focus();
+                return;
+            }
+
+            if (!nimMhs) {
+                alert("NIM wajib diisi.");
+                nimInput.focus();
+                return;
+            }
+
+            const activeContainer = document.getElementById(activeTab);
+
+            // Validasi metode PDF satuan.
+            if (activeTab === "satuan") {
+                const requiredDocuments = [
+                    { name: "ijazah", label: "Ijazah Terakhir" },
+                    { name: "transkrip", label: "Transkrip Nilai" },
+                    { name: "ktp", label: "KTP" },
+                    { name: "ktm", label: "KTM" },
+                    { name: "akte_lahir", label: "Akta Lahir" },
+                    { name: "kk", label: "Kartu Keluarga" },
+                    { name: "surat_rektor", label: "Surat Pernyataan Rektor" }
+                ];
+
+                for (const documentItem of requiredDocuments) {
+                    const input = activeContainer.querySelector(
+                        `input[name="${documentItem.name}"]`
+                    );
+
+                    if (!input || !input.files.length) {
+                        alert("Dokumen " + documentItem.label + " wajib diunggah.");
+
+                        if (input) {
+                            input.scrollIntoView({
+                                behavior: "smooth",
+                                block: "center"
+                            });
+                        }
+
+                        return;
+                    }
+
+                    const file = input.files[0];
+                    const extension = file.name.split(".").pop().toLowerCase();
+
+                    if (extension !== "pdf") {
+                        alert(documentItem.label + " harus menggunakan format PDF.");
+                        input.value = "";
+                        return;
+                    }
+
+                    if (file.size > 500 * 1024) {
+                        alert(documentItem.label + " melebihi batas maksimal 500 KB.");
+                        input.value = "";
+                        return;
+                    }
+                }
+            }
+
+            // Validasi metode Link Cloud.
+            if (activeTab === "link") {
+                const linkInput = document.getElementById("inputLink");
+                const linkValue = linkInput.value.trim();
+
+                linkInput.value = linkValue;
+
+                if (!linkValue) {
+                    alert("Link dokumen wajib diisi.");
+                    linkInput.focus();
+                    return;
+                }
+
+                try {
+                    const parsedUrl = new URL(linkValue);
+
+                    if (!["http:", "https:"].includes(parsedUrl.protocol)) {
+                        throw new Error("Protokol tidak valid.");
+                    }
+                } catch {
+                    alert("Link tidak valid. Masukkan URL yang benar.");
+                    linkInput.focus();
+                    return;
+                }
+            }
+
+            // Validasi metode ZIP, RAR, atau 7Z.
+            if (activeTab === "zip") {
+                const zipInput = activeContainer.querySelector(
+                    'input[name="file_zip"]'
+                );
+
+                if (!zipInput || !zipInput.files.length) {
+                    if (zipInput) {
+                        showInlineFileError(
+                            zipInput,
+                            "File ZIP, RAR, atau 7Z wajib diunggah."
+                        );
+
+                        zipInput.focus();
+                    }
+
+                    return;
+                }
+
+                const file = zipInput.files[0];
+                const extension = file.name.split(".").pop().toLowerCase();
+
+                if (!["zip", "rar", "7z"].includes(extension)) {
+                    zipInput.value = "";
+
+                    showInlineFileError(
+                        zipInput,
+                        "Format arsip harus ZIP, RAR, atau 7Z."
+                    );
+
+                    return;
+                }
+
+                if (file.size > 1024 * 1024) {
+                    zipInput.value = "";
+
+                    showInlineFileError(
+                        zipInput,
+                        "Ukuran maksimal file arsip adalah 1 MB."
+                    );
+
+                    return;
+                }
+            }
+
+            // Konfirmasi sebelum pengiriman.
+            if (!confirm("Anda yakin ingin mengirim data atas nama " + namaMhs + "?")) {
+                return;
+            }
+
+            const overlay = document.getElementById("overlay");
+            const submitButton = document.querySelector(
+                '#uploadForm button[type="submit"]'
+            );
+
+            overlay.style.display = "flex";
+
+            if (submitButton) {
+                submitButton.disabled = true;
+            }
+
+            const formData = new URLSearchParams();
+
+            formData.append("nama", namaMhs);
+            formData.append("nim", nimMhs);
+            formData.append("metode", activeTab);
+
+            if (activeTab === "link") {
+                formData.append(
+                    "link_dokumen",
+                    document.getElementById("inputLink").value
+                );
+            }
+
+            try {
+                const inputs = activeContainer.querySelectorAll(
+                    'input[type="file"]'
+                );
+
+                const promises = Array.from(inputs).map(input => {
+                    return new Promise((resolve, reject) => {
+                        if (!input.files[0]) {
+                            resolve();
+                            return;
+                        }
+
+                        const file = input.files[0];
+                        const reader = new FileReader();
+
+                        reader.onload = event => {
+                            formData.append(input.name, event.target.result);
+                            resolve();
+                        };
+
+                        reader.onerror = () => {
+                            reject(
+                                new Error("Gagal membaca file " + file.name)
+                            );
+                        };
+
+                        reader.readAsDataURL(file);
+                    });
+                });
+
+                await Promise.all(promises);
+
+                const response = await fetch(SCRIPT_URL, {
+                    method: "POST",
+                    body: formData.toString(),
+                    headers: {
+                        "Content-Type": "application/x-www-form-urlencoded"
+                    }
+                });
+
+                const responseText = await response.text();
+
+                let result;
+
+                try {
+                    result = JSON.parse(responseText);
+                } catch {
+                    throw new Error(
+                        "Respons server tidak dapat dibaca. Silakan periksa status penyimpanan sebelum mengirim ulang."
+                    );
+                }
+
+                if (!response.ok) {
+                    throw new Error(
+                        "Server memberikan respons HTTP " + response.status
+                    );
+                }
+
+                if (!result.success) {
+                    throw new Error(
+                        result.message || "Backend gagal menyimpan data PDM."
+                    );
+                }
+
+                alert(
+                    "Data PDM berhasil dikirim dan disimpan.\n\n" +
+                    "ID Pengiriman: " + result.id
+                );
+
+            } catch (error) {
+                console.error("Kesalahan pengiriman PDM:", error);
+
+                alert(
+                    "Pengiriman belum dapat dipastikan.\n\n" +
+                    "Periksa koneksi dan konfirmasikan status dokumen kepada admin " +
+                    "sebelum mencoba mengirim ulang agar tidak terjadi pengiriman ganda."
+                );
+
+            } finally {
+                overlay.style.display = "none";
+
+                if (submitButton) {
+                    submitButton.disabled = false;
+                }
+            }
+        });
+    </script>
+    <script src="../../assets/js/visitor-counter.js"></script>
+</body>
+</html>

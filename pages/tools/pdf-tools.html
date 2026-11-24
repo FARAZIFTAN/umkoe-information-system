@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PUSDATIN - PDF Tools Interaktif</title>
-    
+
     <!-- Header Assets: Fonts, Icons, Favicon -->
     <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1PIQb-v4vNSdTQMKLbOejmIp8ttSKpyag&sz=w32">
     <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <!-- PDF Processing Assets -->
     <script src="https://unpkg.com/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
@@ -25,11 +25,11 @@
     <style>
         /* --- Global & Variable Styles --- */
         :root {
-            --primary: #2d328a; 
+            --primary: #2d328a;
             --secondary: #5d5fef;
             --bg-light: #f4f7fe;
             --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            
+
             /* PDF Tools Variables */
             --tool-primary: #4f46e5;
             --tool-primary-hover: #4338ca;
@@ -226,8 +226,8 @@
             margin: 0 auto;
         }
 
-        .tool-header { 
-            text-align: center; 
+        .tool-header {
+            text-align: center;
             margin-bottom: 2rem;
             padding-bottom: 1.5rem;
             border-bottom: 2px solid var(--border-color);
@@ -259,231 +259,231 @@
             border-radius: 8px;
         }
 
-        .tool-header h2 { 
-            margin-bottom: 0.5rem; 
-            color: var(--text-main); 
-            font-weight: 800; 
-            font-size: 1.8rem; 
+        .tool-header h2 {
+            margin-bottom: 0.5rem;
+            color: var(--text-main);
+            font-weight: 800;
+            font-size: 1.8rem;
         }
 
-        .tool-header p.subtitle { 
-            color: var(--text-muted); 
-            font-size: 0.95rem; 
+        .tool-header p.subtitle {
+            color: var(--text-muted);
+            font-size: 0.95rem;
         }
 
-        .tabs { 
-            display: flex; 
-            background-color: #e2e8f0; 
-            padding: 4px; 
-            border-radius: 8px; 
-            margin-bottom: 2rem; 
+        .tabs {
+            display: flex;
+            background-color: #e2e8f0;
+            padding: 4px;
+            border-radius: 8px;
+            margin-bottom: 2rem;
             flex-wrap: wrap;
             gap: 4px;
         }
 
-        .tab-btn { 
+        .tab-btn {
             flex: 1;
             min-width: 120px;
-            background: none; 
-            border: none; 
-            padding: 0.75rem; 
-            font-size: 0.9rem; 
-            font-weight: 600; 
-            color: var(--text-muted); 
-            cursor: pointer; 
-            border-radius: 6px; 
-            transition: var(--transition); 
-        }
-
-        .tab-btn.active { 
-            background-color: white; 
-            color: var(--tool-primary); 
-            box-shadow: 0 2px 4px rgba(0,0,0,0.05); 
-        }
-
-        .drop-zone {
-            border: 2px dashed var(--border-color); 
-            border-radius: 12px; 
-            padding: 3rem 2rem;
-            cursor: pointer; 
-            transition: var(--transition); 
-            background-color: #fafafa; 
-            position: relative; 
-            text-align: center; 
-            margin-bottom: 1.5rem;
-        }
-
-        .drop-zone:hover, .drop-zone.dragover { 
-            border-color: var(--tool-primary); 
-            background-color: #eff6ff; 
-        }
-
-        .drop-zone svg { 
-            width: 50px; 
-            height: 50px; 
-            fill: var(--tool-primary); 
-            margin-bottom: 1rem; 
-        }
-
-        .drop-zone input[type="file"] { 
-            position: absolute; 
-            width: 100%; 
-            height: 100%; 
-            top: 0; 
-            left: 0; 
-            opacity: 0; 
-            cursor: pointer; 
-        }
-
-        .tool-panel { 
-            display: none; 
-        }
-
-        .tool-panel.active { 
-            display: block; 
-        }
-        
-        .file-info { 
-            display: none; 
-            margin-top: 1rem; 
-            padding: 1.25rem; 
-            background-color: #f8fafc; 
-            border-radius: 10px; 
-            border: 1px solid var(--border-color); 
-        }
-
-        .file-details { 
-            display: flex; 
-            justify-content: space-between; 
-            align-items: center; 
-            margin-bottom: 1.25rem; 
-            padding-bottom: 0.75rem; 
-            border-bottom: 1px solid var(--border-color); 
-        }
-
-        .file-name { 
-            font-weight: 600; 
-            font-size: 0.95rem; 
-            word-break: break-all; 
-            color: var(--text-main); 
-        }
-
-        .file-size { 
-            font-size: 0.85rem; 
-            color: var(--text-muted); 
-            white-space: nowrap; 
-            margin-left: 1rem; 
-        }
-
-        .settings-group { 
-            margin-bottom: 1.25rem; 
-        }
-
-        .settings-group label { 
-            font-size: 0.9rem; 
-            font-weight: 600; 
-            color: var(--text-main); 
-            display: block; 
-            margin-bottom: 0.5rem; 
-        }
-
-        select, input[type="text"], input[type="number"], input[type="file"] { 
-            width: 100%; 
-            padding: 0.7rem; 
-            border-radius: 8px; 
-            border: 1px solid var(--border-color); 
-            background-color: white; 
-            font-size: 0.9rem; 
-            outline: none; 
-            transition: border-color 0.2s; 
-        }
-
-        select:focus, input[type="text"]:focus, input[type="number"]:focus { 
-            border-color: var(--tool-primary); 
-            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
-        }
-
-        .page-selector-container { 
-            background-color: #f1f5f9; 
-            padding: 1rem; 
-            border-radius: 8px; 
-            margin-top: 0.5rem; 
-        }
-
-        .page-badges { 
-            display: flex; 
-            flex-wrap: wrap; 
-            gap: 0.5rem; 
-            margin-top: 0.75rem; 
-            max-height: 150px; 
-            overflow-y: auto; 
-            padding: 4px; 
-        }
-
-        .page-badge {
-            background-color: white; 
-            border: 1px solid var(--border-color); 
-            padding: 0.4rem 0.8rem;
-            border-radius: 6px; 
-            font-size: 0.85rem; 
-            cursor: pointer; 
-            display: flex; 
-            align-items: center; 
-            gap: 0.5rem; 
-            user-select: none; 
+            background: none;
+            border: none;
+            padding: 0.75rem;
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-muted);
+            cursor: pointer;
+            border-radius: 6px;
             transition: var(--transition);
         }
 
-        .page-badge.selected { 
-            background-color: #e0e7ff; 
-            border-color: var(--tool-primary); 
-            color: var(--tool-primary); 
-            font-weight: 600; 
+        .tab-btn.active {
+            background-color: white;
+            color: var(--tool-primary);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
         }
 
-        .page-badge.removed { 
-            background-color: #fee2e2; 
-            border-color: var(--danger); 
-            color: var(--danger); 
-            text-decoration: line-through; 
+        .drop-zone {
+            border: 2px dashed var(--border-color);
+            border-radius: 12px;
+            padding: 3rem 2rem;
+            cursor: pointer;
+            transition: var(--transition);
+            background-color: #fafafa;
+            position: relative;
+            text-align: center;
+            margin-bottom: 1.5rem;
         }
 
-        .info-note { 
-            font-size: 0.8rem; 
-            color: var(--text-muted); 
-            margin-top: 0.5rem; 
-            line-height: 1.4; 
+        .drop-zone:hover, .drop-zone.dragover {
+            border-color: var(--tool-primary);
+            background-color: #eff6ff;
+        }
+
+        .drop-zone svg {
+            width: 50px;
+            height: 50px;
+            fill: var(--tool-primary);
+            margin-bottom: 1rem;
+        }
+
+        .drop-zone input[type="file"] {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
+            opacity: 0;
+            cursor: pointer;
+        }
+
+        .tool-panel {
+            display: none;
+        }
+
+        .tool-panel.active {
+            display: block;
+        }
+
+        .file-info {
+            display: none;
+            margin-top: 1rem;
+            padding: 1.25rem;
+            background-color: #f8fafc;
+            border-radius: 10px;
+            border: 1px solid var(--border-color);
+        }
+
+        .file-details {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .file-name {
+            font-weight: 600;
+            font-size: 0.95rem;
+            word-break: break-all;
+            color: var(--text-main);
+        }
+
+        .file-size {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            white-space: nowrap;
+            margin-left: 1rem;
+        }
+
+        .settings-group {
+            margin-bottom: 1.25rem;
+        }
+
+        .settings-group label {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: var(--text-main);
+            display: block;
+            margin-bottom: 0.5rem;
+        }
+
+        select, input[type="text"], input[type="number"], input[type="file"] {
+            width: 100%;
+            padding: 0.7rem;
+            border-radius: 8px;
+            border: 1px solid var(--border-color);
+            background-color: white;
+            font-size: 0.9rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        select:focus, input[type="text"]:focus, input[type="number"]:focus {
+            border-color: var(--tool-primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.1);
+        }
+
+        .page-selector-container {
+            background-color: #f1f5f9;
+            padding: 1rem;
+            border-radius: 8px;
+            margin-top: 0.5rem;
+        }
+
+        .page-badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+            margin-top: 0.75rem;
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 4px;
+        }
+
+        .page-badge {
+            background-color: white;
+            border: 1px solid var(--border-color);
+            padding: 0.4rem 0.8rem;
+            border-radius: 6px;
+            font-size: 0.85rem;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            user-select: none;
+            transition: var(--transition);
+        }
+
+        .page-badge.selected {
+            background-color: #e0e7ff;
+            border-color: var(--tool-primary);
+            color: var(--tool-primary);
+            font-weight: 600;
+        }
+
+        .page-badge.removed {
+            background-color: #fee2e2;
+            border-color: var(--danger);
+            color: var(--danger);
+            text-decoration: line-through;
+        }
+
+        .info-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            margin-top: 0.5rem;
+            line-height: 1.4;
         }
 
         .btn {
-            background-color: var(--tool-primary); 
-            color: white; 
-            border: none; 
-            padding: 0.85rem 1.5rem; 
+            background-color: var(--tool-primary);
+            color: white;
+            border: none;
+            padding: 0.85rem 1.5rem;
             width: 100%;
-            border-radius: 8px; 
-            font-size: 1rem; 
-            font-weight: 700; 
-            cursor: pointer; 
-            margin-top: 1rem; 
-            transition: background-color 0.2s; 
-            display: flex; 
-            justify-content: center; 
-            align-items: center; 
+            border-radius: 8px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.2s;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             gap: 0.5rem;
         }
 
-        .btn:hover { 
-            background-color: var(--tool-primary-hover); 
+        .btn:hover {
+            background-color: var(--tool-primary-hover);
             transform: translateY(-2px);
         }
 
-        .btn-secondary { 
-            background-color: var(--tool-secondary); 
+        .btn-secondary {
+            background-color: var(--tool-secondary);
         }
 
-        .btn-secondary:hover { 
-            background-color: var(--tool-secondary-hover); 
+        .btn-secondary:hover {
+            background-color: var(--tool-secondary-hover);
         }
 
         .btn-warning {
@@ -494,58 +494,58 @@
             background-color: #d97706;
         }
 
-        .progress-container { 
-            display: none; 
-            margin-top: 1.5rem; 
+        .progress-container {
+            display: none;
+            margin-top: 1.5rem;
         }
 
-        .progress-bar-bg { 
-            background-color: var(--border-color); 
-            height: 8px; 
-            border-radius: 4px; 
-            overflow: hidden; 
-            margin-top: 0.5rem; 
+        .progress-bar-bg {
+            background-color: var(--border-color);
+            height: 8px;
+            border-radius: 4px;
+            overflow: hidden;
+            margin-top: 0.5rem;
         }
 
-        .progress-bar-fill { 
-            height: 100%; 
+        .progress-bar-fill {
+            height: 100%;
             background: linear-gradient(90deg, var(--tool-primary), var(--tool-secondary));
-            width: 0%; 
-            transition: width 0.1s linear; 
+            width: 0%;
+            transition: width 0.1s linear;
         }
 
-        .progress-text { 
-            font-size: 0.85rem; 
-            color: var(--text-muted); 
-            display: flex; 
-            justify-content: space-between; 
-            font-weight: 600; 
+        .progress-text {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            display: flex;
+            justify-content: space-between;
+            font-weight: 600;
         }
 
-        .result-container { 
-            display: none; 
-            margin-top: 1.5rem; 
-            padding: 1.5rem; 
+        .result-container {
+            display: none;
+            margin-top: 1.5rem;
+            padding: 1.5rem;
             background: linear-gradient(135deg, #ecfdf5, #f0fdf4);
-            border: 1px solid #a7f3d0; 
-            border-radius: 10px; 
-            text-align: center; 
+            border: 1px solid #a7f3d0;
+            border-radius: 10px;
+            text-align: center;
         }
 
-        .result-container h3 { 
-            color: var(--success); 
-            margin-bottom: 0.5rem; 
-            font-size: 1.15rem; 
+        .result-container h3 {
+            color: var(--success);
+            margin-bottom: 0.5rem;
+            font-size: 1.15rem;
         }
 
-        .result-stats { 
-            display: flex; 
-            justify-content: space-around; 
-            margin: 1.25rem 0; 
-            font-size: 0.95rem; 
-            background: rgba(255,255,255,0.8); 
-            padding: 0.75rem; 
-            border-radius: 8px; 
+        .result-stats {
+            display: flex;
+            justify-content: space-around;
+            margin: 1.25rem 0;
+            font-size: 0.95rem;
+            background: rgba(255,255,255,0.8);
+            padding: 0.75rem;
+            border-radius: 8px;
             flex-wrap: wrap;
             gap: 1rem;
         }
@@ -555,24 +555,24 @@
             min-width: 120px;
         }
 
-        .btn-download { 
-            background-color: var(--success); 
-            margin-top: 0.5rem; 
+        .btn-download {
+            background-color: var(--success);
+            margin-top: 0.5rem;
         }
 
-        .btn-download:hover { 
-            background-color: #059669; 
+        .btn-download:hover {
+            background-color: #059669;
         }
 
-        .btn-reset { 
-            background-color: transparent; 
-            color: var(--text-muted); 
-            border: 1px solid var(--border-color); 
-            margin-top: 0.5rem; 
+        .btn-reset {
+            background-color: transparent;
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+            margin-top: 0.5rem;
         }
 
-        .btn-reset:hover { 
-            background-color: #f1f5f9; 
+        .btn-reset:hover {
+            background-color: #f1f5f9;
             color: var(--text-main);
         }
 
@@ -947,8 +947,8 @@
 
         /* Responsive */
         @media (max-width: 768px) {
-            header { 
-                padding: 12px 5%; 
+            header {
+                padding: 12px 5%;
                 flex-direction: row;
             }
 
@@ -958,8 +958,8 @@
                 width: 100%;
             }
 
-            .logo-text b { 
-                font-size: 0.95rem; 
+            .logo-text b {
+                font-size: 0.95rem;
             }
 
             .hero-section {
@@ -1014,7 +1014,7 @@
             <div class="logo-text"><span>PUSDATIN</span><b>Universitas Muhammadiyah Kupang</b></div>
         </a>
         <div class="header-right">
-            <a href="index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
+            <a href="../../index.html" class="btn-back"><i class="fas fa-arrow-left"></i> Kembali ke Beranda</a>
         </div>
     </header>
 
@@ -1126,7 +1126,7 @@
     <div class="tool-section" id="compressSection">
         <div class="container">
             <div class="breadcrumb">
-                <a onclick="goToDashboard()">Dashboard</a> / 
+                <a onclick="goToDashboard()">Dashboard</a> /
                 <span>Compress PDF</span>
             </div>
 
@@ -1153,7 +1153,7 @@
                         <span class="file-name" id="fileNameCompress">dokumen.pdf</span>
                         <span class="file-size" id="fileSizeCompress">0 KB</span>
                     </div>
-                    
+
                     <div class="settings-group">
                         <label for="compLevel">Tingkat Kompresi:</label>
                         <select id="compLevel">
@@ -1162,7 +1162,7 @@
                             <option value="high">🔴 Tinggi - Ukuran minimal, kualitas berkurang</option>
                         </select>
                     </div>
-                    
+
                     <p class="info-note" style="color: var(--warning); margin-top: 1rem;">
                         ⚠️ Catatan: Kompresi akan mengubah halaman menjadi gambar. Teks tidak dapat di-copy setelah kompresi.
                     </p>
@@ -1196,7 +1196,7 @@
     <div class="tool-section" id="splitSection">
         <div class="container">
             <div class="breadcrumb">
-                <a onclick="goToDashboard()">Dashboard</a> / 
+                <a onclick="goToDashboard()">Dashboard</a> /
                 <span>Split/Edit Halaman</span>
             </div>
 
@@ -1223,7 +1223,7 @@
                         <span class="file-name" id="fileNameSplit">dokumen.pdf</span>
                         <span class="file-size" id="fileSizeSplit">0 KB</span>
                     </div>
-                    
+
                     <div class="settings-group">
                         <label>Metode Pengeditan Halaman:</label>
                         <select id="splitMethod" onchange="toggleSplitMethod()">
@@ -1275,7 +1275,7 @@
     <div class="tool-section" id="mergeSection">
         <div class="container">
             <div class="breadcrumb">
-                <a onclick="goToDashboard()">Dashboard</a> / 
+                <a onclick="goToDashboard()">Dashboard</a> /
                 <span>Merge PDF</span>
             </div>
 
@@ -1327,7 +1327,7 @@
     <div class="tool-section" id="rotateSection">
         <div class="container">
             <div class="breadcrumb">
-                <a onclick="goToDashboard()">Dashboard</a> / 
+                <a onclick="goToDashboard()">Dashboard</a> /
                 <span>Rotate PDF</span>
             </div>
 
@@ -1354,7 +1354,7 @@
                         <span class="file-name" id="fileNameRotate">dokumen.pdf</span>
                         <span class="file-size" id="fileSizeRotate">0 KB</span>
                     </div>
-                    
+
                     <div class="settings-group">
                         <label>Pilih Halaman yang Akan Diputar:</label>
                         <div class="page-selector-container">
@@ -1401,7 +1401,7 @@
     <div class="tool-section" id="pdf2jpgSection">
         <div class="container">
             <div class="breadcrumb">
-                <a onclick="goToDashboard()">Dashboard</a> / 
+                <a onclick="goToDashboard()">Dashboard</a> /
                 <span>PDF to JPG</span>
             </div>
 
@@ -1428,7 +1428,7 @@
                         <span class="file-name" id="fileNamePdf2jpg">dokumen.pdf</span>
                         <span class="file-size" id="fileSizePdf2jpg">0 KB</span>
                     </div>
-                    
+
                     <div class="settings-group">
                         <label>Pilih Halaman yang Akan Dikonversi:</label>
                         <div class="page-selector-container">
@@ -1475,7 +1475,7 @@
     <div class="tool-section" id="word2pdfSection">
         <div class="container">
             <div class="breadcrumb">
-                <a onclick="goToDashboard()">Dashboard</a> / 
+                <a onclick="goToDashboard()">Dashboard</a> /
                 <span>Word to PDF</span>
             </div>
 
@@ -1535,7 +1535,7 @@
     <div class="tool-section" id="jpg2pdfSection">
         <div class="container">
             <div class="breadcrumb">
-                <a onclick="goToDashboard()">Dashboard</a> / 
+                <a onclick="goToDashboard()">Dashboard</a> /
                 <span>JPG to PDF</span>
             </div>
 
@@ -1626,7 +1626,7 @@
     <div class="tool-section" id="propertiesSection">
         <div class="container">
             <div class="breadcrumb">
-                <a onclick="goToDashboard()">Dashboard</a> / 
+                <a onclick="goToDashboard()">Dashboard</a> /
                 <span>PDF Properties</span>
             </div>
 
@@ -1714,7 +1714,7 @@
     <div class="tool-section" id="unlockSection">
         <div class="container">
             <div class="breadcrumb">
-                <a onclick="goToDashboard()">Dashboard</a> / 
+                <a onclick="goToDashboard()">Dashboard</a> /
                 <span>Unlock PDF</span>
             </div>
 
@@ -1779,7 +1779,7 @@
     <div class="tool-section" id="pdf2wordSection">
         <div class="container">
             <div class="breadcrumb">
-                <a onclick="goToDashboard()">Dashboard</a> / 
+                <a onclick="goToDashboard()">Dashboard</a> /
                 <span>PDF to Word</span>
             </div>
 
@@ -1850,7 +1850,7 @@
     <div class="tool-section" id="pdf2pptSection">
         <div class="container">
             <div class="breadcrumb">
-                <a onclick="goToDashboard()">Dashboard</a> / 
+                <a onclick="goToDashboard()">Dashboard</a> /
                 <span>PDF to PowerPoint</span>
             </div>
 
@@ -1919,7 +1919,7 @@
     <div class="tool-section" id="pdf2excelSection">
         <div class="container">
             <div class="breadcrumb">
-                <a onclick="goToDashboard()">Dashboard</a> / 
+                <a onclick="goToDashboard()">Dashboard</a> /
                 <span>PDF to Excel</span>
             </div>
 
@@ -1983,7 +1983,7 @@
     <div class="tool-section" id="editSection">
         <div class="container">
             <div class="breadcrumb">
-                <a onclick="goToDashboard()">Dashboard</a> / 
+                <a onclick="goToDashboard()">Dashboard</a> /
                 <span>Edit PDF</span>
             </div>
 
@@ -2061,7 +2061,7 @@
     <div class="tool-section" id="comingSoonSection">
         <div class="container">
             <div class="breadcrumb">
-                <a onclick="goToDashboard()">Dashboard</a> / 
+                <a onclick="goToDashboard()">Dashboard</a> /
                 <span id="comingSoonTitle">Coming Soon</span>
             </div>
 
@@ -2509,7 +2509,7 @@
 
         fileInputMerge.addEventListener('change', async function() {
             mergeState.files = Array.from(this.files).filter(f => f.type === 'application/pdf' || f.name.endsWith('.pdf'));
-            
+
             if (mergeState.files.length < 2) {
                 alert("Pilih minimal 2 file PDF untuk menggabung");
                 this.value = '';
@@ -2719,7 +2719,7 @@
             if (!rotateState.file || !rotateState.pdfDoc) return;
 
             // Jika tidak ada halaman yang dipilih, pilih semua
-            let pagesToRotate = rotateState.selectedPages.size > 0 
+            let pagesToRotate = rotateState.selectedPages.size > 0
                 ? Array.from(rotateState.selectedPages).map(p => p - 1)
                 : Array.from({ length: rotateState.totalPages }, (_, i) => i);
 
@@ -2870,7 +2870,7 @@
         document.getElementById('pdf2jpgBtn').addEventListener('click', async () => {
             if (!pdf2jpgState.file || !pdf2jpgState.pdfDoc) return;
 
-            let pagesToConvert = pdf2jpgState.selectedPages.size > 0 
+            let pagesToConvert = pdf2jpgState.selectedPages.size > 0
                 ? Array.from(pdf2jpgState.selectedPages)
                 : Array.from({ length: pdf2jpgState.totalPages }, (_, i) => i + 1);
 
@@ -4692,5 +4692,6 @@ ${paragraphs.join('\n')}
         });
     </script>
 
+    <script src="../../assets/js/visitor-counter.js"></script>
 </body>
 </html>

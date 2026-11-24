@@ -1,0 +1,938 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Informasi dan panduan persyaratan Pemutakhiran Data Mandiri mahasiswa Universitas Muhammadiyah Kupang.">
+
+    <title>Persyaratan PDM - PUSDATIN UMKOE</title>
+
+    <link rel="icon" type="image/png" href="https://drive.google.com/thumbnail?id=1PIQb-v4vNSdTQMKLbOejmIp8ttSKpyag&sz=w32">
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #2d328a;
+            --secondary: #5d5fef;
+            --yellow: #ffcb05;
+            --background: #f4f7fe;
+            --text: #26304a;
+            --muted: #718096;
+            --success: #16a36a;
+            --border: #e5eaf3;
+            --shadow: 0 12px 35px rgba(45, 50, 138, 0.08);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+        }
+
+        body {
+            background: var(--background);
+            color: var(--text);
+            min-height: 100vh;
+        }
+
+        button, a {
+            font: inherit;
+        }
+
+        header {
+            background: #fff;
+            min-height: 76px;
+            padding: 12px 6%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 20px;
+            box-shadow: 0 3px 18px rgba(0,0,0,0.04);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .logo-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-box {
+            width: 48px;
+            height: 48px;
+            border-radius: 13px;
+            background: #f0f2ff;
+            display: grid;
+            place-items: center;
+        }
+
+        .logo-box img {
+            width: 38px;
+            height: 38px;
+            object-fit: contain;
+        }
+
+        .logo-text span {
+            display: block;
+            color: var(--secondary);
+            font-size: 0.68rem;
+            font-weight: 800;
+            letter-spacing: 1.5px;
+        }
+
+        .logo-text b {
+            display: block;
+            color: var(--primary);
+            font-size: 0.95rem;
+        }
+
+        .back-link {
+            color: var(--primary);
+            text-decoration: none;
+            font-size: 0.85rem;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .back-link:hover {
+            color: var(--secondary);
+        }
+
+        .container {
+            width: min(1120px, 92%);
+            margin: 38px auto 70px;
+        }
+
+        .hero {
+            background: linear-gradient(120deg, #2d328a, #5559d9);
+            border-radius: 24px;
+            padding: 38px;
+            color: white;
+            position: relative;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+        }
+
+        .hero::after {
+            content: "";
+            position: absolute;
+            width: 260px;
+            height: 260px;
+            border: 45px solid rgba(255,255,255,0.07);
+            border-radius: 50%;
+            right: -65px;
+            top: -100px;
+        }
+
+        .hero-label {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            background: rgba(255,255,255,0.14);
+            padding: 8px 13px;
+            border-radius: 30px;
+            font-size: 0.72rem;
+            font-weight: 700;
+            margin-bottom: 17px;
+        }
+
+        .hero h1 {
+            font-size: clamp(1.6rem, 4vw, 2.3rem);
+            line-height: 1.3;
+            margin-bottom: 12px;
+            max-width: 700px;
+        }
+
+        .hero p {
+            color: rgba(255,255,255,0.83);
+            font-size: 0.9rem;
+            line-height: 1.8;
+            max-width: 720px;
+        }
+
+        .section-heading {
+            margin: 34px 0 17px;
+        }
+
+        .section-heading h2 {
+            color: var(--primary);
+            font-size: 1.25rem;
+            margin-bottom: 6px;
+        }
+
+        .section-heading p {
+            color: var(--muted);
+            font-size: 0.83rem;
+            line-height: 1.7;
+        }
+
+        .category-grid {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: 16px;
+        }
+
+        .category-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 16px;
+            padding: 19px 15px;
+            text-align: left;
+            cursor: pointer;
+            transition: 0.25s ease;
+            color: var(--text);
+            min-height: 145px;
+        }
+
+        .category-card:hover {
+            transform: translateY(-3px);
+            border-color: #b9bcff;
+            box-shadow: var(--shadow);
+        }
+
+        .category-card.active {
+            border: 2px solid var(--secondary);
+            background: #f5f5ff;
+            box-shadow: 0 8px 22px rgba(93,95,239,0.10);
+        }
+
+        .category-icon {
+            width: 39px;
+            height: 39px;
+            display: grid;
+            place-items: center;
+            border-radius: 11px;
+            background: #eef0ff;
+            color: var(--secondary);
+            margin-bottom: 13px;
+            font-size: 1rem;
+        }
+
+        .category-card strong {
+            display: block;
+            color: var(--primary);
+            font-size: 0.79rem;
+            line-height: 1.5;
+        }
+
+        .category-card small {
+            display: block;
+            color: var(--muted);
+            font-size: 0.68rem;
+            margin-top: 5px;
+        }
+
+        .requirement-panel {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 20px;
+            padding: 27px;
+            margin-top: 20px;
+            box-shadow: var(--shadow);
+        }
+
+        .panel-header {
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .panel-header h3 {
+            color: var(--primary);
+            font-size: 1.12rem;
+            margin-bottom: 6px;
+        }
+
+        .panel-header p {
+            color: var(--muted);
+            font-size: 0.78rem;
+            line-height: 1.6;
+        }
+
+        .document-count {
+            background: #eef0ff;
+            color: var(--primary);
+            border-radius: 30px;
+            padding: 8px 12px;
+            font-size: 0.72rem;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .progress-area {
+            margin-bottom: 20px;
+        }
+
+        .progress-info {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            font-size: 0.73rem;
+            color: var(--muted);
+            margin-bottom: 8px;
+        }
+
+        .progress-track {
+            height: 8px;
+            background: #edf0f6;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            width: 0%;
+            height: 100%;
+            background: linear-gradient(90deg, #5d5fef, #16a36a);
+            border-radius: inherit;
+            transition: width 0.25s ease;
+        }
+
+        .document-list {
+            display: grid;
+            gap: 10px;
+        }
+
+        .document-item {
+            display: flex;
+            align-items: center;
+            gap: 13px;
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 14px;
+            transition: 0.2s;
+        }
+
+        .document-item:hover {
+            border-color: #c5c8ff;
+            background: #fcfcff;
+        }
+
+        .document-item.checked {
+            border-color: #b8e8d2;
+            background: #f3fcf7;
+        }
+
+        .document-item input {
+            width: 18px;
+            height: 18px;
+            accent-color: var(--success);
+            cursor: pointer;
+            flex-shrink: 0;
+        }
+
+        .document-info {
+            flex: 1;
+        }
+
+        .document-info strong {
+            display: block;
+            font-size: 0.82rem;
+            color: var(--text);
+            line-height: 1.5;
+        }
+
+        .document-info small {
+            display: block;
+            font-size: 0.7rem;
+            color: var(--muted);
+            margin-top: 4px;
+            line-height: 1.6;
+        }
+
+        .document-badge {
+            background: #fff5d6;
+            color: #936900;
+            border-radius: 20px;
+            padding: 5px 8px;
+            font-size: 0.62rem;
+            font-weight: 800;
+            white-space: nowrap;
+        }
+
+        .document-badge.prodi {
+            background: #eaf2ff;
+            color: #2857a4;
+        }
+
+        .reset-button {
+            border: 0;
+            background: transparent;
+            color: #dc5555;
+            font-size: 0.73rem;
+            font-weight: 700;
+            cursor: pointer;
+            margin-top: 17px;
+        }
+
+        .reset-button:hover {
+            text-decoration: underline;
+        }
+
+        .info-grid {
+            display: grid;
+            grid-template-columns: 1.15fr 0.85fr;
+            gap: 17px;
+            margin-top: 22px;
+        }
+
+        .info-card {
+            background: white;
+            border: 1px solid var(--border);
+            border-radius: 17px;
+            padding: 22px;
+        }
+
+        .info-card h3 {
+            color: var(--primary);
+            font-size: 0.95rem;
+            margin-bottom: 14px;
+            display: flex;
+            align-items: center;
+            gap: 9px;
+        }
+
+        .info-card h3 i {
+            color: var(--secondary);
+        }
+
+        .rule-list {
+            list-style: none;
+            display: grid;
+            gap: 12px;
+        }
+
+        .rule-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 10px;
+            color: #536078;
+            font-size: 0.77rem;
+            line-height: 1.7;
+        }
+
+        .rule-list i {
+            color: var(--success);
+            margin-top: 3px;
+        }
+
+        .location-note {
+            background: #fff9e8;
+            border: 1px solid #f7e6ae;
+            border-radius: 11px;
+            padding: 12px;
+            color: #725a16;
+            font-size: 0.74rem;
+            line-height: 1.7;
+            margin-top: 12px;
+        }
+
+        .sample-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 9px;
+            background: var(--primary);
+            color: white;
+            text-decoration: none;
+            padding: 11px 15px;
+            border-radius: 9px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            margin-top: 14px;
+            transition: 0.2s;
+        }
+
+        .sample-link:hover {
+            background: var(--secondary);
+            transform: translateY(-2px);
+        }
+
+        .checklist-note {
+            margin-top: 10px;
+            color: var(--muted);
+            font-size: 0.7rem;
+            line-height: 1.6;
+        }
+
+        footer {
+            text-align: center;
+            color: var(--muted);
+            font-size: 0.7rem;
+            padding: 25px 15px;
+        }
+
+        @media (max-width: 850px) {
+            .category-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        @media (max-width: 650px) {
+            header {
+                padding: 11px 4%;
+            }
+
+            .logo-text b {
+                font-size: 0.75rem;
+            }
+
+            .logo-box {
+                width: 40px;
+                height: 40px;
+            }
+
+            .logo-box img {
+                width: 32px;
+                height: 32px;
+            }
+
+            .back-link span {
+                display: none;
+            }
+
+            .container {
+                margin-top: 22px;
+            }
+
+            .hero {
+                padding: 27px 22px;
+                border-radius: 18px;
+            }
+
+            .category-grid {
+                gap: 10px;
+            }
+
+            .category-card {
+                min-height: 135px;
+                padding: 14px 11px;
+            }
+
+            .requirement-panel {
+                padding: 19px 14px;
+            }
+
+            .panel-header {
+                flex-direction: column;
+            }
+
+            .info-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .document-item {
+                align-items: flex-start;
+                flex-wrap: wrap;
+            }
+
+            .document-badge {
+                margin-left: 31px;
+            }
+        }
+
+        @media (max-width: 480px) {
+            .category-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .category-card {
+                min-height: auto;
+                display: grid;
+                grid-template-columns: 40px 1fr;
+                column-gap: 12px;
+                align-items: center;
+            }
+
+            .category-icon {
+                grid-row: span 2;
+                margin-bottom: 0;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+<header>
+    <div class="logo-container">
+        <div class="logo-box">
+            <img src="https://umkoe.ac.id/wp-content/uploads/2025/07/Logo-UMKOE-Warna-1.png" alt="Logo Universitas Muhammadiyah Kupang">
+        </div>
+        <div class="logo-text">
+            <span>PUSDATIN</span>
+            <b>Universitas Muhammadiyah Kupang</b>
+        </div>
+    </div>
+
+    <a href="../../index.html" class="back-link">
+        <i class="fas fa-arrow-left"></i>
+        <span>Kembali ke Beranda</span>
+    </a>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <div class="hero-label">
+            <i class="fas fa-file-circle-check"></i>
+            PANDUAN LAYANAN MAHASISWA
+        </div>
+
+        <h1>Persyaratan Pemutakhiran Data Mandiri</h1>
+
+        <p>
+            Periksa dokumen yang perlu disiapkan sebelum mengajukan perubahan
+            data mahasiswa. Pilih jenis perubahan untuk melihat persyaratan
+            yang sesuai.
+        </p>
+    </section>
+
+    <section>
+        <div class="section-heading">
+            <h2>Pilih Jenis Perubahan Data</h2>
+            <p>Pilih salah satu kategori berikut untuk melihat daftar persyaratannya.</p>
+        </div>
+
+        <div class="category-grid" id="categoryGrid">
+            <button class="category-card active" type="button" data-category="nama">
+                <span class="category-icon"><i class="fas fa-user-pen"></i></span>
+                <strong>Perubahan Nama, Tempat & Tanggal Lahir</strong>
+                <small>7 dokumen persyaratan</small>
+            </button>
+
+            <button class="category-card" type="button" data-category="nim">
+                <span class="category-icon"><i class="fas fa-id-card"></i></span>
+                <strong>Perubahan NIM</strong>
+                <small>7 dokumen persyaratan</small>
+            </button>
+
+            <button class="category-card" type="button" data-category="keluar">
+                <span class="category-icon"><i class="fas fa-file-circle-xmark"></i></span>
+                <strong>Perubahan Jenis Keluar</strong>
+                <small>6 dokumen persyaratan</small>
+            </button>
+
+        </div>
+    </section>
+
+    <section class="requirement-panel">
+        <div class="panel-header">
+            <div>
+                <h3 id="requirementTitle">Persyaratan Perubahan Nama, Tempat & Tanggal Lahir</h3>
+                <p id="requirementDescription">
+                    Siapkan seluruh dokumen berikut sebelum melakukan pengajuan.
+                </p>
+            </div>
+
+            <span class="document-count" id="documentCount">0 dari 7 siap</span>
+        </div>
+
+        <div class="progress-area" id="progressArea">
+            <div class="progress-info">
+                <span>Progres persiapan dokumen</span>
+                <strong id="progressPercent">0%</strong>
+            </div>
+            <div class="progress-track">
+                <div class="progress-bar" id="progressBar"></div>
+            </div>
+            <p class="checklist-note">
+                Checklist ini hanya membantu memantau persiapan dokumen.
+                Progres tersimpan di browser dan tidak dikirim ke PUSDATIN.
+            </p>
+        </div>
+
+        <div class="document-list" id="documentList"></div>
+
+        <button type="button" class="reset-button" id="resetChecklist">
+            <i class="fas fa-rotate-left"></i>
+            Reset checklist kategori ini
+        </button>
+
+        <div class="notice" id="categoryNotice" hidden>
+            <i class="fas fa-circle-info"></i>
+            <div id="categoryNoticeText"></div>
+        </div>
+    </section>
+
+    <section class="info-grid">
+
+        <div class="info-card">
+            <h3><i class="fas fa-clipboard-check"></i> Aturan Berkas</h3>
+
+            <ul class="rule-list">
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span>Dokumen harus berupa hasil scan berwarna dari dokumen asli.</span>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span>Setiap dokumen disimpan dalam format PDF.</span>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span>Ukuran maksimal setiap file adalah 500 KB.</span>
+                </li>
+                <li>
+                    <i class="fas fa-check-circle"></i>
+                    <span>Satu dokumen dibuat menjadi satu file PDF tersendiri. Jangan menggabungkan beberapa dokumen dalam satu PDF.</span>
+                </li>
+            </ul>
+        </div>
+
+        <div class="info-card">
+            <h3><i class="fas fa-map-location-dot"></i> Informasi Pengurusan Dokumen</h3>
+
+            <p style="font-size:0.77rem; color:#536078; line-height:1.8;">
+                Beberapa dokumen pendukung perlu diperoleh melalui unit terkait.
+            </p>
+
+            <div class="location-note">
+                <strong>Sekretaris Rektor — Lantai Dua</strong><br>
+                Surat Pernyataan Rektor, SPTJM, dan Surat Permohonan Perubahan Jenis Keluar.
+            </div>
+
+            <div class="location-note">
+                <strong>Program Studi (Prodi)</strong><br>
+                SK Yudisium diperoleh dari Program Studi.
+            </div>
+        </div>
+
+    </section>
+
+    <section class="info-card" style="margin-top:17px;">
+        <h3><i class="fas fa-folder-open"></i> Contoh dan Dokumen Pendukung</h3>
+
+        <p style="font-size:0.78rem; color:#536078; line-height:1.8;">
+            Gunakan folder dokumen pendukung berikut untuk melihat contoh
+            dan formulir yang berkaitan dengan persyaratan PDM.
+        </p>
+
+        <a
+            class="sample-link"
+            href="https://drive.google.com/drive/folders/1mBCK6mzDBl3CpZZgyVY8QwAvkaScIXnr?usp=sharing"
+            target="_blank"
+            rel="noopener noreferrer"
+        >
+            <i class="fab fa-google-drive"></i>
+            Buka Dokumen Pendukung
+            <i class="fas fa-arrow-up-right-from-square"></i>
+        </a>
+    </section>
+
+</main>
+
+<footer>
+    PUSDATIN Universitas Muhammadiyah Kupang
+</footer>
+
+<script>
+    const requirements = {
+        nama: {
+            title: "Persyaratan Perubahan Nama, Tempat & Tanggal Lahir",
+            description: "Siapkan seluruh dokumen berikut untuk pengajuan perubahan nama, tempat, atau tanggal lahir.",
+            documents: [
+                { name: "Kartu Tanda Penduduk (KTP)" },
+                { name: "Ijazah Terakhir" },
+                { name: "Transkrip Nilai dari Ijazah Terakhir" },
+                { name: "Kartu Tanda Mahasiswa (KTM)" },
+                { name: "Akta Kelahiran" },
+                { name: "Kartu Keluarga (KK)" },
+                {
+                    name: "Surat Pernyataan Rektor",
+                    note: "Diperoleh melalui Sekretaris Rektor, lantai dua.",
+                    badge: "Sekretaris Rektor"
+                }
+            ]
+        },
+
+        nim: {
+            title: "Persyaratan Perubahan NIM",
+            description: "Siapkan seluruh dokumen berikut untuk pengajuan perubahan Nomor Induk Mahasiswa.",
+            documents: [
+                { name: "Kartu Tanda Penduduk (KTP)" },
+                { name: "Ijazah" },
+                { name: "Transkrip Nilai / Daftar Nilai Ijazah" },
+                { name: "Akta Kelahiran" },
+                { name: "Kartu Keluarga (KK)" },
+                {
+                    name: "Surat Pernyataan Rektor",
+                    note: "Diperoleh melalui Sekretaris Rektor, lantai dua.",
+                    badge: "Sekretaris Rektor"
+                },
+                {
+                    name: "Kartu Hasil Studi (KHS)",
+                    note: "Semester awal sampai semester terakhir."
+                }
+            ]
+        },
+
+        keluar: {
+            title: "Persyaratan Perubahan Jenis Keluar",
+            description: "Siapkan dokumen berikut untuk pengajuan perubahan jenis keluar mahasiswa.",
+            documents: [
+                { name: "Transkrip Nilai" },
+                { name: "Ijazah" },
+                {
+                    name: "SK Yudisium",
+                    note: "Diperoleh dari Program Studi.",
+                    badge: "Dari Prodi",
+                    prodi: true
+                },
+                {
+                    name: "Surat Pernyataan Tanggung Jawab Mutlak (SPTJM)",
+                    note: "Diperoleh melalui Sekretaris Rektor, lantai dua.",
+                    badge: "Sekretaris Rektor"
+                },
+                {
+                    name: "Surat Pernyataan Rektor",
+                    note: "Diperoleh melalui Sekretaris Rektor, lantai dua.",
+                    badge: "Sekretaris Rektor"
+                },
+                {
+                    name: "Surat Permohonan Perubahan Jenis Keluar",
+                    note: "Diperoleh melalui Sekretaris Rektor, lantai dua.",
+                    badge: "Sekretaris Rektor"
+                }
+            ]
+        },
+
+    };
+
+    let activeCategory = "nama";
+
+    const categoryGrid = document.getElementById("categoryGrid");
+    const documentList = document.getElementById("documentList");
+
+    function getStorageKey(category) {
+        return "umkoe-pdm-checklist-v1-" + category;
+    }
+
+    function getCheckedItems(category) {
+        try {
+            return JSON.parse(localStorage.getItem(getStorageKey(category))) || [];
+        } catch {
+            return [];
+        }
+    }
+
+    function saveCheckedItems(category, checkedItems) {
+        localStorage.setItem(
+            getStorageKey(category),
+            JSON.stringify(checkedItems)
+        );
+    }
+
+    function updateProgress() {
+        const data = requirements[activeCategory];
+        const total = data.documents.length;
+
+        if (total === 0) return;
+
+        const checked = getCheckedItems(activeCategory);
+        const completed = checked.length;
+        const percentage = Math.round((completed / total) * 100);
+
+        document.getElementById("documentCount").textContent =
+            completed + " dari " + total + " siap";
+
+        document.getElementById("progressPercent").textContent =
+            percentage + "%";
+
+        document.getElementById("progressBar").style.width =
+            percentage + "%";
+    }
+
+    function renderCategory(category) {
+        activeCategory = category;
+
+        const data = requirements[category];
+
+        categoryGrid.querySelectorAll(".category-card").forEach(button => {
+            const isActive = button.dataset.category === category;
+            button.classList.toggle("active", isActive);
+            button.setAttribute("aria-pressed", String(isActive));
+        });
+
+        document.getElementById("requirementTitle").textContent = data.title;
+        document.getElementById("requirementDescription").textContent =
+            data.description;
+
+        const progressArea = document.getElementById("progressArea");
+        const resetButton = document.getElementById("resetChecklist");
+        const notice = document.getElementById("categoryNotice");
+        notice.hidden = true;
+
+        progressArea.hidden = false;
+        resetButton.hidden = false;
+
+        const checkedItems = getCheckedItems(category);
+
+        documentList.innerHTML = data.documents.map((doc, index) => `
+            <label class="document-item ${checkedItems.includes(index) ? "checked" : ""}">
+                <input
+                    type="checkbox"
+                    data-index="${index}"
+                    ${checkedItems.includes(index) ? "checked" : ""}
+                >
+
+                <span class="document-info">
+                    <strong>${doc.name}</strong>
+                    ${doc.note ? `<small>${doc.note}</small>` : ""}
+                </span>
+
+                ${doc.badge ? `
+                    <span class="document-badge ${doc.prodi ? "prodi" : ""}">
+                        ${doc.badge}
+                    </span>
+                ` : ""}
+            </label>
+        `).join("");
+
+        updateProgress();
+    }
+
+    categoryGrid.addEventListener("click", function(event) {
+        const button = event.target.closest(".category-card");
+
+        if (!button) return;
+
+        renderCategory(button.dataset.category);
+    });
+
+    documentList.addEventListener("change", function(event) {
+        if (!event.target.matches('input[type="checkbox"]')) return;
+
+        const index = Number(event.target.dataset.index);
+        let checkedItems = getCheckedItems(activeCategory);
+
+        if (event.target.checked) {
+            if (!checkedItems.includes(index)) {
+                checkedItems.push(index);
+            }
+        } else {
+            checkedItems = checkedItems.filter(item => item !== index);
+        }
+
+        saveCheckedItems(activeCategory, checkedItems);
+        renderCategory(activeCategory);
+    });
+
+    document.getElementById("resetChecklist").addEventListener("click", function() {
+        if (!confirm("Reset semua checklist untuk kategori ini?")) return;
+
+        localStorage.removeItem(getStorageKey(activeCategory));
+        renderCategory(activeCategory);
+    });
+
+    renderCategory("nama");
+</script>
+
+</body>
+</html>
